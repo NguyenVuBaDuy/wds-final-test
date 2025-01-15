@@ -2,14 +2,21 @@ import { DollarOutlined, DownOutlined, MenuFoldOutlined, MenuUnfoldOutlined, Pro
 import { Avatar, Button, Dropdown, Layout, Menu, Space, theme } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, Outlet, useNavigate } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 
 const AdminLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [activeMenu, setActiveMenu] = useState('')
+    const location = useLocation()
+
+    useEffect(() => {
+        const active = items.find(item => location.pathname === item.key).key ?? '/admin'
+        setActiveMenu(active)
+    }, [location])
 
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -31,7 +38,7 @@ const AdminLayout = () => {
             label: <Link to={'/admin/user'}>User Management</Link>,
         },
         {
-            key: '/admin/book',
+            key: '/admin/product',
             icon: <ProductOutlined />,
             label: <Link to={'/admin/product'}>Product Management</Link>,
         },
@@ -84,6 +91,7 @@ const AdminLayout = () => {
                         mode="inline"
                         defaultSelectedKeys={['/admin']}
                         items={items}
+                        selectedKeys={[activeMenu]}
                     />
                 </Sider>
                 <Layout>
