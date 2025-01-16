@@ -83,7 +83,10 @@ const AdminLayout = () => {
                         margin: "15px 0",
                         textAlign: "center",
                         fontSize: !collapsed ? "32px" : "15px",
-                    }}>
+                        cursor: "pointer"
+                    }}
+                        onClick={() => { navigate('/admin') }}
+                    >
                         ADMIN
                     </div>
                     <Menu

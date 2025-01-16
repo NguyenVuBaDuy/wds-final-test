@@ -1,8 +1,8 @@
-import Product from "../../../components/admin/product/product"
+import ProductTable from "../../../components/admin/product/product.table"
 
 const ProductManagement = () => {
     return (
-        <Product />
+        <ProductTable />
     )
 }
 

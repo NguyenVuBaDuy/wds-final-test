@@ -1,8 +1,8 @@
-import Order from "../../../components/admin/order/order"
+import OrderTable from "../../../components/admin/order/order.table"
 
 const OrderManagement = () => {
     return (
-        <Order />
+        <OrderTable />
     )
 }
 

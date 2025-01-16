@@ -11,6 +11,8 @@ import DashboardManagement from './pages/admin/dashboard.management/dashboard.ma
 import UserManagement from './pages/admin/user.management/user.management.jsx'
 import OrderManagement from './pages/admin/order.management/order.management.jsx'
 import ProductManagement from './pages/admin/product.management/product.management.jsx'
+import { ConfigProvider } from 'antd'
+import enUS from 'antd/locale/en_US';
 
 const router = createBrowserRouter([
   {
@@ -69,7 +71,9 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <RouterProvider router={router} />
+    <ConfigProvider locale={enUS}>
+      <RouterProvider router={router} />
+    </ConfigProvider>
   )
 }
 

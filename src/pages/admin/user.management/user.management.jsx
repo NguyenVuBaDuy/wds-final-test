@@ -1,8 +1,8 @@
-import User from "../../../components/admin/user/user"
+import UserTable from "../../../components/admin/user/user.table"
 
 const UserManagement = () => {
     return (
-        <User />
+        <UserTable />
     )
 }
 
