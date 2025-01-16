@@ -1,0 +1,64 @@
+/* Header */
+.header {
+    padding: 26px 0;
+    background: #fffae3;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+    font-size: 1rem;
+    position: relative;
+    display: inline-flex;
+}
+
+/* Navbar */
+.navbar__list {
+    display: flex;
+}
+
+.header-action__link,
+.navbar__link {
+    padding: 4px 18px;
+    color: #000;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.navbar__link:hover {
+    color: #000958;
+    text-shadow: 1px 0 0 currentColor;
+}
+
+.navbar__link--active {
+    text-decoration-line: underline;
+}
+
+/* Shopping cart */
+.shopping-cart {
+    margin-right: 10px;
+}
+
+.shopping-cart__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+/* Action */
+.header-action {
+    display: flex;
+    align-items: center;
+}
+
+.header-action__sign-up {
+    min-width: 117px;
+    color: #000;
+}
