@@ -12,7 +12,6 @@ const AppLayout = () => {
             <Home />
 
             <AppFooter />
-
         </div>
     );
 };
