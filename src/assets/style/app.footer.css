@@ -1,0 +1,132 @@
+/* Footer */
+.footer {
+    background-color: #fffae3;
+    padding: 20px;
+    color: #000;
+}
+
+.footer__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.footer__logo-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.logo {
+    font-size: 1rem;
+    position: relative;
+    display: inline-flex;
+}
+
+.footer__description {
+    margin: 10px 0;
+    font-size: 1.4rem;
+    color: #555;
+}
+
+.footer__social-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.footer__social-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #f4f4f4;
+    border-radius: 50%;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.footer__social-link:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.footer__links-section {
+    display: flex;
+    flex: 2;
+    min-width: 300px;
+    gap: 40px;
+}
+
+.footer__links-column {
+    list-style: none;
+}
+
+.footer__link {
+    display: block;
+    text-decoration: none;
+    color: #000;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.footer__link:hover {
+    text-decoration: underline;
+}
+
+.footer__subscribe-section {
+    flex: 2;
+    min-width: 300px;
+}
+
+.footer__subscribe-title {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.footer__subscribe-form {
+    display: flex;
+    gap: 10px;
+}
+
+.footer__input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.footer__button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.footer__button:hover {
+    background-color: #333;
+}
+
+.footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #555;
+}
+
+.footer__bottom-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer__bottom-links .footer__link {
+    font-size: 1.2rem;
+}
