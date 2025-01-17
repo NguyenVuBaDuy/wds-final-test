@@ -8,8 +8,11 @@ const AppLayout = () => {
     return (
         <div className="layout">
             <AppHeader />
+
             <Home />
-            {/* <AppFooter /> */}
+
+            <AppFooter />
+
         </div>
     );
 };
