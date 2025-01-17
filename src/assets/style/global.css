@@ -135,6 +135,7 @@ table {
 
 :root {
     --primary-color: #000;
+    --hover-item: #572AF8;
 }
 
 html,
@@ -182,7 +183,7 @@ button {
 }
 
 .container {
-    width: 1170px;
+    width: 1310px;
     max-width: calc(100% - 48px);
     margin: 0 auto;
 }
@@ -212,5 +213,3 @@ a {
     opacity: 0.9;
     cursor: pointer;
 }
-
-
