@@ -3,6 +3,7 @@
     background-color: #fffae3;
     padding: 20px;
     color: #000;
+    margin-top: 50px;
 }
 
 .footer__container {
@@ -10,6 +11,7 @@
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap;
+    padding-top: 20px;
 }
 
 .footer__logo-section {
