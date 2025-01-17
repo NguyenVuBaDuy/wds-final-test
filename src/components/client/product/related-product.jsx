@@ -73,81 +73,11 @@ const products = [
         price: "123$",
         image: "https://via.placeholder.com/300x200",
     },
-    {
-        id: 1,
-        name: "Nike Air Zoom",
-        description: "Product 1 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 2,
-        name: "Nike Air Zoom",
-        description: "Product 2 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 3,
-        name: "Nike Air Zoom",
-        description: "Product 3 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 4,
-        name: "Nike Air Zoom",
-        description: "Product 4 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 5,
-        name: "Nike Air Zoom",
-        description: "Product 5 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 1,
-        name: "Nike Air Zoom",
-        description: "Product 1 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 2,
-        name: "Nike Air Zoom",
-        description: "Product 2 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 3,
-        name: "Nike Air Zoom",
-        description: "Product 3 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 4,
-        name: "Nike Air Zoom",
-        description: "Product 4 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
-    {
-        id: 5,
-        name: "Nike Air Zoom",
-        description: "Product 5 description",
-        price: "123$",
-        image: "https://via.placeholder.com/300x200",
-    },
 ];
 
 const RelatedProducts = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const itemsPerPage = 3; 
+    const itemsPerPage = 3;
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -155,9 +85,15 @@ const RelatedProducts = () => {
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) =>
-            Math.min(prevIndex + 1, products.length - itemsPerPage)
+            Math.min(
+                prevIndex + 1,
+                Math.ceil(products.length / itemsPerPage) - 1
+            )
         );
     };
+
+    const containerWidth = 900; 
+    const translateX = -currentIndex * containerWidth;
 
     return (
         <div
@@ -188,24 +124,28 @@ const RelatedProducts = () => {
                 <div
                     style={{
                         overflow: "hidden",
-                        width: "100%",
-                        maxWidth: "900px",
+                        width: `${containerWidth}px`,
                     }}
                 >
                     <div
                         style={{
                             display: "flex",
-                            transform: `translateX(-${currentIndex * 100}%)`,
                             transition: "transform 0.5s ease-in-out",
+                            transform: `translateX(${translateX}px)`,
                             gap: "16px",
+                            width: `${
+                                products.length *
+                                (containerWidth / itemsPerPage)
+                            }px`,
                         }}
                     >
-                        {products.map((product) => (
+                        {products.map((product, index) => (
                             <Card
-                                key={product.id}
+                                key={index}
                                 hoverable
                                 style={{
-                                    flex: "1 0 calc(33.33% - 16px)",
+                                    width: `${containerWidth / itemsPerPage}px`,
+                                    flexShrink: 0,
                                     border: "1px solid #ddd",
                                 }}
                                 cover={
@@ -261,7 +201,10 @@ const RelatedProducts = () => {
                     shape="circle"
                     icon={<RightOutlined />}
                     onClick={handleNext}
-                    disabled={currentIndex >= products.length - itemsPerPage}
+                    disabled={
+                        currentIndex ===
+                        Math.ceil(products.length / itemsPerPage) - 1
+                    }
                     style={{ margin: "0 10px" }}
                 />
             </div>
