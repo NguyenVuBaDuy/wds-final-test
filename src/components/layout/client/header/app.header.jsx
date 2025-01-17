@@ -54,7 +54,7 @@ const items = [
 ];
 
 const CheckLogin = () => {
-    const isAuthentication = true;
+    const isAuthentication = false;
 
     return (
         <>
