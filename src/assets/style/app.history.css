@@ -1,8 +1,8 @@
 .history-container {
     display: flex;
     flex-wrap: wrap;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 0 auto;
+    padding: 0 20px;
     justify-content: space-between;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -15,6 +15,9 @@
 }
 
 .summary-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     width: 30%;
     margin-top: 53px;
     margin-left: 20px;
@@ -26,10 +29,10 @@
 
 .action-button {
     border: none;
-    padding: 8px 16px;
+    padding: 16px 0;
     cursor: pointer;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 1.6rem;
     transition: background-color 0.3s;
 }
 
@@ -53,12 +56,13 @@
 
 .buy-again-button {
     margin-top: 20px;
-    background-color: #008cba;
-    color: white;
+    background-color: #ffb700;
+    color: #000;
     padding: 24px;
     width: 100%;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 1.6rem;
+    font-weight: 600;
     transition: background-color 0.3s;
 }
 
@@ -142,15 +146,19 @@
 }
 
 .centered-cell {
+    font-size: 1.8rem;
     text-align: center !important;
 }
 
 .action-buttons {
     flex-direction: column;
     display: flex;
-    gap: 10px;
+    gap: 25px;
 }
 
 .continue-shopping-button {
     margin-top: 20px;
+}
+.buy-again-text {
+    font-weight: bold;
 }

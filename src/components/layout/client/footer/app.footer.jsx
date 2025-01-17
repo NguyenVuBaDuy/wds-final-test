@@ -11,7 +11,7 @@ import "../../../../assets/style/global.css";
 const AppFooter = () => {
     return (
         <footer className="footer">
-            <div className="container">
+            <div className="containers">
                 <div className="footer__container">
                     <div className="footer__logo-section">
                         <div className="logo">

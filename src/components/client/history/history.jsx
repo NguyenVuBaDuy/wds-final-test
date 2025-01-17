@@ -1,11 +1,17 @@
 import React from "react";
 import { Table, Button, Select, InputNumber } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons"; // Import biểu tượng mũi tên
+import {
+    ArrowLeftOutlined,
+    SaveOutlined,
+    DeleteOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "../../../assets/style/app.history.css";
 
 const { Option } = Select;
 
 const History = () => {
+    const navigate = useNavigate();
     const data = [
         {
             key: "1",
@@ -13,7 +19,7 @@ const History = () => {
                 name: "Shoe Shoe Shoe",
                 price: 47.0,
                 stockStatus: "In Stock",
-                image: "src/assets/img/product-1.png", // Corrected the image path
+                image: "src/assets/img/product-1.png",
             },
             quantity: 1,
             color: "Black",
@@ -96,10 +102,25 @@ const History = () => {
             key: "actions",
             render: () => (
                 <div className="action-buttons">
-                    <Button type="text" className="action-button save-button">
+                    <Button
+                        type="text"
+                        className="action-button save-button"
+                        icon={<SaveOutlined />}
+                        onClick={() => {
+                            window.location.href =
+                                "src/assets/img/product-1.png";
+                        }}
+                    >
                         Save
                     </Button>
-                    <Button type="text" className="action-button delete-button">
+                    <Button
+                        type="text"
+                        className="action-button delete-button"
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                            alert("Deleted!");
+                        }}
+                    >
                         Delete
                     </Button>
                 </div>
@@ -122,19 +143,24 @@ const History = () => {
             <div className="summary-section">
                 <div className="summary">
                     <div>Subtotal (items)</div>
-                    <div>{data.length}</div>
+                    <div className="buy-again-text">{data.length}</div>
                 </div>
                 <div className="summary">
                     <div>Price (Total)</div>
-                    <div>${calculateSubtotal().toFixed(2)}</div>
+                    <div className="buy-again-text">
+                        ${calculateSubtotal().toFixed(2)}
+                    </div>
                 </div>
                 <div className="summary">
                     <div>Shipping</div>
-                    <div>$10.00</div>
+                    <div className="buy-again-text">$10.00</div>
                 </div>
                 <div className="summary total">
                     <div>Estimated Total</div>
-                    <div>${(calculateSubtotal() + 10).toFixed(2)}</div>
+                    <div className="buy-again-text">
+                        {" "}
+                        ${(calculateSubtotal() + 10).toFixed(2)}
+                    </div>
                 </div>
                 <Button type="primary" className="buy-again-button">
                     Buy again
@@ -145,9 +171,7 @@ const History = () => {
                 <Button
                     type="primary"
                     icon={<ArrowLeftOutlined />}
-                    onClick={() =>
-                        (window.location.href = "/continue-shopping")
-                    } // Điều hướng tới trang "Continue Shopping"
+                    onClick={() => navigate("/home")}
                     className="continue-shopping-button"
                 >
                     Continue Shopping

@@ -5,15 +5,14 @@ import Home from "../../client/home/home";
 import ProductPage from "../../client/product/product";
 import RelatedProducts from "../../client/product/related-product";
 import "../../../assets/style/global.css";
+import History from "../../client/history/history";
 
 const AppLayout = () => {
     return (
         <div className="layout">
             <AppHeader />
 
-            <ProductPage />
-
-            <RelatedProducts />
+            <History />
 
             <AppFooter />
         </div>
