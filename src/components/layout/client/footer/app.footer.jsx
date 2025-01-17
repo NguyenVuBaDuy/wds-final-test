@@ -1,3 +1,7 @@
+
+const AppFooter = () => {
+    return <div>AppFooter</div>;
+
 import React from "react";
 import {
     FacebookOutlined,
