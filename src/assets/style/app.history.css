@@ -1,0 +1,156 @@
+.history-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    padding: 20px;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.product-table {
+    width: 60%;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.summary-section {
+    width: 30%;
+    margin-top: 53px;
+    margin-left: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.action-button {
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.save-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #e53935;
+}
+
+.buy-again-button {
+    margin-top: 20px;
+    background-color: #008cba;
+    color: white;
+    padding: 24px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.buy-again-button:hover {
+    background-color: #006f88;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+.summary.total {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.product-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.product-name {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-price {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.in-stock {
+    font-size: 1.6rem;
+    color: green;
+}
+
+.product-option {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Các ô trong bảng */
+.ant-table-tbody > tr > td {
+    padding: 12px;
+}
+
+/* Thêm màu cho các nút chọn màu */
+.select-color {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.ant-table-tbody > tr > td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ant-table-column-product,
+.ant-table-column-color,
+.ant-table-column-quantity,
+.ant-table-column-actions,
+.ant-table-cell {
+    text-align: center;
+}
+
+.ant-table-tbody > tr {
+    margin-bottom: 10px;
+}
+
+.ant-table-tbody > tr > td {
+    padding: 12px;
+}
+
+.centered-cell {
+    text-align: center !important;
+}
+
+.action-buttons {
+    flex-direction: column;
+    display: flex;
+    gap: 10px;
+}
+
+.continue-shopping-button {
+    margin-top: 20px;
+}
