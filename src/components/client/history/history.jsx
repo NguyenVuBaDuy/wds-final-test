@@ -5,7 +5,7 @@ import {
     SaveOutlined,
     DeleteOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.history.css";
 
 const { Option } = Select;
@@ -171,7 +171,7 @@ const History = () => {
                 <Button
                     type="primary"
                     icon={<ArrowLeftOutlined />}
-                    onClick={() => navigate("/home")}
+                    onClick={() => navigate("/")}
                     className="continue-shopping-button"
                 >
                     Continue Shopping
