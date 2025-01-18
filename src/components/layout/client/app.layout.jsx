@@ -6,13 +6,13 @@ import ProductPage from "../../client/product/product";
 import RelatedProducts from "../../client/product/related-product";
 import "../../../assets/style/global.css";
 import History from "../../client/history/history";
-
+import Order from "../../client/order/order";
 const AppLayout = () => {
     return (
         <div className="layout">
             <AppHeader />
 
-            <History />
+            <Order />
 
             <AppFooter />
         </div>
