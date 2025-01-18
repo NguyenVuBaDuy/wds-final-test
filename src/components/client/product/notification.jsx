@@ -39,7 +39,7 @@ const ProductNotification = ({ isVisible, onClose }) => {
                     </span>
                 </div>
                 <p style={{ fontSize: "16px", margin: "20px 0" }}>
-                    Đơn hàng đã được thêm vào giỏ!
+                    Order has been added to cart!
                 </p>
             </div>
             <Button
@@ -54,7 +54,7 @@ const ProductNotification = ({ isVisible, onClose }) => {
                     navigate("/order");
                 }}
             >
-                Đi đến thanh toán
+                Go to checkout
             </Button>
         </Modal>
     );

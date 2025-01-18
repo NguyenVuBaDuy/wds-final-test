@@ -219,7 +219,7 @@ const Product = () => {
 
             <div style={{ marginTop: "40px" }}>
                 <Tabs defaultActiveKey="1">
-                    <TabPane tab="Giới thiệu sản phẩm" key="1">
+                    <TabPane tab="Product introdution" key="1">
                         <p style={{ lineHeight: "1.6" }}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit. Aenean commodo ligula eget dolor. Aenean
