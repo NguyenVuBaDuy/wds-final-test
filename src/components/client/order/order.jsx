@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Table, Button, Select, Input } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.order.css";
 
 const { Option } = Select;
 
 const Order = () => {
+    const navigate = useNavigate();
     const [coupon, setCoupon] = useState("");
-    const [products, setProducts] = useState([
+    const products = [
         {
             key: "1",
             name: "Nike Air Zoom Pegasus",
@@ -22,56 +24,22 @@ const Order = () => {
             quantity: 1,
             image: "src/assets/img/product-1.png",
         },
-    ]);
+    ];
 
-    // Tính tổng tiền hàng
     const totalPrice = products.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0
     );
 
-    const shippingFee = 50000; // Phí ship cố định
+    const shippingFee = 50000;
 
-    // Xử lý tăng số lượng
-    const handleIncrease = (key) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.key === key
-                    ? { ...product, quantity: product.quantity + 1 }
-                    : product
-            )
-        );
-    };
-
-    // Xử lý giảm số lượng
-    const handleDecrease = (key) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.key === key && product.quantity > 1
-                    ? { ...product, quantity: product.quantity - 1 }
-                    : product
-            )
-        );
-    };
-
-    // Xử lý xóa sản phẩm
-    const handleDelete = (key) => {
-        setProducts((prevProducts) =>
-            prevProducts.filter((product) => product.key !== key)
-        );
-    };
-
-    // Cột cho bảng sản phẩm
     const columns = [
         {
             title: "",
             dataIndex: "delete",
             key: "delete",
-            render: (_, record) => (
-                <div
-                    className="order__delete-icon"
-                    onClick={() => handleDelete(record.key)}
-                >
+            render: () => (
+                <div className="order__delete-icon">
                     <DeleteOutlined />
                 </div>
             ),
@@ -106,21 +74,11 @@ const Order = () => {
             dataIndex: "quantity",
             key: "quantity",
             className: "custom-align-center",
-            render: (quantity, record) => (
+            render: (quantity) => (
                 <div className="order__quantity">
-                    <button
-                        className="order__quantity-btn"
-                        onClick={() => handleDecrease(record.key)}
-                    >
-                        -
-                    </button>
+                    <button className="order__quantity-btn">-</button>
                     <span>{quantity}</span>
-                    <button
-                        className="order__quantity-btn"
-                        onClick={() => handleIncrease(record.key)}
-                    >
-                        +
-                    </button>
+                    <button className="order__quantity-btn">+</button>
                 </div>
             ),
         },
@@ -139,7 +97,10 @@ const Order = () => {
 
     const handleApplyCoupon = () => {
         console.log("Mã giảm giá:", coupon);
-        // Thêm logic xử lý mã giảm giá tại đây
+    };
+
+    const handleCheckout = () => {
+        navigate("/");
     };
 
     return (
@@ -209,7 +170,13 @@ const Order = () => {
                             {(totalPrice + shippingFee).toLocaleString()} đ
                         </span>
                     </div>
-                    <Button className="order__checkout">Thanh toán</Button>
+                    {/* Update this button to call handleCheckout */}
+                    <Button
+                        className="order__checkout"
+                        onClick={handleCheckout}
+                    >
+                        Thanh toán
+                    </Button>
                 </section>
             </main>
         </div>
