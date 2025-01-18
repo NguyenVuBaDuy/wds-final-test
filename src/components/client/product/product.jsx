@@ -1,12 +1,41 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Rate, Tabs, Select, InputNumber, Avatar } from "antd";
+import { Button, Rate, Tabs, InputNumber, Avatar, Space } from "antd";
+import RelatedProducts from "./related-product";
+import ProductNotification from "./notification";
 
 const { TabPane } = Tabs;
 
 const ProductPage = () => {
     const [selectedSize, setSelectedSize] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [reviews, setReviews] = useState([
+        { id: 1, rating: 5, content: "Great product!", user: "John Doe" },
+        {
+            id: 2,
+            rating: 4,
+            content: "Very good, but could be better.",
+            user: "Jane Smith",
+        },
+        { id: 3, rating: 3, content: "Average quality.", user: "Alice Brown" },
+        { id: 4, rating: 3, content: "Not bad.", user: "Charlie Green" },
+        { id: 5, rating: 4, content: "Liked it!", user: "Dave Blue" },
+        { id: 6, rating: 2, content: "Could be better.", user: "Emma White" },
+    ]);
+    const [showAllReviews, setShowAllReviews] = useState(false);
+    const [filterRating, setFilterRating] = useState(null); 
+    const maxVisibleReviews = 3;
+
+    const limitedReviews = showAllReviews
+        ? reviews 
+        : reviews.slice(0, maxVisibleReviews); 
+
+    const [isNotificationVisible, setNotificationVisible] = useState(false);
+
+    const handleAddToCart = () => {
+        setNotificationVisible(true);
+    };
 
     return (
         <div
@@ -29,6 +58,7 @@ const ProductPage = () => {
                 </Link>{" "}
                 &raquo; Vans UA Old Skool
             </div>
+
             <div
                 style={{
                     display: "flex",
@@ -38,7 +68,7 @@ const ProductPage = () => {
             >
                 <div>
                     <img
-                        src="src\assets\img\product-1.png"
+                        src="src/assets/img/product-1.png"
                         alt="Product Image"
                         style={{
                             width: "100%",
@@ -66,7 +96,7 @@ const ProductPage = () => {
                             marginBottom: "10px",
                         }}
                     >
-                        20 $
+                        $20
                     </p>
                     <p style={{ marginBottom: "5px" }}>
                         Brand: <strong>Vans</strong>
@@ -96,28 +126,24 @@ const ProductPage = () => {
                                     marginTop: "5px",
                                 }}
                             >
-                                <div
-                                    className="color-box"
-                                    style={{
-                                        width: "30px",
-                                        height: "30px",
-                                        borderRadius: "50%",
-                                        backgroundColor: "#ddd",
-                                        cursor: "pointer",
-                                        border: "1px solid #ccc",
-                                    }}
-                                ></div>
-                                <div
-                                    className="color-box"
-                                    style={{
-                                        width: "30px",
-                                        height: "30px",
-                                        borderRadius: "50%",
-                                        backgroundColor: "#444",
-                                        cursor: "pointer",
-                                        border: "1px solid #ccc",
-                                    }}
-                                ></div>
+                                {["#ddd", "#444"].map((color) => (
+                                    <div
+                                        key={color}
+                                        className="color-box"
+                                        onClick={() => setSelectedColor(color)}
+                                        style={{
+                                            width: "30px",
+                                            height: "30px",
+                                            borderRadius: "50%",
+                                            backgroundColor: color,
+                                            cursor: "pointer",
+                                            border:
+                                                selectedColor === color
+                                                    ? "2px solid #000"
+                                                    : "1px solid #ccc",
+                                        }}
+                                    ></div>
+                                ))}
                             </div>
                         </div>
 
@@ -178,13 +204,19 @@ const ProductPage = () => {
                             fontSize: "16px",
                             fontWeight: "bold",
                         }}
+                        onClick={handleAddToCart}
+                        disabled={!selectedColor || !selectedSize}
                     >
                         Add to Cart
                     </Button>
+                    {/* Thông báo */}
+                    <ProductNotification
+                        isVisible={isNotificationVisible}
+                        onClose={() => setNotificationVisible(false)}
+                    />
                 </div>
             </div>
 
-            {/* Tabs Section */}
             <div style={{ marginTop: "40px" }}>
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Giới thiệu sản phẩm" key="1">
@@ -195,39 +227,72 @@ const ProductPage = () => {
                             parturient montes.
                         </p>
                     </TabPane>
-                    <TabPane tab="Reviews (1)" key="2">
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "flex-start",
-                                gap: "15px",
-                                marginBottom: "20px",
-                            }}
-                        >
-                            <Avatar
-                                src="https://via.placeholder.com/40"
-                                alt="User Avatar"
-                                size={40}
+                    <TabPane
+                        tab={`Reviews (${reviews.length})`} 
+                        key="2"
+                    >
+                        <Space direction="vertical" style={{ width: "100%" }}>
+                            <Rate
+                                allowHalf
+                                onChange={(value) => setFilterRating(value)} 
+                                value={filterRating}
+                                style={{ marginBottom: "20px" }}
                             />
-                            <div>
-                                <Rate disabled defaultValue={4} />
-                                <p
+                            {limitedReviews.map((review) => (
+                                <div
+                                    key={review.id}
                                     style={{
-                                        fontWeight: "bold",
-                                        margin: "5px 0",
+                                        display: "flex",
+                                        alignItems: "flex-start",
+                                        gap: "15px",
+                                        marginBottom: "20px",
                                     }}
                                 >
-                                    Customer Review:
-                                </p>
-                                <p style={{ lineHeight: "1.6" }}>
-                                    Lorem ipsum dolor sit amet consectetur
-                                    adipiscing.
-                                </p>
-                            </div>
-                        </div>
+                                    <Avatar
+                                        src={`https://via.placeholder.com/40?text=${review.user[0]}`}
+                                        alt="User Avatar"
+                                        size={40}
+                                    />
+                                    <div>
+                                        <Rate
+                                            disabled
+                                            defaultValue={review.rating}
+                                        />
+                                        <p
+                                            style={{
+                                                fontWeight: "bold",
+                                                margin: "5px 0",
+                                            }}
+                                        >
+                                            {review.user}:
+                                        </p>
+                                        <p style={{ lineHeight: "1.6" }}>
+                                            {review.content}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {reviews.length > maxVisibleReviews && (
+                                <Button
+                                    type="link"
+                                    onClick={() =>
+                                        setShowAllReviews(!showAllReviews)
+                                    }
+                                    style={{
+                                        display: "block",
+                                        margin: "0 auto",
+                                    }}
+                                >
+                                    {showAllReviews ? "View Less" : "View More"}
+                                </Button>
+                            )}
+                        </Space>
                     </TabPane>
                 </Tabs>
             </div>
+
+            <RelatedProducts />
         </div>
     );
 };

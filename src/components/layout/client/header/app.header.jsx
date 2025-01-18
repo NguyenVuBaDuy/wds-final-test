@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Menu, Badge, Avatar, Space, Dropdown } from "antd";
 import {
     ShoppingCartOutlined,
@@ -8,59 +8,62 @@ import {
     ProfileOutlined,
     SettingOutlined,
 } from "@ant-design/icons";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../../../../assets/style/app.header.css";
 import "../../../../assets/style/global.css";
 
-const items = [
-    {
-        key: "1",
-        label: (
-            <a
-                href="/profile"
-                style={{ display: "flex", alignItems: "center" }}
-            >
-                <ProfileOutlined style={{ marginRight: "8px" }} />
-                Profile
-            </a>
-        ),
-    },
-    {
-        key: "2",
-        label: (
-            <a
-                href="/settings"
-                style={{ display: "flex", alignItems: "center" }}
-            >
-                <SettingOutlined style={{ marginRight: "8px" }} />
-                Settings
-            </a>
-        ),
-    },
-    {
-        type: "divider",
-    },
-    {
-        key: "3",
-        label: (
-            <a
-                href="/logout"
-                style={{ display: "flex", alignItems: "center", color: "red" }}
-            >
-                <LogoutOutlined style={{ marginRight: "8px" }} />
-                Logout
-            </a>
-        ),
-    },
-];
-
 const CheckLogin = () => {
-    const isAuthentication = false;
+    const navigate = useNavigate();
+    const [isAuthentication, setIsAuthentication] = useState(true);
+
+    const handleLogout = () => {
+        setIsAuthentication(false);
+    };
+
+    const menuItems = [
+        {
+            key: "1",
+            label: (
+                <div
+                    onClick={() => navigate("/history")}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                    }}
+                >
+                    <ProfileOutlined style={{ marginRight: "8px" }} />
+                    Profile
+                </div>
+            ),
+        },
+        {
+            type: "divider",
+        },
+        {
+            key: "3",
+            label: (
+                <div
+                    onClick={handleLogout}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "red",
+                        cursor: "pointer",
+                    }}
+                >
+                    <LogoutOutlined style={{ marginRight: "8px" }} />
+                    Logout
+                </div>
+            ),
+        },
+    ];
 
     return (
         <>
             {isAuthentication ? (
                 <Dropdown
-                    menu={{ items }}
+                    menu={{ items: menuItems }}
                     trigger={["click"]}
                     overlayStyle={{ minWidth: "200px" }}
                 >
@@ -103,33 +106,62 @@ const CheckLogin = () => {
 };
 
 const AppHeader = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const isHome = location.pathname === "/";
+    const isCart = location.pathname === "/order";
+
     return (
-        <header class="header">
-            <div class="container">
-                <div class="header-top">
-                    <div class="logo">
-                        <img src="" alt="logo" class="logo__img" />
+        <header className="header">
+            <div className="container">
+                <div className="header-top">
+                    <div className="logo">
+                        <img src="" alt="logo" className="logo__img" />
                     </div>
-                    <nav class="navbar">
-                        <ul class="navbar__list">
-                            <li class="navbar__item">
+                    <nav className="navbar">
+                        <ul className="navbar__list">
+                            <li className="navbar__item">
                                 <a
                                     href="#!"
-                                    class="navbar__link navbar__link--active"
+                                    onClick={() => navigate("/")}
+                                    className={`navbar__link ${
+                                        isHome ? "navbar__link--active" : ""
+                                    }`}
+                                    style={{
+                                        textDecoration: isHome
+                                            ? "underline"
+                                            : "none",
+                                    }}
                                 >
                                     Home
                                 </a>
                             </li>
-                            <li class="navbar__item">
-                                <a href="#!" class="navbar__link">
+                            <li className="navbar__item">
+                                <a
+                                    href="#!"
+                                    onClick={() => navigate("/order")}
+                                    className={`navbar__link ${
+                                        isCart ? "navbar__link--active" : ""
+                                    }`}
+                                    style={{
+                                        textDecoration: isCart
+                                            ? "underline"
+                                            : "none",
+                                    }}
+                                >
                                     Cart
                                 </a>
                             </li>
                         </ul>
                     </nav>
-                    <div class="header-action">
+                    <div className="header-action">
                         <div className="shopping-cart">
-                            <a href="#!" class="shopping-cart__link">
+                            <a
+                                onClick={() => navigate("/order")}
+                                className="shopping-cart__link"
+                                style={{ cursor: "pointer" }}
+                            >
                                 <ShoppingCartOutlined
                                     style={{
                                         fontSize: "2.4rem",

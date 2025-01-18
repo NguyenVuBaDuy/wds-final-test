@@ -8,70 +8,70 @@ const products = [
         name: "Nike Air Zoom",
         description: "Product 1 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 2,
         name: "Nike Air Zoom",
         description: "Product 2 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 3,
         name: "Nike Air Zoom",
         description: "Product 3 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 4,
         name: "Nike Air Zoom",
         description: "Product 4 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 5,
         name: "Nike Air Zoom",
         description: "Product 5 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 1,
         name: "Nike Air Zoom",
         description: "Product 1 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 2,
         name: "Nike Air Zoom",
         description: "Product 2 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 3,
         name: "Nike Air Zoom",
         description: "Product 3 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 4,
         name: "Nike Air Zoom",
         description: "Product 4 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
     {
         id: 5,
         name: "Nike Air Zoom",
         description: "Product 5 description",
         price: "123$",
-        image: "https://via.placeholder.com/300x200",
+        image: "src/assets/img/product-1.png",
     },
 ];
 
@@ -92,16 +92,15 @@ const RelatedProducts = () => {
         );
     };
 
-    const containerWidth = 900; 
+    const containerWidth = 900;
     const translateX = -currentIndex * containerWidth;
 
     return (
         <div
             className="container"
             style={{
-                padding: "20px",
                 maxWidth: "1200px",
-                margin: "0 auto",
+                margin: "20px auto",
             }}
         >
             <h2 style={{ fontSize: "24px", marginBottom: "20px" }}>

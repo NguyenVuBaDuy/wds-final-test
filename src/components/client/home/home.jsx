@@ -11,45 +11,72 @@ import {
     Input,
     Collapse,
     Button,
+    Radio,
 } from "antd";
 import { StarOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const { Option } = Select;
 const { Search } = Input;
 const { Panel } = Collapse;
 
-// Mock dữ liệu sản phẩm
-const products = new Array(20).fill({
+const products = new Array(20).fill(null).map((_, index) => ({
+    id: index + 1,
     name: "VANS",
     rating: 4.2,
     price: 200,
-});
+    size: 36,
+    brand: "Vans",
+}));
 
-// Mock dữ liệu thương hiệu
 const brands = [
-    { name: "Adidas", logo: "https://via.placeholder.com/50" },
-    { name: "Nike", logo: "https://via.placeholder.com/50" },
-    { name: "Vans", logo: "https://via.placeholder.com/50" },
-    { name: "Type 3", logo: "https://via.placeholder.com/50" },
-    { name: "Type 4", logo: "https://via.placeholder.com/50" },
-    { name: "Type 5", logo: "https://via.placeholder.com/50" },
-    { name: "Type 6", logo: "https://via.placeholder.com/50" },
-    { name: "Type 7", logo: "https://via.placeholder.com/50" },
-    { name: "Type 8", logo: "https://via.placeholder.com/50" },
+    { name: "Adidas", logo: "src/assets/img/product-1.png" },
+    { name: "Nike", logo: "src/assets/img/product-1.png" },
+    { name: "Vans", logo: "src/assets/img/product-1.png" },
+    { name: "Type 3", logo: "src/assets/img/product-1.png" },
+    { name: "Type 4", logo: "src/assets/img/product-1.png" },
+    { name: "Type 5", logo: "src/assets/img/product-1.png" },
+    { name: "Type 6", logo: "src/assets/img/product-1.png" },
+    { name: "Type 7", logo: "src/assets/img/product-1.png" },
+    { name: "Type 8", logo: "src/assets/img/product-1.png" },
 ];
 
-const App = () => {
+const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedBrand, setSelectedBrand] = useState(null);
+    const [selectedRating, setSelectedRating] = useState(null);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([20, 50]);
+    const [selectedSizes, setSelectedSizes] = useState([]);
+    const navigate = useNavigate();
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const handleClearFilters = () => {
+        setSelectedBrand(null); 
+        setSelectedRating(null); 
+        setSelectedPriceRange([20, 50]); 
+        setSelectedSizes([]); 
+
+        const checkboxes = document.querySelectorAll(".ant-checkbox-input");
+        checkboxes.forEach((checkbox) => (checkbox.checked = false));
+
+        const slider = document.querySelector(".ant-slider");
+        if (slider) {
+            const rangeSlider = slider.querySelector(".ant-slider-rail");
+            rangeSlider.style.left = "0%"; 
+            rangeSlider.style.right = "100%";
+        }
+
+        const radioGroup = document.querySelectorAll(".ant-radio-input");
+        radioGroup.forEach((radio) => (radio.checked = false));
+    };
+
+    const handleBrandClick = (brandName) => {
+        setSelectedBrand(brandName);
+    };
 
     return (
         <div className="container">
@@ -62,6 +89,20 @@ const App = () => {
                             borderRight: "1px solid #e0e0e0",
                         }}
                     >
+                        {selectedBrand && (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginBottom: "30px",
+                                    fontWeight: "bold",
+                                    fontSize: "30px",
+                                }}
+                            >
+                                {selectedBrand}
+                            </div>
+                        )}
                         <div
                             style={{
                                 display: "flex",
@@ -77,33 +118,53 @@ const App = () => {
                                 Filters
                             </h3>
 
-                            <Button type="link" style={{ marginLeft: "auto" }}>
+                            <Button
+                                type="link"
+                                style={{ marginLeft: "auto" }}
+                                onClick={handleClearFilters}
+                            >
                                 Clear All
                             </Button>
                         </div>
-                        <Collapse defaultActiveKey={["1"]} ghost>
+                        <Collapse defaultActiveKey={[]} ghost>
                             <Panel header="Rating" key="1">
-                                <Checkbox.Group>
-                                    <Checkbox value="4">4 star or up</Checkbox>
-                                    <Checkbox value="3">3 star or up</Checkbox>
-                                </Checkbox.Group>
+                                <Radio.Group
+                                    value={selectedRating}
+                                    onChange={(e) =>
+                                        setSelectedRating(e.target.value)
+                                    }
+                                >
+                                    <Radio value={4}>4 star or up</Radio>
+                                    <Radio value={3}>3 star or up</Radio>
+                                </Radio.Group>
                             </Panel>
                             <Panel header="Price" key="2">
                                 <Slider
                                     range
-                                    min={1000000}
-                                    max={5000000}
-                                    defaultValue={[2000000, 4000000]}
+                                    min={0}
+                                    max={1000}
+                                    value={selectedPriceRange}
+                                    onChange={setSelectedPriceRange}
                                 />
                             </Panel>
                             <Panel header="Size" key="3">
-                                <Checkbox.Group>
-                                    <Checkbox value="36">36</Checkbox>
-                                    <Checkbox value="37">37</Checkbox>
-                                    <Checkbox value="38">38</Checkbox>
+                                <Checkbox.Group
+                                    value={selectedSizes}
+                                    onChange={setSelectedSizes}
+                                >
+                                    <Checkbox value={36}>36</Checkbox>
+                                    <Checkbox value={37}>37</Checkbox>
+                                    <Checkbox value={38}>38</Checkbox>
                                 </Checkbox.Group>
                             </Panel>
                         </Collapse>
+
+                        <Button
+                            type="primary"
+                            style={{ width: "90%", marginTop: "16px" }}
+                        >
+                            Apply Filters
+                        </Button>
                     </Sider>
 
                     <Content style={{ padding: "0 16px", background: "#fff" }}>
@@ -124,6 +185,7 @@ const App = () => {
                                         textAlign: "center",
                                         cursor: "pointer",
                                     }}
+                                    onClick={() => handleBrandClick(brand.name)}
                                 >
                                     <img
                                         src={brand.logo}
@@ -134,6 +196,15 @@ const App = () => {
                                             borderRadius: "50%",
                                         }}
                                     />
+                                    <div
+                                        style={{
+                                            fontSize: "12px",
+                                            marginTop: "8px",
+                                            color: "#333",
+                                        }}
+                                    >
+                                        {brand.name}
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -146,7 +217,6 @@ const App = () => {
                                 <Search
                                     placeholder="Search..."
                                     allowClear
-                                    onSearch={(value) => setSearchTerm(value)}
                                     style={{ width: "100%" }}
                                 />
                             </Col>
@@ -166,7 +236,7 @@ const App = () => {
                         </Row>
 
                         <Row gutter={[16, 16]}>
-                            {filteredProducts
+                            {products
                                 .slice((currentPage - 1) * 8, currentPage * 8)
                                 .map((product, index) => (
                                     <Col span={6} key={index}>
@@ -175,8 +245,13 @@ const App = () => {
                                             cover={
                                                 <img
                                                     alt={product.name}
-                                                    src="src\assets\img\product-1.png"
+                                                    src="src/assets/img/product-1.png"
                                                 />
+                                            }
+                                            onClick={() =>
+                                                navigate(
+                                                    `/product/${product.id}`
+                                                )
                                             }
                                         >
                                             <h3>{product.name}</h3>
@@ -196,7 +271,7 @@ const App = () => {
 
                         <Pagination
                             current={currentPage}
-                            total={filteredProducts.length}
+                            total={products.length}
                             pageSize={8}
                             onChange={handlePageChange}
                             style={{ textAlign: "center", marginTop: "16px" }}
@@ -208,4 +283,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default Home;
