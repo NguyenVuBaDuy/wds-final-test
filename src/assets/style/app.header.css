@@ -65,9 +65,8 @@
     color: #000;
     text-align: center;
     padding: 8px 16px;
-    border-radius: 4px;
     transition: all 0.3s ease;
-    border: 1px solid transparent;
+    border: 1px solid #000;
 }
 
 .header-action__sign-up:hover {

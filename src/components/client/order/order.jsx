@@ -3,6 +3,7 @@ import { Table, Button, Select, Input } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.order.css";
+import "../../../assets/style/global.css";
 
 const { Option } = Select;
 
@@ -104,81 +105,85 @@ const Order = () => {
     };
 
     return (
-        <div className="order">
-            <main className="order__cart">
-                <section className="order__items">
-                    <Table
-                        dataSource={products}
-                        columns={columns}
-                        pagination={false}
-                        bordered
-                    />
-                    <Button className="order__update">Cập nhật giỏ hàng</Button>
-                </section>
-                <section className="order__summary">
-                    <h2 className="order__summary-title">
-                        Tổng tiền thanh toán
-                    </h2>
-                    <div className="order__summary-item">
-                        <span>Tiền hàng</span>
-                        <span>{totalPrice.toLocaleString()} đ</span>
-                    </div>
-                    <div className="order__summary-item">
-                        <span>Tiền ship</span>
-                        <span>{shippingFee.toLocaleString()} đ</span>
-                    </div>
-                    <div className="order__summary-item">
-                        <span>Địa chỉ</span>
-                        <div className="order__address">
-                            <Select
-                                defaultValue="Việt Nam"
-                                className="order__address-item"
-                            >
-                                <Option value="vietnam">Việt Nam</Option>
-                            </Select>
-                            <Select
-                                defaultValue="Cần Thơ"
-                                className="order__address-item"
-                            >
-                                <Option value="cantho">Cần Thơ</Option>
-                            </Select>
-                            <Select
-                                defaultValue="Ô Môn"
-                                className="order__address-item"
-                            >
-                                <Option value="omon">Ô Môn</Option>
-                            </Select>
-                            <Input
-                                placeholder="Địa chỉ nhà"
-                                className="order__address-item"
-                            />
-                        </div>
-                    </div>
-                    <div className="order__summary-item">
-                        <Input
-                            placeholder="Nhập mã giảm giá"
-                            value={coupon}
-                            onChange={(e) => setCoupon(e.target.value)}
+        <div className="container">
+            <div className="order">
+                <main className="order__cart">
+                    <section className="order__items">
+                        <Table
+                            dataSource={products}
+                            columns={columns}
+                            pagination={false}
+                            bordered
                         />
-                        <Button onClick={handleApplyCoupon}>
-                            Áp dụng mã giảm giá
+                        <Button className="order__update">
+                            Cập nhật giỏ hàng
                         </Button>
-                    </div>
-                    <div className="order__summary-total">
-                        <span>Tổng tiền</span>
-                        <span>
-                            {(totalPrice + shippingFee).toLocaleString()} đ
-                        </span>
-                    </div>
-                    {/* Update this button to call handleCheckout */}
-                    <Button
-                        className="order__checkout"
-                        onClick={handleCheckout}
-                    >
-                        Thanh toán
-                    </Button>
-                </section>
-            </main>
+                    </section>
+                    <section className="order__summary">
+                        <h2 className="order__summary-title">
+                            Tổng tiền thanh toán
+                        </h2>
+                        <div className="order__summary-item">
+                            <span>Tiền hàng</span>
+                            <span>{totalPrice.toLocaleString()} đ</span>
+                        </div>
+                        <div className="order__summary-item">
+                            <span>Tiền ship</span>
+                            <span>{shippingFee.toLocaleString()} đ</span>
+                        </div>
+                        <div className="order__summary-item">
+                            <span>Địa chỉ</span>
+                            <div className="order__address">
+                                <Select
+                                    defaultValue="Việt Nam"
+                                    className="order__address-item"
+                                >
+                                    <Option value="vietnam">Việt Nam</Option>
+                                </Select>
+                                <Select
+                                    defaultValue="Cần Thơ"
+                                    className="order__address-item"
+                                >
+                                    <Option value="cantho">Cần Thơ</Option>
+                                </Select>
+                                <Select
+                                    defaultValue="Ô Môn"
+                                    className="order__address-item"
+                                >
+                                    <Option value="omon">Ô Môn</Option>
+                                </Select>
+                                <Input
+                                    placeholder="Địa chỉ nhà"
+                                    className="order__address-item"
+                                />
+                            </div>
+                        </div>
+                        <div className="order__summary-item">
+                            <Input
+                                placeholder="Nhập mã giảm giá"
+                                value={coupon}
+                                onChange={(e) => setCoupon(e.target.value)}
+                            />
+                            <Button onClick={handleApplyCoupon}>
+                                Áp dụng mã giảm giá
+                            </Button>
+                        </div>
+                        <div className="order__summary-total">
+                            <span>Tổng tiền</span>
+                            <span>
+                                {(totalPrice + shippingFee).toLocaleString()} đ
+                            </span>
+                        </div>
+                        {/* Update this button to call handleCheckout */}
+                        <Button
+                            className="order__checkout"
+                            onClick={handleCheckout}
+                        >
+                            Thanh toán
+                        </Button>
+                    </section>
+                </main>
+            </div>
         </div>
     );
 };

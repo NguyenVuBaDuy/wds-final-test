@@ -27,9 +27,8 @@ const CheckLogin = () => {
                 <div
                     onClick={() => navigate("/history")}
                     style={{
-                        display: "flex",
-                        alignItems: "center",
                         cursor: "pointer",
+                        width: "100%",
                     }}
                 >
                     <ProfileOutlined style={{ marginRight: "8px" }} />
@@ -46,10 +45,9 @@ const CheckLogin = () => {
                 <div
                     onClick={handleLogout}
                     style={{
-                        display: "flex",
-                        alignItems: "center",
                         color: "red",
                         cursor: "pointer",
+                        width: "100%",
                     }}
                 >
                     <LogoutOutlined style={{ marginRight: "8px" }} />

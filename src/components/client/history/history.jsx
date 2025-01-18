@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.history.css";
+import "../../../assets/style/global.css";
 
 const { Option } = Select;
 
@@ -133,49 +134,51 @@ const History = () => {
         data.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
 
     return (
-        <div className="history-container">
-            <Table
-                dataSource={data}
-                columns={columns}
-                pagination={false}
-                className="product-table"
-            />
-            <div className="summary-section">
-                <div className="summary">
-                    <div>Subtotal (items)</div>
-                    <div className="buy-again-text">{data.length}</div>
-                </div>
-                <div className="summary">
-                    <div>Price (Total)</div>
-                    <div className="buy-again-text">
-                        ${calculateSubtotal().toFixed(2)}
+        <div className="container">
+            <div className="history-container">
+                <Table
+                    dataSource={data}
+                    columns={columns}
+                    pagination={false}
+                    className="product-table"
+                />
+                <div className="summary-section">
+                    <div className="summary">
+                        <div>Subtotal (items)</div>
+                        <div className="buy-again-text">{data.length}</div>
                     </div>
-                </div>
-                <div className="summary">
-                    <div>Shipping</div>
-                    <div className="buy-again-text">$10.00</div>
-                </div>
-                <div className="summary total">
-                    <div>Estimated Total</div>
-                    <div className="buy-again-text">
-                        {" "}
-                        ${(calculateSubtotal() + 10).toFixed(2)}
+                    <div className="summary">
+                        <div>Price (Total)</div>
+                        <div className="buy-again-text">
+                            ${calculateSubtotal().toFixed(2)}
+                        </div>
                     </div>
+                    <div className="summary">
+                        <div>Shipping</div>
+                        <div className="buy-again-text">$10.00</div>
+                    </div>
+                    <div className="summary total">
+                        <div>Estimated Total</div>
+                        <div className="buy-again-text">
+                            {" "}
+                            ${(calculateSubtotal() + 10).toFixed(2)}
+                        </div>
+                    </div>
+                    <Button type="primary" className="buy-again-button">
+                        Buy again
+                    </Button>
                 </div>
-                <Button type="primary" className="buy-again-button">
-                    Buy again
-                </Button>
-            </div>
 
-            <div className="continue-shopping-container">
-                <Button
-                    type="primary"
-                    icon={<ArrowLeftOutlined />}
-                    onClick={() => navigate("/")}
-                    className="continue-shopping-button"
-                >
-                    Continue Shopping
-                </Button>
+                <div className="continue-shopping-container">
+                    <Button
+                        type="primary"
+                        icon={<ArrowLeftOutlined />}
+                        onClick={() => navigate("/")}
+                        className="continue-shopping-button"
+                    >
+                        Continue Shopping
+                    </Button>
+                </div>
             </div>
         </div>
     );
