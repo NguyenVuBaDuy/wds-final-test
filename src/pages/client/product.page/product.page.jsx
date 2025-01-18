@@ -1,8 +1,9 @@
+import Product from "../../../components/client/product/product"
 
 const ProductPage = () => {
     return (
         <div className="product-page">
-            <ProductPage />
+            <Product />
         </div>
     )
 }

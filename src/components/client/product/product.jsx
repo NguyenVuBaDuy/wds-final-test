@@ -6,7 +6,7 @@ import ProductNotification from "./notification";
 
 const { TabPane } = Tabs;
 
-const ProductPage = () => {
+const Product = () => {
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -24,12 +24,12 @@ const ProductPage = () => {
         { id: 6, rating: 2, content: "Could be better.", user: "Emma White" },
     ]);
     const [showAllReviews, setShowAllReviews] = useState(false);
-    const [filterRating, setFilterRating] = useState(null); 
+    const [filterRating, setFilterRating] = useState(null);
     const maxVisibleReviews = 3;
 
     const limitedReviews = showAllReviews
-        ? reviews 
-        : reviews.slice(0, maxVisibleReviews); 
+        ? reviews
+        : reviews.slice(0, maxVisibleReviews);
 
     const [isNotificationVisible, setNotificationVisible] = useState(false);
 
@@ -228,13 +228,13 @@ const ProductPage = () => {
                         </p>
                     </TabPane>
                     <TabPane
-                        tab={`Reviews (${reviews.length})`} 
+                        tab={`Reviews (${reviews.length})`}
                         key="2"
                     >
                         <Space direction="vertical" style={{ width: "100%" }}>
                             <Rate
                                 allowHalf
-                                onChange={(value) => setFilterRating(value)} 
+                                onChange={(value) => setFilterRating(value)}
                                 value={filterRating}
                                 style={{ marginBottom: "20px" }}
                             />
@@ -297,4 +297,4 @@ const ProductPage = () => {
     );
 };
 
-export default ProductPage;
+export default Product;
