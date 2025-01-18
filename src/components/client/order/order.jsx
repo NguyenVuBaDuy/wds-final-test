@@ -46,7 +46,7 @@ const Order = () => {
             ),
         },
         {
-            title: "Tên giày",
+            title: "Product Name",
             dataIndex: "name",
             key: "name",
             className: "custom-align-center",
@@ -62,7 +62,7 @@ const Order = () => {
             ),
         },
         {
-            title: "Giá",
+            title: "Price",
             dataIndex: "price",
             key: "price",
             className: "custom-align-center",
@@ -71,7 +71,7 @@ const Order = () => {
             ),
         },
         {
-            title: "Số lượng",
+            title: "Quantity",
             dataIndex: "quantity",
             key: "quantity",
             className: "custom-align-center",
@@ -84,7 +84,7 @@ const Order = () => {
             ),
         },
         {
-            title: "Tổng tiền",
+            title: "Total Price",
             dataIndex: "price",
             key: "total",
             className: "custom-align-center",
@@ -97,7 +97,7 @@ const Order = () => {
     ];
 
     const handleApplyCoupon = () => {
-        console.log("Mã giảm giá:", coupon);
+        console.log("Coupon Code:", coupon);
     };
 
     const handleCheckout = () => {
@@ -115,71 +115,66 @@ const Order = () => {
                             pagination={false}
                             bordered
                         />
-                        <Button className="order__update">
-                            Cập nhật giỏ hàng
-                        </Button>
+                        <Button className="order__update">Update Cart</Button>
                     </section>
                     <section className="order__summary">
-                        <h2 className="order__summary-title">
-                            Tổng tiền thanh toán
-                        </h2>
+                        <h2 className="order__summary-title">Order Summary</h2>
                         <div className="order__summary-item">
-                            <span>Tiền hàng</span>
+                            <span>Subtotal</span>
                             <span>{totalPrice.toLocaleString()} đ</span>
                         </div>
                         <div className="order__summary-item">
-                            <span>Tiền ship</span>
+                            <span>Shipping Fee</span>
                             <span>{shippingFee.toLocaleString()} đ</span>
                         </div>
                         <div className="order__summary-item">
-                            <span>Địa chỉ</span>
+                            <span>Address</span>
                             <div className="order__address">
                                 <Select
-                                    defaultValue="Việt Nam"
+                                    defaultValue="Vietnam"
                                     className="order__address-item"
                                 >
-                                    <Option value="vietnam">Việt Nam</Option>
+                                    <Option value="vietnam">Vietnam</Option>
                                 </Select>
                                 <Select
-                                    defaultValue="Cần Thơ"
+                                    defaultValue="Can Tho"
                                     className="order__address-item"
                                 >
-                                    <Option value="cantho">Cần Thơ</Option>
+                                    <Option value="cantho">Can Tho</Option>
                                 </Select>
                                 <Select
-                                    defaultValue="Ô Môn"
+                                    defaultValue="O Mon"
                                     className="order__address-item"
                                 >
-                                    <Option value="omon">Ô Môn</Option>
+                                    <Option value="omon">O Mon</Option>
                                 </Select>
                                 <Input
-                                    placeholder="Địa chỉ nhà"
+                                    placeholder="Home Address"
                                     className="order__address-item"
                                 />
                             </div>
                         </div>
                         <div className="order__summary-item">
                             <Input
-                                placeholder="Nhập mã giảm giá"
+                                placeholder="Enter Coupon Code"
                                 value={coupon}
                                 onChange={(e) => setCoupon(e.target.value)}
                             />
                             <Button onClick={handleApplyCoupon}>
-                                Áp dụng mã giảm giá
+                                Apply Coupon
                             </Button>
                         </div>
                         <div className="order__summary-total">
-                            <span>Tổng tiền</span>
+                            <span>Total</span>
                             <span>
                                 {(totalPrice + shippingFee).toLocaleString()} đ
                             </span>
                         </div>
-                        {/* Update this button to call handleCheckout */}
                         <Button
                             className="order__checkout"
                             onClick={handleCheckout}
                         >
-                            Thanh toán
+                            Checkout
                         </Button>
                     </section>
                 </main>
