@@ -6,13 +6,7 @@ const AppLayout = () => {
     return (
         <div className="layout">
             <AppHeader />
-<<<<<<< HEAD
-
             <Outlet />
-
-=======
-            <Outlet />
->>>>>>> e14b6654c442a4a054be3a4e85a7ab47440d7570
             <AppFooter />
         </div>
     );
