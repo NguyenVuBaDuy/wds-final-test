@@ -106,10 +106,10 @@ const CheckLogin = () => {
                 </Dropdown>
             ) : (
                 <>
-                    <a href="#!" className="header-action__link">
+                    <a href="#!" className="header-action__link" onClick={() => navigate("/login")}>
                         Sign in
                     </a>
-                    <a href="#!" className="header-action__sign-up btn">
+                    <a href="#!" className="header-action__sign-up btn" onClick={() => navigate("/register")}>
                         Sign up
                     </a>
                 </>
