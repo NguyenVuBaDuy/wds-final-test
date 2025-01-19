@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Rate, Tabs, InputNumber, Avatar, Space } from "antd";
 import RelatedProducts from "./related-product";
 import ProductNotification from "./notification";
+import productImage from '../../../assets/img/product-1.png'
 
 const { TabPane } = Tabs;
 
@@ -68,7 +69,7 @@ const Product = () => {
             >
                 <div>
                     <img
-                        src="src/assets/img/product-1.png"
+                        src={productImage}
                         alt="Product Image"
                         style={{
                             width: "100%",

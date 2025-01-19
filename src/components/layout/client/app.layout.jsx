@@ -1,19 +1,18 @@
 import { Outlet } from "react-router-dom";
 import AppHeader from "./header/app.header";
 import AppFooter from "./footer/app.footer";
-import Home from "../../client/home/home";
-import Product from "../../client/product/product";
-import RelatedProducts from "../../client/product/related-product";
 import "../../../assets/style/global.css";
-import History from "../../client/history/history";
-import Order from "../../client/order/order";
 const AppLayout = () => {
     return (
         <div className="layout">
             <AppHeader />
+<<<<<<< HEAD
 
             <Outlet />
 
+=======
+            <Outlet />
+>>>>>>> e14b6654c442a4a054be3a4e85a7ab47440d7570
             <AppFooter />
         </div>
     );
