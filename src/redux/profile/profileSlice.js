@@ -25,7 +25,7 @@ const profileSlice = createSlice({
         doLogoutAction: (state) => {
             state.isAuthenticated = false
             state.user = initialState.user
-            localStorage.removeItem('access_token')
+            localStorage.removeItem('accessToken')
         }
     },
 });

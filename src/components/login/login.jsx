@@ -2,29 +2,19 @@ import { Button, Divider, Form, Input, message, notification } from "antd"
 import background from './assets/images/background.png'
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import { getProfileAPI, loginAPI } from "../../services/api.service";
-import { doGetProfileAction } from "../../redux/profile/profileSlice";
-import { useDispatch } from "react-redux";
+import { loginAPI } from "../../services/api.service";
+
 const Login = () => {
     const [form] = Form.useForm()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
-    const getProfile = async () => {
-        const res = await getProfileAPI()
-        if (res.data) {
-            dispatch(doGetProfileAction(res.data))
-            message.success('Successfully Login')
-            navigate('/')
-        }
-    }
 
     const handleLogin = async (values) => {
         const { email, password } = values
         const res = await loginAPI(email, password)
         if (res.data) {
             localStorage.setItem("accessToken", res.data.accessToken)
-            getProfile()
+            navigate('/')
         } else {
             notification.error({
                 message: "Login Failed!",

@@ -15,6 +15,9 @@ import {
 } from "antd";
 import { StarOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { getProfileAPI } from "../../../services/api.service";
+import { useDispatch } from "react-redux";
+import { doGetProfileAction } from "../../../redux/profile/profileSlice";
 
 const { Header, Sider, Content } = Layout;
 const { Option } = Select;
@@ -48,8 +51,19 @@ const Home = () => {
     const [selectedRating, setSelectedRating] = useState(null);
     const [selectedPriceRange, setSelectedPriceRange] = useState([20, 50]);
     const [selectedSizes, setSelectedSizes] = useState([]);
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
+    const getProfile = async () => {
+        const res = await getProfileAPI()
+        if (res.data) {
+            dispatch(doGetProfileAction(res.data))
+        }
+    }
+
+    useEffect(() => {
+        getProfile()
+    }, [])
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
