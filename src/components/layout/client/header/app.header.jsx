@@ -11,14 +11,16 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../../../assets/style/app.header.css";
 import "../../../../assets/style/global.css";
+import { useDispatch, useSelector } from "react-redux";
+import { doLogoutAction } from "../../../../redux/profile/profileSlice";
+import { FaArrowRight } from "react-icons/fa";
 
 const CheckLogin = () => {
     const navigate = useNavigate();
-    const [isAuthentication, setIsAuthentication] = useState(true);
+    const user = useSelector(state => state.profile.user)
+    const isAuthenticated = useSelector(state => state.profile.isAuthenticated)
+    const dispatch = useDispatch()
 
-    const handleLogout = () => {
-        setIsAuthentication(false);
-    };
 
     const menuItems = [
         {
@@ -58,7 +60,7 @@ const CheckLogin = () => {
             key: "3",
             label: (
                 <div
-                    onClick={handleLogout}
+                    onClick={() => { dispatch(doLogoutAction()) }}
                     style={{
                         color: "red",
                         cursor: "pointer",
@@ -74,10 +76,10 @@ const CheckLogin = () => {
 
     return (
         <>
-            {isAuthentication ? (
+            {isAuthenticated ? (
                 <Dropdown
                     menu={{ items: menuItems }}
-                    trigger={["click"]}
+                    trigger={["hover"]}
                     overlayStyle={{ minWidth: "200px" }}
                 >
                     <div
@@ -88,29 +90,20 @@ const CheckLogin = () => {
                             cursor: "pointer",
                         }}
                     >
-                        <Avatar size="large" icon={<UserOutlined />} />
-                        <DownOutlined
-                            style={{
-                                position: "absolute",
-                                bottom: "-2px",
-                                right: "-2px",
-                                background: "#252728",
-                                borderRadius: "50%",
-                                padding: "2px",
-                                fontSize: "10px",
-                                color: "#fff",
-                                boxShadow: "0 0 2px rgba(0,0,0,0.2)",
-                            }}
-                        />
+                        <Space style={{ marginRight: "15px" }}>
+                            <Avatar size='large' icon={<UserOutlined />} />{user.name}
+                            <DownOutlined />
+                        </Space>
                     </div>
                 </Dropdown>
             ) : (
                 <>
-                    <a href="#!" className="header-action__link" onClick={() => navigate("/login")}>
+                    <a className="header-action__link btn" onClick={() => { navigate('/login') }}>
                         Sign in
                     </a>
-                    <a href="#!" className="header-action__sign-up btn" onClick={() => navigate("/register")}>
-                        Sign up
+                    <a className="header-action__sign-up btn" onClick={() => { navigate('/register') }}>
+                        Get Started
+                        <FaArrowRight style={{ marginLeft: "5px" }} />
                     </a>
                 </>
             )}
@@ -138,9 +131,8 @@ const AppHeader = () => {
                                 <a
                                     href="#!"
                                     onClick={() => navigate("/")}
-                                    className={`navbar__link ${
-                                        isHome ? "navbar__link--active" : ""
-                                    }`}
+                                    className={`navbar__link ${isHome ? "navbar__link--active" : ""
+                                        }`}
                                     style={{
                                         textDecoration: isHome
                                             ? "underline"
@@ -154,9 +146,8 @@ const AppHeader = () => {
                                 <a
                                     href="#!"
                                     onClick={() => navigate("/order")}
-                                    className={`navbar__link ${
-                                        isCart ? "navbar__link--active" : ""
-                                    }`}
+                                    className={`navbar__link ${isCart ? "navbar__link--active" : ""
+                                        }`}
                                     style={{
                                         textDecoration: isCart
                                             ? "underline"

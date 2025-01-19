@@ -13,6 +13,10 @@ import OrderManagement from "./pages/admin/order.management/order.management.jsx
 import ProductManagement from "./pages/admin/product.management/product.management.jsx";
 import { ConfigProvider } from "antd";
 import enUS from "antd/locale/en_US";
+import { useEffect } from "react";
+import { getProfileAPI } from "./services/api.service.js";
+import { useDispatch } from "react-redux";
+import { doGetProfileAction } from "./redux/profile/profileSlice.js";
 
 const router = createBrowserRouter([
     {
@@ -70,6 +74,20 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        getProfile()
+    }, [])
+
+    const getProfile = async () => {
+        const res = await getProfileAPI()
+        if (res.data) {
+            dispatch(doGetProfileAction(res.data))
+        }
+    }
+
     return (
         <ConfigProvider locale={enUS}>
             <RouterProvider router={router} />

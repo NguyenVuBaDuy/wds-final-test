@@ -1,11 +1,39 @@
-import { Button, Divider, Form, Input } from "antd"
+import { Button, Divider, Form, Input, message, notification } from "antd"
 import background from './assets/images/background.png'
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-
+import { getProfileAPI, loginAPI } from "../../services/api.service";
+import { doGetProfileAction } from "../../redux/profile/profileSlice";
+import { useDispatch } from "react-redux";
 const Login = () => {
     const [form] = Form.useForm()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const getProfile = async () => {
+        const res = await getProfileAPI()
+        if (res.data) {
+            dispatch(doGetProfileAction(res.data))
+            message.success('Successfully Login')
+            navigate('/')
+        }
+    }
+
+    const handleLogin = async (values) => {
+        const { email, password } = values
+        const res = await loginAPI(email, password)
+        if (res.data) {
+            localStorage.setItem("accessToken", res.data.accessToken)
+            getProfile()
+        } else {
+            notification.error({
+                message: "Login Failed!",
+                message: "Information does not match"
+            })
+        }
+    }
+
+
     return (
         <div className="login-container">
             <div className="login-form">
@@ -19,9 +47,12 @@ const Login = () => {
                         <Form
                             layout="vertical"
                             form={form}
-                            onFinish={() => { }}
+                            onFinish={handleLogin}
                             autoComplete="off"
                         >
+                            <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
+                                Email
+                            </div>
                             <Form.Item
                                 name="email"
                                 rules={[
@@ -35,14 +66,15 @@ const Login = () => {
                                     }
                                 ]}
                             >
-                                <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
-                                    Email
-                                </div>
                                 <Input
                                     placeholder="Enter your email"
                                     className="input" />
                             </Form.Item>
 
+
+                            <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
+                                Password
+                            </div>
                             <Form.Item
                                 name="password"
                                 rules={[
@@ -52,9 +84,6 @@ const Login = () => {
                                     },
                                 ]}
                             >
-                                <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
-                                    Password
-                                </div>
                                 <Input.Password
                                     placeholder="Enter your password"
                                     className="input" />
@@ -69,7 +98,9 @@ const Login = () => {
                                         color: "black", fontWeight: "600",
                                         fontSize: "14px", height: '39.63px',
                                         width: "100%", marginTop: "10px"
-                                    }}>Login</Button>
+                                    }}
+                                    onClick={() => { form.submit() }}
+                                >Login</Button>
                             </Form.Item>
                         </Form>
                     </div>

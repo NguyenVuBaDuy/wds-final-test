@@ -12,8 +12,8 @@ const Register = () => {
         const { name, email, phone_number, password } = values
         const res = await registerAPI(name, email, phone_number, password)
         if (res.data) {
-            console.log(res.data)
             message.success('Successfully registered!')
+            form.resetFields()
             navigate('/login')
         } else {
             notification.error({

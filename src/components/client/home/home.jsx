@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Layout,
     Card,
@@ -50,15 +50,16 @@ const Home = () => {
     const [selectedSizes, setSelectedSizes] = useState([]);
     const navigate = useNavigate();
 
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
     const handleClearFilters = () => {
-        setSelectedBrand(null); 
-        setSelectedRating(null); 
-        setSelectedPriceRange([20, 50]); 
-        setSelectedSizes([]); 
+        setSelectedBrand(null);
+        setSelectedRating(null);
+        setSelectedPriceRange([20, 50]);
+        setSelectedSizes([]);
 
         const checkboxes = document.querySelectorAll(".ant-checkbox-input");
         checkboxes.forEach((checkbox) => (checkbox.checked = false));
@@ -66,7 +67,7 @@ const Home = () => {
         const slider = document.querySelector(".ant-slider");
         if (slider) {
             const rangeSlider = slider.querySelector(".ant-slider-rail");
-            rangeSlider.style.left = "0%"; 
+            rangeSlider.style.left = "0%";
             rangeSlider.style.right = "100%";
         }
 
