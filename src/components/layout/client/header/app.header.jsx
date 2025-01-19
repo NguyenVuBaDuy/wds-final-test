@@ -25,7 +25,7 @@ const CheckLogin = () => {
             key: "1",
             label: (
                 <div
-                    onClick={() => navigate("/history")}
+                    onClick={() => navigate("/profile")}
                     style={{
                         cursor: "pointer",
                         width: "100%",
@@ -38,6 +38,21 @@ const CheckLogin = () => {
         },
         {
             type: "divider",
+        },
+        {
+            key: "2",
+            label: (
+                <div
+                    onClick={() => navigate("/history")}
+                    style={{
+                        cursor: "pointer",
+                        width: "100%",
+                    }}
+                >
+                    <ProfileOutlined style={{ marginRight: "8px" }} />
+                    Order History
+                </div>
+            ),
         },
         {
             key: "3",
