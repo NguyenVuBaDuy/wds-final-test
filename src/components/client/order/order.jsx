@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { Table, Button, Select, Input } from "antd";
+import { Table, Button, Select, Input, Steps, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.order.css";
 import "../../../assets/style/global.css";
 
 const { Option } = Select;
+const { Step } = Steps;
 
 const Order = () => {
     const navigate = useNavigate();
     const [coupon, setCoupon] = useState("");
+    const [current, setCurrent] = useState(0);
+
     const products = [
         {
             key: "1",
@@ -67,7 +70,7 @@ const Order = () => {
             key: "price",
             className: "custom-align-center",
             render: (price) => (
-                <span className="order__price">{price.toLocaleString()}đ</span>
+                <span className="order__price">{price.toLocaleString()}₫</span>
             ),
         },
         {
@@ -90,7 +93,7 @@ const Order = () => {
             className: "custom-align-center",
             render: (price, record) => (
                 <span className="order__price">
-                    {(price * record.quantity).toLocaleString()}đ
+                    {(price * record.quantity).toLocaleString()}₫
                 </span>
             ),
         },
@@ -101,83 +104,102 @@ const Order = () => {
     };
 
     const handleCheckout = () => {
+        message.success("Order placed successfully!");
         navigate("/");
     };
+
+    const next = () => {
+        setCurrent(current + 1);
+    };
+
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+
+    const stepsContent = [
+        <section className="order__items">
+            <Table
+                dataSource={products}
+                columns={columns}
+                pagination={false}
+                bordered
+            />
+            <Button className="order__update">Update Cart</Button>
+        </section>,
+        <section className="order__address">
+            <h2>Shipping Address</h2>
+            <div className="order__address-form">
+                <Select defaultValue="Vietnam" className="order__address-item">
+                    <Option value="vietnam">Vietnam</Option>
+                </Select>
+                <Select defaultValue="Can Tho" className="order__address-item">
+                    <Option value="cantho">Can Tho</Option>
+                </Select>
+                <Select defaultValue="O Mon" className="order__address-item">
+                    <Option value="omon">O Mon</Option>
+                </Select>
+                <Input
+                    placeholder="Enter Home Address"
+                    className="order__address-item"
+                />
+            </div>
+        </section>,
+        <section className="order__summary">
+            <h2 className="order__summary-title">Order Summary</h2>
+            <div className="order__summary-item">
+                <span>Subtotal</span>
+                <span>{totalPrice.toLocaleString()}₫</span>
+            </div>
+            <div className="order__summary-item">
+                <span>Shipping Fee</span>
+                <span>{shippingFee.toLocaleString()}₫</span>
+            </div>
+            <div className="order__summary-item">
+                <Input
+                    placeholder="Enter Coupon Code"
+                    value={coupon}
+                    onChange={(e) => setCoupon(e.target.value)}
+                />
+                <Button onClick={handleApplyCoupon}>Apply Coupon</Button>
+            </div>
+            <div className="order__summary-total">
+                <span>Total</span>
+                <span>{(totalPrice + shippingFee).toLocaleString()}₫</span>
+            </div>
+            <Button className="order__checkout" onClick={handleCheckout}>
+                Place Order
+            </Button>
+        </section>,
+    ];
 
     return (
         <div className="container">
             <div className="order">
-                <main className="order__cart">
-                    <section className="order__items">
-                        <Table
-                            dataSource={products}
-                            columns={columns}
-                            pagination={false}
-                            bordered
-                        />
-                        <Button className="order__update">Update Cart</Button>
-                    </section>
-                    <section className="order__summary">
-                        <h2 className="order__summary-title">Order Summary</h2>
-                        <div className="order__summary-item">
-                            <span>Subtotal</span>
-                            <span>{totalPrice.toLocaleString()} đ</span>
-                        </div>
-                        <div className="order__summary-item">
-                            <span>Shipping Fee</span>
-                            <span>{shippingFee.toLocaleString()} đ</span>
-                        </div>
-                        <div className="order__summary-item">
-                            <span>Address</span>
-                            <div className="order__address">
-                                <Select
-                                    defaultValue="Vietnam"
-                                    className="order__address-item"
-                                >
-                                    <Option value="vietnam">Vietnam</Option>
-                                </Select>
-                                <Select
-                                    defaultValue="Can Tho"
-                                    className="order__address-item"
-                                >
-                                    <Option value="cantho">Can Tho</Option>
-                                </Select>
-                                <Select
-                                    defaultValue="O Mon"
-                                    className="order__address-item"
-                                >
-                                    <Option value="omon">O Mon</Option>
-                                </Select>
-                                <Input
-                                    placeholder="Home Address"
-                                    className="order__address-item"
-                                />
-                            </div>
-                        </div>
-                        <div className="order__summary-item">
-                            <Input
-                                placeholder="Enter Coupon Code"
-                                value={coupon}
-                                onChange={(e) => setCoupon(e.target.value)}
-                            />
-                            <Button onClick={handleApplyCoupon}>
-                                Apply Coupon
-                            </Button>
-                        </div>
-                        <div className="order__summary-total">
-                            <span>Total</span>
-                            <span>
-                                {(totalPrice + shippingFee).toLocaleString()} đ
-                            </span>
-                        </div>
+                <Steps current={current} style={{ marginBottom: "20px" }}>
+                    <Step title="Cart" />
+                    <Step title="Shipping Address" />
+                    <Step title="Confirmation" />
+                </Steps>
+                <div className="steps-content">{stepsContent[current]}</div>
+                <div className="steps-action">
+                    {current > 0 && (
+                        <Button style={{ marginRight: 8 }} onClick={prev}>
+                            Previous
+                        </Button>
+                    )}
+                    {current < stepsContent.length - 1 ? (
+                        <Button className="order__next-btn" onClick={next}>
+                            Next
+                        </Button>
+                    ) : (
                         <Button
-                            className="order__checkout"
+                            className="order__next-btn"
                             onClick={handleCheckout}
                         >
-                            Checkout
+                            Confirm Order
                         </Button>
-                    </section>
-                </main>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -202,23 +202,24 @@ th.custom-align-center {
     border-radius: 4px;
 }
 
-.order__update {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px auto 0;
-    background-color: #613fdc;
+.order__next-btn {
+    background-color: #ff4d4f;
     color: #fff;
     font-weight: bold;
-    padding: 5px 40px;
+    padding: 12px 30px;
     border-radius: 8px;
-    text-align: center;
+    font-size: 1.5rem;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1.5rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: auto;
 }
 
-.order__update:hover {
-    background-color: #502fb5;
+.order__next-btn:hover {
+    background-color: #d43833;
+    transform: scale(1.05);
+}
+
+.order__next-btn:focus {
+    outline: none;
 }
