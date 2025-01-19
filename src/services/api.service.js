@@ -1,6 +1,6 @@
 import axios from './axios.customize.js'
 
-const registerAPI = (name, email, phone_number, password) => {
+export const registerAPI = (name, email, phone_number, password) => {
     const urlBackend = '/auth/register'
     const data = {
         name,
@@ -11,7 +11,7 @@ const registerAPI = (name, email, phone_number, password) => {
     return axios.post(urlBackend, data)
 }
 
-const loginAPI = (email, password) => {
+export const loginAPI = (email, password) => {
     const urlBackend = '/auth/login'
     const data = {
         email,
@@ -20,13 +20,7 @@ const loginAPI = (email, password) => {
     return axios.post(urlBackend, data)
 }
 
-const getProfileAPI = () => {
+export const getProfileAPI = () => {
     const urlBackend = '/auth/profile'
     return axios.get(urlBackend)
-}
-
-export {
-    registerAPI,
-    loginAPI,
-    getProfileAPI
 }

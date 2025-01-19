@@ -74,7 +74,6 @@ const CheckLogin = () => {
         },
     ];
 
-    console.log(isAuthenticated)
 
     return (
         <>
