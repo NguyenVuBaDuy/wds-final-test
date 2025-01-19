@@ -1,11 +1,28 @@
-import { Button, Col, Divider, Form, Input, Row } from "antd"
+import { Button, Divider, Form, Input, message, notification } from "antd"
 import background from './assets/images/background.png'
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
+import { registerAPI } from "../../services/api.service";
 
 const Register = () => {
     const [form] = Form.useForm()
     const navigate = useNavigate()
+
+    const handleRegister = async (values) => {
+        const { name, email, phone_number, password } = values
+        const res = await registerAPI(name, email, phone_number, password)
+        if (res.data) {
+            console.log(res.data)
+            message.success('Successfully registered!')
+            navigate('/login')
+        } else {
+            notification.error({
+                message: "Register Failed!",
+                description: res.message
+            })
+        }
+    }
+
     return (
         <div className="register-container">
             <div className="register-form">
@@ -18,27 +35,30 @@ const Register = () => {
                         <Form
                             layout="vertical"
                             form={form}
-                            onFinish={() => { }}
+                            onFinish={handleRegister}
                             autoComplete="off"
                         >
-
+                            <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
+                                Full Name
+                            </div>
                             <Form.Item
-                                name="fullName"
+                                name="name"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter full name!"
+                                        message: "Please enter name!"
                                     },
                                 ]}
                             >
-                                <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
-                                    Full Name
-                                </div>
                                 <Input
-                                    placeholder="Enter your full name"
+                                    placeholder="Enter your name"
                                     className="input" />
                             </Form.Item>
 
+
+                            <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
+                                Email
+                            </div>
                             <Form.Item
                                 name="email"
                                 rules={[
@@ -52,16 +72,17 @@ const Register = () => {
                                     }
                                 ]}
                             >
-                                <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
-                                    Email
-                                </div>
                                 <Input
                                     placeholder="Enter your email"
                                     className="input" />
                             </Form.Item>
 
+
+                            <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
+                                Phone Number
+                            </div>
                             <Form.Item
-                                name="phone"
+                                name="phone_number"
                                 rules={[
                                     {
                                         required: true,
@@ -69,14 +90,15 @@ const Register = () => {
                                     },
                                 ]}
                             >
-                                <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
-                                    Phone Number
-                                </div>
                                 <Input
                                     placeholder="Enter your phone number"
                                     className="input" />
                             </Form.Item>
 
+
+                            <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
+                                Password
+                            </div>
                             <Form.Item
                                 name="password"
                                 rules={[
@@ -86,9 +108,6 @@ const Register = () => {
                                     },
                                 ]}
                             >
-                                <div className="label" style={{ marginBottom: "5px", fontSize: '15px', fontWeight: "600" }}>
-                                    Password
-                                </div>
                                 <Input.Password
                                     placeholder="Enter your password"
                                     className="input" />
@@ -104,7 +123,9 @@ const Register = () => {
                                         color: "black", fontWeight: "600",
                                         fontSize: "14px", height: '39.63px',
                                         width: "100%", marginTop: "10px"
-                                    }}>Sign Up</Button>
+                                    }}
+                                    onClick={() => { form.submit() }}
+                                >Sign Up</Button>
                             </Form.Item>
                         </Form>
                     </div>
