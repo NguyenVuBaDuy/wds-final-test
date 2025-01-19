@@ -1,6 +1,5 @@
-import { Button, Col, Divider, Form, Input, Row } from "antd"
+import { Button, Divider, Form, Input } from "antd"
 import background from './assets/images/background.png'
-import { GoogleOutlined } from "@ant-design/icons"
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 
