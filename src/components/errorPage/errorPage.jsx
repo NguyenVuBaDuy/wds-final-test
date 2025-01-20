@@ -15,15 +15,16 @@ const ErrorPage = () => {
                 height: "100vh",
                 backgroundColor: "#1e1e1e",
                 color: "#fff",
-                textAlign: "center",
+                textAlign: "left",
+                paddingBottom: "80px",
             }}
         >
-            <Space direction="vertical" size="large" align="center">
+            <Space direction="vertical" size="large">
                 <ExclamationCircleOutlined
                     style={{ fontSize: "48px", color: "#fff" }}
                 />
 
-                <Title level={2} style={{ color: "#fff" }}>
+                <Title level={2} style={{ color: "#fff", margin: 0 }}>
                     Error notification
                 </Title>
 
@@ -43,11 +44,12 @@ const ErrorPage = () => {
                 </Text>
 
                 <Button
+                    style={{ borderRadius: "99px", marginTop: "20px" }}
                     type="primary"
                     size="large"
                     onClick={() => window.location.reload()}
                 >
-                    Reload
+                    Back to homepage
                 </Button>
             </Space>
         </div>
