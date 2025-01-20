@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Button, Typography, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const { Title, Text, Link } = Typography;
 
 const ErrorPage = () => {
+    const navigate = useNavigate(); // Khởi tạo navigate
+
     return (
         <div
             style={{
@@ -47,7 +50,7 @@ const ErrorPage = () => {
                     style={{ borderRadius: "99px", marginTop: "20px" }}
                     type="primary"
                     size="large"
-                    onClick={() => window.location.reload()}
+                    onClick={() => navigate("/")} // Điều hướng về trang chủ
                 >
                     Back to homepage
                 </Button>
