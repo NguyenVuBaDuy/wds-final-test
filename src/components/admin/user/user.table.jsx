@@ -23,16 +23,6 @@ const UserTable = () => {
     const [pageSize, setPageSize] = useState(5)
     const [total, setTotal] = useState(null)
 
-    useEffect(() => {
-        const getUsers = async () => {
-            const res = await getUsersAPI()
-            if (res.data) {
-                setDataUsers(res.data)
-                setTotal(res.data.length)
-            }
-        }
-        getUsers()
-    }, [])
 
     const handleDataUsers = () => {
         const indexStart = (current - 1) * pageSize
@@ -170,7 +160,16 @@ const UserTable = () => {
                 columns={columns}
                 actionRef={actionRef}
                 cardBordered
-                dataSource={handleDataUsers()}
+                request={async () => {
+                    const res = await getUsersAPI()
+                    if (res.data) {
+                        setDataUsers(res.data)
+                        setTotal(res.data.length)
+                    }
+                    return {
+                        data: res.data,
+                    }
+                }}
                 rowKey="id"
                 pagination={{
                     current: current,
