@@ -26,6 +26,7 @@ const profileSlice = createSlice({
             state.isAuthenticated = false
             state.user = initialState.user
             localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
         }
     },
 });

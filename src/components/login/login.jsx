@@ -14,6 +14,7 @@ const Login = () => {
         const res = await loginAPI(email, password)
         if (res.data) {
             localStorage.setItem("accessToken", res.data.accessToken)
+            localStorage.setItem("refreshToken", res.data.refreshToken)
             navigate('/')
         } else {
             notification.error({

@@ -24,3 +24,9 @@ export const getProfileAPI = () => {
     const urlBackend = '/auth/profile'
     return axios.get(urlBackend)
 }
+
+
+export const handleRefreshTokenAPI = () => {
+    const urlBackend = '/auth/refresh-token'
+    return axios.post(urlBackend, { refreshToken: localStorage.getItem('refreshToken') })
+}
