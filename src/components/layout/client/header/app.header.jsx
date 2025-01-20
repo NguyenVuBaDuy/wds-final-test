@@ -7,6 +7,7 @@ import {
     LogoutOutlined,
     ProfileOutlined,
     SettingOutlined,
+    DollarOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../../../../assets/style/app.header.css";
@@ -14,6 +15,7 @@ import "../../../../assets/style/global.css";
 import { useDispatch, useSelector } from "react-redux";
 import { doLogoutAction } from "../../../../redux/profile/profileSlice";
 import { FaArrowRight } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 
 const CheckLogin = () => {
     const navigate = useNavigate();
@@ -23,11 +25,25 @@ const CheckLogin = () => {
 
 
     const menuItems = [
+        ...(user.role === 'admin' ? [{
+            key: "admin",
+            label: (
+                <div
+                    onClick={() => navigate("/admin")}
+                    style={{
+                        cursor: "pointer",
+                        width: "100%",
+                    }}
+                >
+                    <RiAdminFill style={{ marginRight: "8px" }} />
+                    Admin DashBoard
+                </div>
+            ),
+        }] : []),
         {
             key: "1",
             label: (
                 <div
-                    onClick={() => navigate("/admin")}
                     style={{
                         cursor: "pointer",
                         width: "100%",
@@ -38,9 +54,7 @@ const CheckLogin = () => {
                 </div>
             ),
         },
-        {
-            type: "divider",
-        },
+
         {
             key: "2",
             label: (
@@ -51,10 +65,13 @@ const CheckLogin = () => {
                         width: "100%",
                     }}
                 >
-                    <ProfileOutlined style={{ marginRight: "8px" }} />
+                    <DollarOutlined style={{ marginRight: "8px" }} />
                     Order History
                 </div>
             ),
+        },
+        {
+            type: "divider",
         },
         {
             key: "3",
@@ -92,7 +109,7 @@ const CheckLogin = () => {
                         }}
                     >
                         <Space style={{ marginRight: "15px" }}>
-                            <Avatar size='large' icon={<UserOutlined />} />{user.name}
+                            <Avatar size={'large'} src={user.avatar_url} />{user.name}
                             <DownOutlined />
                         </Space>
                     </div>
