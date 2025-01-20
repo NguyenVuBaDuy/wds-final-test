@@ -30,3 +30,8 @@ export const handleRefreshTokenAPI = () => {
     const urlBackend = '/auth/refresh-token'
     return axios.post(urlBackend, { refreshToken: localStorage.getItem('refreshToken') })
 }
+
+export const getUsersAPI = () => {
+    const urlBackend = '/users'
+    return axios.get(urlBackend)
+}

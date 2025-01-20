@@ -18,6 +18,7 @@ import { getProfileAPI } from "./services/api.service.js";
 import { useDispatch } from "react-redux";
 import { doGetProfileAction } from "./redux/profile/profileSlice.js";
 import Loading from "./components/client/loading/loading.jsx";
+import ProtectedRoute from "./components/auth/protectedRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -34,33 +35,61 @@ const router = createBrowserRouter([
             },
             {
                 path: "/order",
-                element: <OrderPage />,
+                element: (
+                    <ProtectedRoute>
+                        <OrderPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/history",
-                element: <HistoryPage />,
+                element: (
+                    <ProtectedRoute>
+                        <HistoryPage />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },
     {
         path: "/admin",
-        element: <AdminLayout />,
+        element: (
+            <ProtectedRoute>
+                <AdminLayout />
+            </ProtectedRoute>
+        ),
         children: [
             {
                 index: true,
-                element: <DashboardManagement />,
+                element: (
+                    <ProtectedRoute>
+                        <DashboardManagement />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/admin/user",
-                element: <UserManagement />,
+                element: (
+                    <ProtectedRoute>
+                        <UserManagement />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/admin/order",
-                element: <OrderManagement />,
+                element: (
+                    <ProtectedRoute>
+                        <OrderManagement />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "/admin/product",
-                element: <ProductManagement />,
+                element: (
+                    <ProtectedRoute>
+                        <ProductManagement />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },
@@ -105,6 +134,7 @@ const App = () => {
                 || window.location.pathname === '/'
                 || window.location.pathname === '/login'
                 || window.location.pathname === '/register'
+                || window.location.pathname.startsWith('/product/')
                 ?
                 <ConfigProvider locale={enUS}>
                     <RouterProvider router={router} />

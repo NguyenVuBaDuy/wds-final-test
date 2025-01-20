@@ -130,7 +130,6 @@ const AppHeader = () => {
                         <ul className="navbar__list">
                             <li className="navbar__item">
                                 <a
-                                    href="#!"
                                     onClick={() => navigate("/")}
                                     className={`navbar__link ${isHome ? "navbar__link--active" : ""
                                         }`}
@@ -138,6 +137,7 @@ const AppHeader = () => {
                                         textDecoration: isHome
                                             ? "underline"
                                             : "none",
+                                        cursor: "pointer"
                                     }}
                                 >
                                     Home
@@ -145,7 +145,7 @@ const AppHeader = () => {
                             </li>
                             <li className="navbar__item">
                                 <a
-                                    href="#!"
+
                                     onClick={() => navigate("/order")}
                                     className={`navbar__link ${isCart ? "navbar__link--active" : ""
                                         }`}
@@ -153,6 +153,7 @@ const AppHeader = () => {
                                         textDecoration: isCart
                                             ? "underline"
                                             : "none",
+                                        cursor: "pointer"
                                     }}
                                 >
                                     Cart
