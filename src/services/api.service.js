@@ -1,48 +1,49 @@
-import axios from './axios.customize.js'
+import axios from "./axios.customize.js";
 
 export const registerAPI = (name, email, phone_number, password) => {
-    const urlBackend = '/auth/register'
+    const urlBackend = "/auth/register";
     const data = {
         name,
         email,
         phone_number,
-        password
-    }
-    return axios.post(urlBackend, data)
-}
+        password,
+    };
+    return axios.post(urlBackend, data);
+};
 
 export const loginAPI = (email, password) => {
-    const urlBackend = '/auth/login'
+    const urlBackend = "/auth/login";
     const data = {
         email,
-        password
-    }
-    return axios.post(urlBackend, data)
-}
+        password,
+    };
+    return axios.post(urlBackend, data);
+};
 
 export const getProfileAPI = () => {
-    const urlBackend = '/auth/profile'
-    return axios.get(urlBackend)
-}
-
+    const urlBackend = "/auth/profile";
+    return axios.get(urlBackend);
+};
 
 export const handleRefreshTokenAPI = () => {
-    const urlBackend = '/auth/refresh-token'
-    return axios.post(urlBackend, { refreshToken: localStorage.getItem('refreshToken') })
-}
+    const urlBackend = "/auth/refresh-token";
+    return axios.post(urlBackend, {
+        refreshToken: localStorage.getItem("refreshToken"),
+    });
+};
 
 export const getUsersAPI = () => {
-    const urlBackend = '/users'
-    return axios.get(urlBackend)
-}
+    const urlBackend = "/users";
+    return axios.get(urlBackend);
+};
 
 export const createUserAPI = (name, email, phone_number, password) => {
-    const urlBackend = '/user'
+    const urlBackend = "/users";
     const data = {
         name,
         email,
         phone_number,
-        password
-    }
-    return axios.post(urlBackend, data)
-}
+        password,
+    };
+    return axios.post(urlBackend, data);
+};

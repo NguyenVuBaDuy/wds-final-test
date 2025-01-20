@@ -8,8 +8,8 @@ const CreateUser = (props) => {
     const [form] = Form.useForm();
 
     const handleCreateUser = async (values) => {
-        const { email, fullName, password, phone } = values;
-        const res = await createUserAPI(fullName, email, password, phone);
+        const { name, email, phone_number, password } = values;
+        const res = await createUserAPI(name, email, phone_number, password);
         if (res.data) {
             message.success("Create User Successfully");
             setIsOpenModalCreateUser(false);

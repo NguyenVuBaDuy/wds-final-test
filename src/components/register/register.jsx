@@ -8,17 +8,16 @@ const Register = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
 
-    const handleCreateUser = async () => {
-        const { email, fullName, password, phone } = values;
-        const res = await createUserAPI(fullName, email, password, phone);
+    const handleRegister = async (values) => {
+        const { name, email, phone_number, password } = values;
+        const res = await registerAPI(name, email, phone_number, password);
         if (res.data) {
-            message.success("Create User Successfully");
-            setIsOpenModalCreateUser(false);
+            message.success("Successfully registered!");
             form.resetFields();
-            actionRef.current?.reload();
+            navigate("/login");
         } else {
             notification.error({
-                message: "Create User Failed!",
+                message: "Register Failed!",
                 description: res.message,
             });
         }
