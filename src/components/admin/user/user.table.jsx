@@ -109,25 +109,25 @@ const UserTable = () => {
         {
             key: "id",
             title: 'Id',
-            dataIndex: '_id',
+            dataIndex: 'id',
             render: (text, record, _, action) => [
                 <a href='#' onClick={() => {
                     setDataUserDetail(record)
                     setIsOpenUserDetail(true)
-                }}>{record._id}</a>
+                }}>{record.id}</a>
             ],
             hideInSearch: true,
             editable: false
         },
         {
-            key: "fullName",
-            title: 'Full Name',
-            dataIndex: 'fullName',
+            key: "name",
+            title: 'Name',
+            dataIndex: 'name',
         },
         {
-            key: "phone",
+            key: "phone_number",
             title: 'Phone Number',
-            dataIndex: 'phone',
+            dataIndex: 'phone_number',
             hideInSearch: true,
         },
         {
@@ -147,18 +147,10 @@ const UserTable = () => {
             editable: false
         },
         {
-            title: 'Created At',
-            dataIndex: 'createdAtRange',
-            valueType: 'dateRange',
-            hideInTable: true,
-            editable: false
-        },
-        {
             key: "action",
             title: 'Action',
             render: (text, record, _, action) => {
                 const isEdit = record._id === editableKeys[0]
-
                 return (
                     <>
                         {isEdit ?
