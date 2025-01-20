@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Button, Typography, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const { Title, Text, Link } = Typography;
 
 const ErrorPage = () => {
+    const navigate = useNavigate(); // Khởi tạo navigate
+
     return (
         <div
             style={{
@@ -15,15 +18,16 @@ const ErrorPage = () => {
                 height: "100vh",
                 backgroundColor: "#1e1e1e",
                 color: "#fff",
-                textAlign: "center",
+                textAlign: "left",
+                paddingBottom: "80px",
             }}
         >
-            <Space direction="vertical" size="large" align="center">
+            <Space direction="vertical" size="large">
                 <ExclamationCircleOutlined
                     style={{ fontSize: "48px", color: "#fff" }}
                 />
 
-                <Title level={2} style={{ color: "#fff" }}>
+                <Title level={2} style={{ color: "#fff", margin: 0 }}>
                     Error notification
                 </Title>
 
@@ -43,11 +47,12 @@ const ErrorPage = () => {
                 </Text>
 
                 <Button
+                    style={{ borderRadius: "99px", marginTop: "20px" }}
                     type="primary"
                     size="large"
-                    onClick={() => window.location.reload()}
+                    onClick={() => navigate("/")} // Điều hướng về trang chủ
                 >
-                    Reload
+                    Back to homepage
                 </Button>
             </Space>
         </div>
