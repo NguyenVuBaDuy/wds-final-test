@@ -4,7 +4,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const { Title, Text, Link } = Typography;
 
-const errorPage = () => {
+const ErrorPage = () => {
     return (
         <div
             style={{
@@ -54,4 +54,4 @@ const errorPage = () => {
     );
 };
 
-export default errorPage;
+export default ErrorPage;

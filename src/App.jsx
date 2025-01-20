@@ -19,13 +19,13 @@ import { useDispatch } from "react-redux";
 import { doGetProfileAction } from "./redux/profile/profileSlice.js";
 import Loading from "./components/client/loading/loading.jsx";
 import ProtectedRoute from "./components/auth/protectedRoute.jsx";
-import errorPage from "./components/errorPage/errorPage.jsx";
+import ErrorPage from "./components/errorPage/errorPage.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <AppLayout />,
-        errorElement: <errorPage/>,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
