@@ -27,7 +27,7 @@ const CheckLogin = () => {
             key: "1",
             label: (
                 <div
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate("/admin")}
                     style={{
                         cursor: "pointer",
                         width: "100%",

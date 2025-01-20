@@ -35,3 +35,14 @@ export const getUsersAPI = () => {
     const urlBackend = '/users'
     return axios.get(urlBackend)
 }
+
+export const createUserAPI = (name, email, phone_number, password) => {
+    const urlBackend = '/user'
+    const data = {
+        name,
+        email,
+        phone_number,
+        password
+    }
+    return axios.post(urlBackend, data)
+}

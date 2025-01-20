@@ -1,5 +1,5 @@
 import { Badge, Descriptions, Drawer } from "antd"
-
+import { getUsersAPI } from "../../../services/api.service"
 
 
 const ViewUserDetail = (props) => {
