@@ -1,90 +1,44 @@
-
 import { CloseOutlined, DeleteOutlined, EditOutlined, ExportOutlined, ImportOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, message, notification, Popconfirm } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as XLSX from 'xlsx'
 import CreateUser from './create.user';
 import ViewUserDetail from './view.user.detail';
 import ImportUsers from './data/import.users';
+import { getUsersAPI } from '../../../services/api.service';
 
 const color = ['#314659', '#979797']
 
-const fakeDataUser = [
-    {
-        _id: 'ajdhajksdhasdhas',
-        fullName: 'data fake',
-        email: 'datafake@gmail.com',
-        phone: '0132131567',
-        createdAt: '2024-01-16',
-        updatedAt: '2024-01-16',
-        role: 'USER'
-    },
-    {
-        _id: 'fasdasdfasdf',
-        fullName: 'data fake',
-        email: 'datafake@gmail.com',
-        phone: '0132131567',
-        createdAt: '2024-01-16',
-        updatedAt: '2024-01-16',
-        role: 'USER'
-    },
-    {
-        _id: 'rqwerqwerwertwert',
-        fullName: 'data fake',
-        email: 'datafake@gmail.com',
-        phone: '0132131567',
-        createdAt: '2024-01-16',
-        updatedAt: '2024-01-16',
-        role: 'USER'
-    },
-    {
-        _id: 'wersdfbsdfhbxcvb',
-        fullName: 'data fake',
-        email: 'datafake@gmail.com',
-        phone: '0132131567',
-        createdAt: '2024-01-16',
-        updatedAt: '2024-01-16',
-        role: 'USER'
-    },
-    {
-        _id: 'ertwertwerxvbxcvb',
-        fullName: 'data fake',
-        email: 'datafake@gmail.com',
-        phone: '0132131567',
-        createdAt: '2024-01-16',
-        updatedAt: '2024-01-16',
-        role: 'USER'
-    },
-    {
-        _id: 'xvbxcbsdghshhsdf',
-        fullName: 'data fake',
-        email: 'datafake@gmail.com',
-        phone: '0132131567',
-        createdAt: '2024-01-16',
-        updatedAt: '2024-01-16',
-        role: 'USER'
-    }
-]
-
 const UserTable = () => {
     const actionRef = useRef()
-    const [dataUsers, setDataUsers] = useState(fakeDataUser)
+    const [dataUsers, setDataUsers] = useState([])
     const [editableKeys, setEditableKeys] = useState([])
     const [isOpenModalCreateUser, setIsOpenModalCreateUser] = useState(false)
     const [isOpenUserDetail, setIsOpenUserDetail] = useState(false)
     const [dataUserDetail, setDataUserDetail] = useState(null)
     const [isOpenModalImportUsers, setIsOpenModalImportUsers] = useState(false)
 
-    const [meta, setMeta] = useState({
-        current: 1,
-        pageSize: 5,
-        pages: 0,
-        total: 0
-    })
+    const [current, setCurrent] = useState(1)
+    const [pageSize, setPageSize] = useState(5)
+    const [total, setTotal] = useState(null)
 
+    useEffect(() => {
+        const getUsers = async () => {
+            const res = await getUsersAPI()
+            if (res.data) {
+                setDataUsers(res.data)
+                setTotal(res.data.length)
+            }
+        }
+        getUsers()
+    }, [])
 
-
+    const handleDataUsers = () => {
+        const indexStart = (current - 1) * pageSize
+        const currentDataUsers = dataUsers.slice(indexStart, indexStart + pageSize)
+        return currentDataUsers
+    }
 
     const columns = [
         {
@@ -92,7 +46,7 @@ const UserTable = () => {
             key: "no.",
             render: (text, record, index, action) => [
                 <div style={{
-                    backgroundColor: index <= meta.pageSize / 2 ? color[0] : color[1],
+                    backgroundColor: index <= pageSize / 2 ? color[0] : color[1],
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -101,9 +55,10 @@ const UserTable = () => {
                     borderRadius: "50%",
                     color: "white"
                 }}
-                >{(meta.pageSize * (meta.current - 1)) + (index + 1)}</div>
+                >{(pageSize * (current - 1)) + (index + 1)}</div>
             ],
             hideInSearch: true,
+            editable: false
         },
 
         {
@@ -150,44 +105,30 @@ const UserTable = () => {
             key: "action",
             title: 'Action',
             render: (text, record, _, action) => {
-                const isEdit = record._id === editableKeys[0]
+                const isEdit = record.id === editableKeys[0]
                 return (
                     <>
                         {isEdit ?
-                            <div style={{
-                                display: "flex",
-                                gap: "15px"
-                            }}>
+                            <div style={{ display: "flex", gap: "15px" }}>
                                 <SaveOutlined
                                     style={{ cursor: 'pointer', color: "blue" }}
-                                    onClick={async () => {
-                                        handleSave()
-                                    }}
+                                    onClick={async () => { handleSave() }}
                                 />
                                 <CloseOutlined
                                     style={{ cursor: 'pointer', color: "red" }}
-                                    onClick={() => {
-                                        setEditableKeys([])
-                                    }}
+                                    onClick={() => { setEditableKeys([]) }}
                                 />
                             </div>
                             :
-                            <div style={{
-                                display: "flex",
-                                gap: "15px"
-                            }}>
+                            <div style={{ display: "flex", gap: "15px" }}>
                                 <EditOutlined
                                     style={{ cursor: 'pointer', color: "orange" }}
-                                    key="editable"
-                                    onClick={() => {
-                                        action?.startEditable?.(record._id)
-                                    }}
+                                    onClick={() => { action?.startEditable?.(record.id) }}
                                 />
                                 <Popconfirm
                                     title="Delete the user"
                                     description="Are you sure to delete this user?"
-                                    onConfirm={() => { handleDelete(record._id) }}
-                                    onCancel={() => { }}
+                                    onConfirm={() => { handleDelete(record.id) }}
                                     okText="Yes"
                                     cancelText="No"
                                 >
@@ -205,13 +146,15 @@ const UserTable = () => {
 
     const handleExport = () => {
         if (dataUsers && dataUsers.length > 0) {
-            const worksheet = XLSX.utils.json_to_sheet(dataUsers);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-            XLSX.writeFile(workbook, "DataUsers.xlsx");
+            const data = handleDataUsers()
+            if (data && data.length) {
+                const worksheet = XLSX.utils.json_to_sheet(data);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+                XLSX.writeFile(workbook, "DataUsers.xlsx");
+            }
         }
     }
-
 
     const handleSave = async () => {
         //call api update user
@@ -222,39 +165,29 @@ const UserTable = () => {
     }
 
     return (
-
         <>
             <ProTable
                 columns={columns}
                 actionRef={actionRef}
                 cardBordered
-                request={async (params, sorter) => {
-
-                    //call api get user and query
-
-                    return {
-                        data: fakeDataUser,
-                        page: 1,
-                        success: true,
-                        total: 10
-                    }
-                }}
-                rowKey="_id"
+                dataSource={handleDataUsers()}
+                rowKey="id"
                 pagination={{
-                    current: meta.current,
-                    pageSize: meta.pageSize,
-                    total: meta.total,
-                    showSizeChanger: true
+                    current: current,
+                    pageSize: pageSize,
+                    total: total,
+                    showSizeChanger: true,
+                    onChange: (page, pageSize) => {
+                        setCurrent(page)
+                        setPageSize(pageSize)
+                    }
                 }}
                 headerTitle="Table User"
                 toolBarRender={() => [
-
                     <Button
                         key="button"
                         icon={<ExportOutlined />}
-                        onClick={() => {
-                            handleExport()
-                        }}
+                        onClick={() => { handleExport() }}
                         type="primary"
                     >
                         Export
@@ -262,9 +195,7 @@ const UserTable = () => {
                     <Button
                         key="button"
                         icon={<ImportOutlined />}
-                        onClick={() => {
-                            setIsOpenModalImportUsers(true)
-                        }}
+                        onClick={() => { setIsOpenModalImportUsers(true) }}
                         type="primary"
                     >
                         Import
@@ -272,9 +203,7 @@ const UserTable = () => {
                     <Button
                         key="button"
                         icon={<PlusOutlined />}
-                        onClick={() => {
-                            setIsOpenModalCreateUser(true)
-                        }}
+                        onClick={() => { setIsOpenModalCreateUser(true) }}
                         type="primary"
                     >
                         Add new
