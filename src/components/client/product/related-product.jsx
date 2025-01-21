@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, Button } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const products = [
     {
@@ -78,6 +79,7 @@ const products = [
 const RelatedProducts = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const itemsPerPage = 3;
+    const navigate = useNavigate();
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -157,6 +159,9 @@ const RelatedProducts = () => {
                                             objectFit: "cover",
                                         }}
                                     />
+                                }
+                                onClick={() =>
+                                    navigate(`/product/${product.id}`)
                                 }
                             >
                                 <h3

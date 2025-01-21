@@ -51,19 +51,19 @@ const Home = () => {
     const [selectedRating, setSelectedRating] = useState(null);
     const [selectedPriceRange, setSelectedPriceRange] = useState([20, 50]);
     const [selectedSizes, setSelectedSizes] = useState([]);
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const getProfile = async () => {
-        const res = await getProfileAPI()
+        const res = await getProfileAPI();
         if (res.data) {
-            dispatch(doGetProfileAction(res.data))
+            dispatch(doGetProfileAction(res.data));
         }
-    }
+    };
 
     useEffect(() => {
-        getProfile()
-    }, [])
+        getProfile();
+    }, []);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
