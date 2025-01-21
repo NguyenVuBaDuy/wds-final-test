@@ -4,6 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.order.css";
 import "../../../assets/style/global.css";
+import RelatedProducts from "../product/related-product";
 
 const { Option } = Select;
 const { Step } = Steps;
@@ -127,16 +128,36 @@ const Order = () => {
             <Button className="order__update">Update Cart</Button>
         </section>,
         <section className="order__address">
-            <h2>Shipping Address</h2>
             <div className="order__address-form">
-                <Select defaultValue="Vietnam" className="order__address-item">
-                    <Option value="vietnam">Vietnam</Option>
+                <Select
+                    style={{ marginBottom: "10px" }}
+                    defaultValue="Vietnam"
+                    className="order__address-item"
+                    dropdownStyle={{ padding: "8px" }}
+                >
+                    <Option value="vietnam" style={{ margin: "8px 0" }}>
+                        Vietnam
+                    </Option>
                 </Select>
-                <Select defaultValue="Can Tho" className="order__address-item">
-                    <Option value="cantho">Can Tho</Option>
+                <Select
+                    style={{ marginBottom: "10px" }}
+                    defaultValue="Can Tho"
+                    className="order__address-item"
+                    dropdownStyle={{ padding: "8px" }}
+                >
+                    <Option value="cantho" style={{ margin: "8px 0" }}>
+                        Can Tho
+                    </Option>
                 </Select>
-                <Select defaultValue="O Mon" className="order__address-item">
-                    <Option value="omon">O Mon</Option>
+                <Select
+                    style={{ marginBottom: "10px" }}
+                    defaultValue="O Mon"
+                    className="order__address-item"
+                    dropdownStyle={{ padding: "8px" }}
+                >
+                    <Option value="omon" style={{ margin: "8px 0" }}>
+                        O Mon
+                    </Option>
                 </Select>
                 <Input
                     placeholder="Enter Home Address"
@@ -181,7 +202,7 @@ const Order = () => {
                     <Step title="Confirmation" />
                 </Steps>
                 <div className="steps-content">{stepsContent[current]}</div>
-                <div className="steps-action">
+                <div style={{ marginTop: "20px" }} className="steps-action">
                     {current > 0 && (
                         <Button style={{ marginRight: 8 }} onClick={prev}>
                             Previous
@@ -201,6 +222,7 @@ const Order = () => {
                     )}
                 </div>
             </div>
+            <RelatedProducts />
         </div>
     );
 };

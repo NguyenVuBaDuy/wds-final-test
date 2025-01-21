@@ -62,19 +62,19 @@
 
 .header-action__sign-up {
     min-width: 117px;
-    color: #E5E5E5;
+    color: #e5e5e5;
     text-align: center;
     padding: 8px 16px;
     transition: all 0.3s ease;
     font-size: 15px;
     font-weight: 400;
-    background-color: #673EF6;
-    border: 1px solid #673EF6;
+    background-color: #673ef6;
+    border: 1px solid #673ef6;
 }
 
 .header-action__sign-up:hover {
-    background-color: #E5E5E5;
-    color: #673EF6;
+    background-color: #e5e5e5;
+    color: #673ef6;
     border-color: var(--hover-item);
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
     transform: translateY(-2px);
@@ -89,8 +89,6 @@
     transition: all 0.3s ease;
     font-size: 15px;
     font-weight: 500;
-    background-color: rgb(143, 197, 143);
-    border: 1px solid rgb(143, 197, 143);
 }
 
 .header-action__link:hover {
