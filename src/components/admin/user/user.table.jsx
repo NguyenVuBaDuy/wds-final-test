@@ -185,29 +185,19 @@ const UserTable = () => {
         //call api update user
     };
 
-    const handleDelete = async (_id) => {
-        try {
-            const res = await deleteUserAPI(_id); // Gọi API xóa user
-            if (res.data) {
-                message.success("User deleted successfully");
-                setDataUsers((prevUsers) =>
-                    prevUsers.filter((user) => user.id !== _id)
-                );
-                setTotal((prevTotal) => prevTotal - 1);
-            } else {
-                notification.error({
-                    message: "Delete Failed",
-                    description: res.message || "Something went wrong",
-                });
-            }
-        } catch (error) {
+    const handleDelete = async (id) => {
+        const res = await deleteUserAPI(id)
+        console.log(res)
+        if (res.statusCode === 200) {
+            message.success('Successfully Deleted User')
+            actionRef.current?.reload()
+        } else {
             notification.error({
-                message: "Error",
-                description:
-                    error.response?.data?.message || "Failed to delete user",
-            });
+                message: "Delete User Failed",
+                description: res.message
+            })
         }
-    };
+    }
 
     return (
         <>
