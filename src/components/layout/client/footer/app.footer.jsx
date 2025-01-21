@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import "../../../../assets/style/app.footer.css";
 import "../../../../assets/style/global.css";
-
+import logo from "../../../../assets/img/logo.png";
 const AppFooter = () => {
     return (
         <footer className="footer">
@@ -15,8 +15,7 @@ const AppFooter = () => {
                 <div className="footer__container">
                     <div className="footer__logo-section">
                         <div className="logo">
-                            LOGO
-                            <img src="" alt="Logo" className="logo__img" />
+                            <img src={logo} alt="Logo" className="logo__img" />
                         </div>
                         <p className="footer__description">SHOP DESCRIPTION</p>
                         <div className="footer__social-links">

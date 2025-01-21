@@ -13,9 +13,14 @@
 
 /* Logo */
 .logo {
-    font-size: 1rem;
-    position: relative;
-    display: inline-flex;
+    display: flex;
+    align-items: center;
+}
+
+.logo__img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
 }
 
 /* Navbar */
