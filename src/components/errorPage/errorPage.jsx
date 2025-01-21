@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, useLocation } from "react-router-dom"; // Import useNavigate và useLocation
 import { Button, Typography, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
@@ -7,6 +7,7 @@ const { Title, Text, Link } = Typography;
 
 const ErrorPage = () => {
     const navigate = useNavigate(); // Khởi tạo navigate
+    const location = useLocation(); // Lấy thông tin đường dẫn hiện tại
 
     return (
         <div
@@ -32,7 +33,8 @@ const ErrorPage = () => {
                 </Title>
 
                 <Text style={{ color: "rgba(255, 255, 255, 0.75)" }}>
-                    Check if there is a typo in <Text code>xxx</Text>.
+                    Check if there is a typo in{" "}
+                    <Text code>{location.pathname}</Text>.
                 </Text>
                 <Text style={{ color: "rgba(255, 255, 255, 0.75)" }}>
                     If spelling is correct, try running{" "}
