@@ -129,18 +129,37 @@ const Order = () => {
         <section className="order__address">
             <h2>Shipping Address</h2>
             <div className="order__address-form">
-                <Select defaultValue="Vietnam" className="order__address-item">
-                    <Option value="vietnam">Vietnam</Option>
+                <Select
+                    defaultValue="Vietnam"
+                    className="order__address-item"
+                    dropdownStyle={{ padding: "8px" }} 
+                >
+                    <Option value="vietnam" style={{ margin: "8px 0" }}>
+                        Vietnam
+                    </Option>
                 </Select>
-                <Select defaultValue="Can Tho" className="order__address-item">
-                    <Option value="cantho">Can Tho</Option>
+                <Select
+                    defaultValue="Can Tho"
+                    className="order__address-item"
+                    dropdownStyle={{ padding: "8px" }} 
+                >
+                    <Option value="cantho" style={{ margin: "8px 0" }}>
+                        Can Tho
+                    </Option>
                 </Select>
-                <Select defaultValue="O Mon" className="order__address-item">
-                    <Option value="omon">O Mon</Option>
+                <Select
+                    defaultValue="O Mon"
+                    className="order__address-item"
+                    dropdownStyle={{ padding: "8px" }} 
+                >
+                    <Option value="omon" style={{ margin: "8px 0" }}>
+                        O Mon
+                    </Option>
                 </Select>
                 <Input
                     placeholder="Enter Home Address"
                     className="order__address-item"
+                    style={{ marginTop: "16px" }} // Thêm khoảng cách phía trên input
                 />
             </div>
         </section>,
@@ -181,7 +200,7 @@ const Order = () => {
                     <Step title="Confirmation" />
                 </Steps>
                 <div className="steps-content">{stepsContent[current]}</div>
-                <div className="steps-action">
+                <div style={{ marginTop: "20px" }} className="steps-action">
                     {current > 0 && (
                         <Button style={{ marginRight: 8 }} onClick={prev}>
                             Previous
