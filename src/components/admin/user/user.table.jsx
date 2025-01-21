@@ -15,6 +15,7 @@ import CreateUser from "./create.user";
 import ViewUserDetail from "./view.user.detail";
 import ImportUsers from "./data/import.users";
 import { getUsersAPI, deleteUserAPI } from "../../../services/api.service";
+import axios from "../../../services/axios.customize";
 
 const color = ["#314659", "#979797"];
 
@@ -22,6 +23,7 @@ const UserTable = () => {
     const actionRef = useRef();
     const [dataUsers, setDataUsers] = useState([]);
     const [editableKeys, setEditableKeys] = useState([]);
+    const [dataUpdate, setDataUpdate] = useState({});
     const [isOpenModalCreateUser, setIsOpenModalCreateUser] = useState(false);
     const [isOpenUserDetail, setIsOpenUserDetail] = useState(false);
     const [dataUserDetail, setDataUserDetail] = useState(null);
@@ -182,22 +184,46 @@ const UserTable = () => {
     };
 
     const handleSave = async () => {
-        //call api update user
+        try {
+            if (!dataUpdate || !dataUpdate.id) {
+                message.error("No data to update");
+                return;
+            }
+
+            const res = await axios.put(`/users/${dataUpdate.id}`, dataUpdate);
+
+            if (res.status === 200) {
+                message.success("User updated successfully");
+                setEditableKeys([]);
+                actionRef.current?.reload();
+            } else {
+                notification.error({
+                    message: "Update failed",
+                    description: res.message || "Something went wrong",
+                });
+            }
+        } catch (error) {
+            notification.error({
+                message: "Error",
+                description:
+                    error?.response?.data?.message || "Failed to update user",
+            });
+        }
     };
 
     const handleDelete = async (id) => {
-        const res = await deleteUserAPI(id)
-        console.log(res)
+        const res = await deleteUserAPI(id);
+        console.log(res);
         if (res.statusCode === 200) {
-            message.success('Successfully Deleted User')
-            actionRef.current?.reload()
+            message.success("Successfully Deleted User");
+            actionRef.current?.reload();
         } else {
             notification.error({
                 message: "Delete User Failed",
-                description: res.message
-            })
+                description: res.message,
+            });
         }
-    }
+    };
 
     return (
         <>
@@ -266,7 +292,10 @@ const UserTable = () => {
                         setEditableKeys(editableKeys);
                     },
                     onValuesChange: (values) => {
-                        //handle data update
+                        setDataUpdate((prev) => ({
+                            ...prev,
+                            ...values,
+                        }));
                     },
                 }}
             />
