@@ -20,6 +20,7 @@ import { doGetProfileAction } from "./redux/profile/profileSlice.js";
 import Loading from "./components/client/loading/loading.jsx";
 import ProtectedRoute from "./components/auth/protectedRoute.jsx";
 import ErrorPage from "./components/errorPage/errorPage.jsx";
+import ProfilePage from "./pages/client/profile.page/profile.page.jsx";
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <HistoryPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "/profile",
+                element: (
+                    <ProtectedRoute>
+                        <ProfilePage/>
                     </ProtectedRoute>
                 ),
             },

@@ -19,31 +19,37 @@ import { RiAdminFill } from "react-icons/ri";
 
 const CheckLogin = () => {
     const navigate = useNavigate();
-    const user = useSelector(state => state.profile.user)
-    const isAuthenticated = useSelector(state => state.profile.isAuthenticated)
-    const dispatch = useDispatch()
-
+    const user = useSelector((state) => state.profile.user);
+    const isAuthenticated = useSelector(
+        (state) => state.profile.isAuthenticated
+    );
+    const dispatch = useDispatch();
 
     const menuItems = [
-        ...(user.role === 'admin' ? [{
-            key: "admin",
-            label: (
-                <div
-                    onClick={() => navigate("/admin")}
-                    style={{
-                        cursor: "pointer",
-                        width: "100%",
-                    }}
-                >
-                    <RiAdminFill style={{ marginRight: "8px" }} />
-                    Admin DashBoard
-                </div>
-            ),
-        }] : []),
+        ...(user.role === "admin"
+            ? [
+                  {
+                      key: "admin",
+                      label: (
+                          <div
+                              onClick={() => navigate("/admin")}
+                              style={{
+                                  cursor: "pointer",
+                                  width: "100%",
+                              }}
+                          >
+                              <RiAdminFill style={{ marginRight: "8px" }} />
+                              Admin DashBoard
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
         {
             key: "1",
             label: (
                 <div
+                    onClick={() => navigate("/profile")}
                     style={{
                         cursor: "pointer",
                         width: "100%",
@@ -77,7 +83,9 @@ const CheckLogin = () => {
             key: "3",
             label: (
                 <div
-                    onClick={() => { dispatch(doLogoutAction()) }}
+                    onClick={() => {
+                        dispatch(doLogoutAction());
+                    }}
                     style={{
                         color: "red",
                         cursor: "pointer",
@@ -90,7 +98,6 @@ const CheckLogin = () => {
             ),
         },
     ];
-
 
     return (
         <>
@@ -109,17 +116,28 @@ const CheckLogin = () => {
                         }}
                     >
                         <Space style={{ marginRight: "15px" }}>
-                            <Avatar size={'large'} src={user.avatar_url} />{user.name}
+                            <Avatar size={"large"} src={user.avatar_url} />
+                            {user.name}
                             <DownOutlined />
                         </Space>
                     </div>
                 </Dropdown>
             ) : (
                 <>
-                    <a className="header-action__link btn" onClick={() => { navigate('/login') }}>
+                    <a
+                        className="header-action__link btn"
+                        onClick={() => {
+                            navigate("/login");
+                        }}
+                    >
                         Sign in
                     </a>
-                    <a className="header-action__sign-up btn" onClick={() => { navigate('/register') }}>
+                    <a
+                        className="header-action__sign-up btn"
+                        onClick={() => {
+                            navigate("/register");
+                        }}
+                    >
                         Get Started
                         <FaArrowRight style={{ marginLeft: "5px" }} />
                     </a>
@@ -148,13 +166,14 @@ const AppHeader = () => {
                             <li className="navbar__item">
                                 <a
                                     onClick={() => navigate("/")}
-                                    className={`navbar__link ${isHome ? "navbar__link--active" : ""
-                                        }`}
+                                    className={`navbar__link ${
+                                        isHome ? "navbar__link--active" : ""
+                                    }`}
                                     style={{
                                         textDecoration: isHome
                                             ? "underline"
                                             : "none",
-                                        cursor: "pointer"
+                                        cursor: "pointer",
                                     }}
                                 >
                                     Home
@@ -162,15 +181,15 @@ const AppHeader = () => {
                             </li>
                             <li className="navbar__item">
                                 <a
-
                                     onClick={() => navigate("/order")}
-                                    className={`navbar__link ${isCart ? "navbar__link--active" : ""
-                                        }`}
+                                    className={`navbar__link ${
+                                        isCart ? "navbar__link--active" : ""
+                                    }`}
                                     style={{
                                         textDecoration: isCart
                                             ? "underline"
                                             : "none",
-                                        cursor: "pointer"
+                                        cursor: "pointer",
                                     }}
                                 >
                                     Cart
