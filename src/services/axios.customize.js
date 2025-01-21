@@ -8,7 +8,6 @@ const instance = axios.create({
 
 const handleRefreshToken = async () => {
     const res = await handleRefreshTokenAPI()
-    console.log(res)
     if (res && res.data) {
         return res.data.accessToken
     } else null

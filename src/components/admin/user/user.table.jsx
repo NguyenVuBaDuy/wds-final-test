@@ -14,7 +14,7 @@ import * as XLSX from "xlsx";
 import CreateUser from "./create.user";
 import ViewUserDetail from "./view.user.detail";
 import ImportUsers from "./data/import.users";
-import { getUsersAPI, deleteUserAPI } from "../../../services/api.service";
+import { getUsersAPI, deleteUserAPI, updateUserAPI } from "../../../services/api.service";
 import axios from "../../../services/axios.customize";
 
 const color = ["#314659", "#979797"];
@@ -124,7 +124,7 @@ const UserTable = () => {
                                 <SaveOutlined
                                     style={{ cursor: "pointer", color: "blue" }}
                                     onClick={async () => {
-                                        handleSave();
+                                        handleSave(record.id);
                                     }}
                                 />
                                 <CloseOutlined
@@ -184,31 +184,16 @@ const UserTable = () => {
         }
     };
 
-    const handleSave = async () => {
-        try {
-            if (!dataUpdate || !dataUpdate.id) {
-                message.error("No data to update");
-                return;
-            }
-
-            const res = await axios.put(`/users/${dataUpdate.id}`, dataUpdate);
-
-            if (res.status === 200) {
-                message.success("User updated successfully");
-                setEditableKeys([]);
-                actionRef.current?.reload();
+    const handleSave = async (id) => {
+        if (dataUpdate) {
+            const res = await updateUserAPI(id, dataUpdate.name, dataUpdate.phone_number)
+            if (res.data) {
+                message.success("Update User Successfully")
+                actionRef.current?.reload()
+                setEditableKeys([])
             } else {
-                notification.error({
-                    message: "Update failed",
-                    description: res.message || "Something went wrong",
-                });
+                notification.success({ message: "Update User Failed", description: res.message })
             }
-        } catch (error) {
-            notification.error({
-                message: "Error",
-                description:
-                    error?.response?.data?.message || "Failed to update user",
-            });
         }
     };
 
@@ -292,10 +277,11 @@ const UserTable = () => {
                         setEditableKeys(editableKeys);
                     },
                     onValuesChange: (values) => {
-                        setDataUpdate((prev) => ({
-                            ...prev,
-                            ...values,
-                        }));
+                        const data = {
+                            name: values.name,
+                            phone_number: values.phone_number
+                        }
+                        setDataUpdate(data)
                     },
                 }}
             />

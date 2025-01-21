@@ -8,12 +8,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 const ProtectedRoute = (props) => {
 
     const isAuthenticated = useSelector((state) => state.profile.isAuthenticated)
-    const role = useSelector(state => state.profile.role)
+    const role = useSelector(state => state.profile.user.role)
     const navigate = useNavigate()
-
     return (
         <>
-            {isAuthenticated === true && role == 'admin'
+            {isAuthenticated === true && role === 'admin'
                 ?
                 <>{props.children}</>
                 :

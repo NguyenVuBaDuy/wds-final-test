@@ -48,6 +48,15 @@ export const createUserAPI = (name, email, phone_number, password) => {
     return axios.post(urlBackend, data);
 };
 
+export const updateUserAPI = (id, name, phone_number) => {
+    const urlBackend = `/users/${id}`
+    const data = {
+        name,
+        phone_number
+    }
+    return axios.patch(urlBackend, data)
+}
+
 export const deleteUserAPI = (userId) => {
     const urlBackend = `/users/${userId}`;
     return axios.delete(urlBackend);
