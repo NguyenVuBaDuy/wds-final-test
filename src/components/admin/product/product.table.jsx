@@ -164,6 +164,7 @@ const ProductTable = () => {
                             }}
                         />
                         <Popconfirm
+                            placement="topRight"
                             title="Delete the product"
                             description="Are you sure to delete this product?"
                             onConfirm={() => {

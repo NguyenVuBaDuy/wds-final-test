@@ -146,6 +146,7 @@ const UserTable = () => {
                                     }}
                                 />
                                 <Popconfirm
+                                    placement="topRight"
                                     title="Delete the user"
                                     description="Are you sure to delete this user?"
                                     onConfirm={() => {

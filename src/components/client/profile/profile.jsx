@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Layout,
@@ -10,9 +10,16 @@ import {
     Row,
     Col,
     Typography,
-    Space,
+    Upload,
+    message,
 } from "antd";
-import { UserOutlined, EditOutlined, MessageOutlined } from "@ant-design/icons";
+import {
+    UserOutlined,
+    EditOutlined,
+    MessageOutlined,
+    UploadOutlined,
+} from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -20,16 +27,22 @@ const { Title } = Typography;
 const Profile = () => {
     const [form] = Form.useForm();
     const [isEditing, setIsEditing] = useState(false);
+    const [avatar, setAvatar] = useState(null); // Avatar URL
     const navigate = useNavigate();
 
-    const initialValues = {
-        name: "User Name",
-        phone: "0123456789",
-        email: "user@example.com",
-        gender: "Male",
-        birthDate: "1990-01-01",
-        accountCreated: "2020-01-01",
-    };
+    const user = useSelector((state) => state.profile.user);
+    console.log(user);
+
+    useEffect(() => {
+        if (user) {
+            form.setFieldsValue({
+                name: user.name,
+                phone: user.phone_number,
+                email: user.email,
+            });
+            setAvatar(user.avatar || null); // Set initial avatar
+        }
+    }, [user, form]);
 
     const handleSave = () => {
         form.validateFields()
@@ -40,6 +53,31 @@ const Profile = () => {
             .catch((info) => {
                 console.log("Validation failed:", info);
             });
+    };
+
+    const handleAvatarChange = (file) => {
+        const isImage = file.type.startsWith("image/");
+        if (!isImage) {
+            message.error("You can only upload image files!");
+            return false;
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error("Image must be smaller than 2MB!");
+            return false;
+        }
+
+        const newAvatar = URL.createObjectURL(file);
+        setAvatar(newAvatar);
+
+        // Optionally: Upload the avatar file to the server
+        // Example:
+        // const formData = new FormData();
+        // formData.append("avatar", file);
+        // axios.post("/api/upload-avatar", formData);
+
+        message.success("Avatar updated successfully!");
+        return false; // Prevent default upload behavior
     };
 
     return (
@@ -60,7 +98,6 @@ const Profile = () => {
                                 <Form
                                     form={form}
                                     layout="vertical"
-                                    initialValues={initialValues}
                                     style={{ maxWidth: "100%" }}
                                 >
                                     <Form.Item
@@ -77,7 +114,7 @@ const Profile = () => {
                                         <Input disabled={!isEditing} />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Phone"
+                                        label="Phone Number"
                                         name="phone"
                                         rules={[
                                             {
@@ -102,21 +139,6 @@ const Profile = () => {
                                         ]}
                                     >
                                         <Input disabled={!isEditing} />
-                                    </Form.Item>
-                                    <Form.Item label="Gender" name="gender">
-                                        <Input disabled={!isEditing} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="Date of Birth"
-                                        name="birthDate"
-                                    >
-                                        <Input disabled={!isEditing} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="Account Created"
-                                        name="accountCreated"
-                                    >
-                                        <Input disabled={true} />
                                     </Form.Item>
                                 </Form>
                                 {isEditing ? (
@@ -157,7 +179,6 @@ const Profile = () => {
                                 )}
                             </Col>
 
-                            {/* Right Column: Avatar and Order History */}
                             <Col
                                 span={8}
                                 style={{
@@ -170,7 +191,7 @@ const Profile = () => {
                                 <div style={{ marginBottom: "20px" }}>
                                     <Avatar
                                         size={120}
-                                        icon={<UserOutlined />}
+                                        src={avatar || <UserOutlined />}
                                         style={{
                                             backgroundColor: "#87d068",
                                             marginBottom: "10px",
@@ -181,14 +202,19 @@ const Profile = () => {
                                             level={4}
                                             style={{ marginBottom: 0 }}
                                         >
-                                            User Name
+                                            {user?.name || "User Name"}
                                         </Title>
-                                        <Button
-                                            icon={<EditOutlined />}
-                                            type="link"
+                                        <Upload
+                                            showUploadList={false}
+                                            beforeUpload={handleAvatarChange}
                                         >
-                                            Change Avatar
-                                        </Button>
+                                            <Button
+                                                icon={<EditOutlined />}
+                                                type="link"
+                                            >
+                                                Change Avatar
+                                            </Button>
+                                        </Upload>
                                     </div>
                                 </div>
                                 <Button
