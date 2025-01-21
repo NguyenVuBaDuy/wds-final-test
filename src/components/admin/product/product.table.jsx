@@ -8,176 +8,118 @@ import './product.css'
 import ViewProductDetail from './view.product.detail';
 import CreateProduct from './create.product';
 import UpdateProduct from './update.product';
+import { getAllCategoriesAPI, getAllProductAPI } from '../../../services/api.service';
 
 const color = ['#314659', '#979797']
-const category = ['Sneaker', 'Boot', 'Leather', 'Sandal']
 
-const fakeDataProduct = [
-    {
-        _id: "a1f5e6d2-9b3c-4d8f-a2e1-1c2b3d4e5f6g",
-        productName: "Air Max 270",
-        category: "Sneaker",
-        brand: "Nike",
-        price: 150,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-16",
-        createdAt: "2025-01-16",
-    },
-    {
-        _id: "b2g6f7e3-0c4d-5e9g-b3f2-2d3c4e5f6g7h",
-        productName: "UltraBoost 22",
-        category: "Sneaker",
-        brand: "Adidas",
-        price: 180,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-15",
-        createdAt: "2025-01-15",
-    },
-    {
-        _id: "c3h7g8f4-1d5e-6f0h-c4g3-3e4d5f6g7h8i",
-        productName: "Timberland 6-Inch",
-        category: "Boot",
-        brand: "Timberland",
-        price: 200,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-14",
-        createdAt: "2025-01-14",
-    },
-    {
-        _id: "d4i8h9g5-2e6f-7g1i-d5h4-4f5g6h7i8j9k",
-        productName: "Dr. Martens 1460",
-        category: "Boot",
-        brand: "Dr. Martens",
-        price: 190,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-13",
-        createdAt: "2025-01-13",
-    },
-    {
-        _id: "e5j9i0h6-3f7g-8h2j-e6i5-5g6h7i8j9k0l",
-        productName: "Oxford Classic",
-        category: "Leather",
-        brand: "Clarks",
-        price: 120,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-12",
-        createdAt: "2025-01-12",
-    },
-    {
-        _id: "f6k0j1i7-4g8h-9i3k-f7j6-6h7i8j9k0l1m",
-        productName: "Derby Premium",
-        category: "Leather",
-        brand: "Gucci",
-        price: 550,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-11",
-        createdAt: "2025-01-11",
-    },
-    {
-        _id: "g7l1k2j8-5h9i-0j4l-g8k7-7i8j9k0l1m2n",
-        productName: "Yeezy Slide",
-        category: "Sandal",
-        brand: "Adidas",
-        price: 70,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-10",
-        createdAt: "2025-01-10",
-    },
-    {
-        _id: "h8m2l3k9-6i0j-1k5m-h9l8-8j9k0l1m2n3o",
-        productName: "Birkenstock Arizona",
-        category: "Sandal",
-        brand: "Birkenstock",
-        price: 100,
-        quantity: 100,
-        sold: 10,
-        updatedAt: "2025-01-09",
-        createdAt: "2025-01-09",
-    }
-];
 
 
 const ProductTable = () => {
 
     const actionRef = useRef()
-    const [meta, setMeta] = useState({
-        current: 1,
-        pageSize: 5,
-        pages: 0,
-        total: 0
-    })
-    const [dataProducts, setDataProducts] = useState(fakeDataProduct)
+    const [dataProducts, setDataProducts] = useState([])
     const [isOpenProductDetail, setIsOpenProductDetail] = useState(false)
     const [dataProductDetail, setDataProductDetail] = useState(null)
     const [isOpenModalCreateProduct, setIsOpenModalCreateProduct] = useState(false)
     const [isOpenModalUpdateProduct, setIsOpenModalUpdateProduct] = useState(false)
     const [dataUpdateProduct, setDataUpdateProduct] = useState(null)
+    const [listCategories, setListCategories] = useState([])
+
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(5);
+    const [total, setTotal] = useState(null);
+
+
+    useEffect(() => {
+        const getAllCategories = async () => {
+            const res = await getAllCategoriesAPI()
+            if (res.data) {
+                const categories = res.data.map(category => {
+                    return category.name
+                })
+                setListCategories(categories)
+            }
+        }
+        getAllCategories()
+    }, [])
+
+    const handleDataProducts = () => {
+        const indexStart = (current - 1) * pageSize;
+        const currentDataUsers = dataUsers.slice(
+            indexStart,
+            indexStart + pageSize
+        );
+        return currentDataUsers;
+    };
 
     const columns = [
         {
             title: "No.",
             key: "no.",
-            render: (text, record, index, action) => [
-                <div style={{
-                    backgroundColor: index <= meta.pageSize / 2 ? color[0] : color[1],
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: '22px',
-                    height: "22px",
-                    borderRadius: "50%",
-                    color: "white",
-                }}
-                >{(meta.pageSize * (meta.current - 1)) + (index + 1)}</div>
+            render: (text, record, index) => [
+                <div
+                    style={{
+                        backgroundColor:
+                            index <= pageSize / 2 ? color[0] : color[1],
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "22px",
+                        height: "22px",
+                        borderRadius: "50%",
+                        color: "white",
+                    }}
+                >
+                    {pageSize * (current - 1) + (index + 1)}
+                </div>,
             ],
             hideInSearch: true,
-            width: "20px"
+            editable: false,
         },
         {
             key: "id",
             title: 'Id',
-            dataIndex: '_id',
+            dataIndex: 'id',
             hideInSearch: true,
             render: (_, record) => (
                 <a href="#" onClick={() => {
                     setIsOpenProductDetail(true)
                     setDataProductDetail(record)
-                }}>{record._id}</a>
+                }}>{record.id}</a>
             ),
+            align: 'left',
         },
         {
-            key: "productName",
+            key: "name",
             title: 'Product Name',
-            dataIndex: 'productName',
+            dataIndex: 'name',
             valueType: 'text',
+            align: 'left',
         },
         {
             key: "category",
             title: 'Category',
-            dataIndex: 'category',
+            dataIndex: 'category_name',
             valueType: 'select',
-            valueEnum: category
+            valueEnum: listCategories,
+            align: 'left',
         },
         {
-            key: "brand",
+            key: "code",
             title: 'Brand',
-            dataIndex: 'brand',
+            dataIndex: 'code',
+            hideInSearch: true,
+            align: 'left',
         },
         {
             key: "price",
             title: "Price",
             dataIndex: "price",
             render: (_, record) => (
-                <>{record.price}</>
+                <>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(record.price)}</>
             ),
             hideInSearch: true,
+            align: 'left',
         },
         {
             key: "updatedAt",
@@ -185,6 +127,7 @@ const ProductTable = () => {
             dataIndex: "updatedAt",
             valueType: "date",
             hideInSearch: true,
+            align: 'left',
         },
         {
             key: "action",
@@ -225,10 +168,13 @@ const ProductTable = () => {
 
     const handleExport = () => {
         if (dataProducts && dataProducts.length > 0) {
-            const worksheet = XLSX.utils.json_to_sheet(dataProducts);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-            XLSX.writeFile(workbook, "DataProducts.xlsx");
+            const data = handleDataProducts()
+            if (data && data.length) {
+                const worksheet = XLSX.utils.json_to_sheet(dataProducts);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+                XLSX.writeFile(workbook, "DataProducts.xlsx");
+            }
         }
     }
 
@@ -242,21 +188,30 @@ const ProductTable = () => {
                 cardBordered
                 request={async (params) => {
 
-                    //handle query and call api
+                    const res = await getAllProductAPI()
+                    if (res.data) {
+                        if (res.data) {
+                            setDataProducts(res.data);
+                            setTotal(res.data.length);
+                        }
+                    }
 
                     return {
-                        data: fakeDataProduct,
-                        page: 1,
-                        success: true,
-                        total: 8
-                    }
+                        data: res.data.map((product) => {
+                            return { ...product, category_name: product.category.name }
+                        }),
+                    };
                 }}
-                rowKey="_id"
+                rowKey="id"
                 pagination={{
-                    current: meta.current,
-                    pageSize: meta.pageSize,
-                    total: meta.total,
-                    showSizeChanger: true
+                    current: current,
+                    pageSize: pageSize,
+                    total: total,
+                    showSizeChanger: true,
+                    onChange: (page, pageSize) => {
+                        setCurrent(page);
+                        setPageSize(pageSize);
+                    },
                 }}
                 headerTitle="Table Product"
                 toolBarRender={() => [
