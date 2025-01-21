@@ -4,6 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.order.css";
 import "../../../assets/style/global.css";
+import RelatedProducts from "../product/related-product";
 
 const { Option } = Select;
 const { Step } = Steps;
@@ -127,30 +128,32 @@ const Order = () => {
             <Button className="order__update">Update Cart</Button>
         </section>,
         <section className="order__address">
-            <h2>Shipping Address</h2>
             <div className="order__address-form">
                 <Select
+                    style={{ marginBottom: "10px" }}
                     defaultValue="Vietnam"
                     className="order__address-item"
-                    dropdownStyle={{ padding: "8px" }} 
+                    dropdownStyle={{ padding: "8px" }}
                 >
                     <Option value="vietnam" style={{ margin: "8px 0" }}>
                         Vietnam
                     </Option>
                 </Select>
                 <Select
+                    style={{ marginBottom: "10px" }}
                     defaultValue="Can Tho"
                     className="order__address-item"
-                    dropdownStyle={{ padding: "8px" }} 
+                    dropdownStyle={{ padding: "8px" }}
                 >
                     <Option value="cantho" style={{ margin: "8px 0" }}>
                         Can Tho
                     </Option>
                 </Select>
                 <Select
+                    style={{ marginBottom: "10px" }}
                     defaultValue="O Mon"
                     className="order__address-item"
-                    dropdownStyle={{ padding: "8px" }} 
+                    dropdownStyle={{ padding: "8px" }}
                 >
                     <Option value="omon" style={{ margin: "8px 0" }}>
                         O Mon
@@ -159,7 +162,6 @@ const Order = () => {
                 <Input
                     placeholder="Enter Home Address"
                     className="order__address-item"
-                    style={{ marginTop: "16px" }} // Thêm khoảng cách phía trên input
                 />
             </div>
         </section>,
@@ -220,6 +222,7 @@ const Order = () => {
                     )}
                 </div>
             </div>
+            <RelatedProducts />
         </div>
     );
 };
