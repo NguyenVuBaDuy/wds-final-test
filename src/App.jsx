@@ -21,6 +21,7 @@ import Loading from "./components/client/loading/loading.jsx";
 import ProtectedRoute from "./components/auth/protectedRoute.jsx";
 import ErrorPage from "./components/errorPage/errorPage.jsx";
 import ProfilePage from "./pages/client/profile.page/profile.page.jsx";
+import NotAuth from "./components/auth/not.auth.jsx";
 
 const router = createBrowserRouter([
     {
@@ -39,25 +40,25 @@ const router = createBrowserRouter([
             {
                 path: "/order",
                 element: (
-                    <ProtectedRoute>
+                    <NotAuth>
                         <OrderPage />
-                    </ProtectedRoute>
+                    </NotAuth>
                 ),
             },
             {
                 path: "/history",
                 element: (
-                    <ProtectedRoute>
+                    <NotAuth>
                         <HistoryPage />
-                    </ProtectedRoute>
+                    </NotAuth>
                 ),
             },
             {
                 path: "/profile",
                 element: (
-                    <ProtectedRoute>
-                        <ProfilePage/>
-                    </ProtectedRoute>
+                    <NotAuth>
+                        <ProfilePage />
+                    </NotAuth>
                 ),
             },
         ],

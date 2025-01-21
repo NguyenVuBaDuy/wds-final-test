@@ -1,26 +1,25 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, Result } from "antd";
 import { useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 
-const ProtectedRoute = (props) => {
+const NotAuth = (props) => {
 
     const isAuthenticated = useSelector((state) => state.profile.isAuthenticated)
-    const role = useSelector(state => state.profile.role)
     const navigate = useNavigate()
 
     return (
         <>
-            {isAuthenticated === true && role == 'admin'
+            {isAuthenticated === true
                 ?
                 <>{props.children}</>
                 :
                 <Result
                     status="403"
-                    title="403"
-                    subTitle="Sorry, you are not authorized to access this page."
+                    title="401"
+                    subTitle="Sorry, you need log in to access this page."
                     extra={<Button type="primary" onClick={() => { navigate('/') }}><ArrowLeftOutlined />Go Back Home</Button>}
                 />
             }
@@ -28,4 +27,4 @@ const ProtectedRoute = (props) => {
     )
 }
 
-export default ProtectedRoute
+export default NotAuth
