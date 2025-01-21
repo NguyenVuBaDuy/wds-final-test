@@ -193,7 +193,7 @@ const UpdateProduct = (props) => {
                             >
                                 <InputNumber
                                     min={0}
-                                    addonAfter="VND"
+                                    addonAfter="$"
                                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     style={{ width: "100%" }}
                                 />

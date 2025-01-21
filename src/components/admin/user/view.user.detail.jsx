@@ -8,7 +8,7 @@ const ViewUserDetail = (props) => {
         setDataUserDetail,
         setIsOpenUserDetail,
     } = props;
-    console.log(dataUserDetail);
+    
     return (
         <Drawer
             title="User Detail"

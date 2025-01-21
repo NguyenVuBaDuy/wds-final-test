@@ -1,47 +1,53 @@
+import {
+    DeleteOutlined,
+    EditOutlined,
+    ExportOutlined,
+    PlusOutlined,
+} from "@ant-design/icons";
+import { ProTable } from "@ant-design/pro-components";
+import { Button, message, notification, Popconfirm } from "antd";
+import { useEffect, useRef, useState } from "react";
+import * as XLSX from "xlsx";
+import "./product.css";
+import ViewProductDetail from "./view.product.detail";
+import CreateProduct from "./create.product";
+import UpdateProduct from "./update.product";
+import {
+    getAllCategoriesAPI,
+    getAllProductAPI,
+    deleteProductAPI,
+} from "../../../services/api.service";
 
-import { DeleteOutlined, EditOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons';
-import { ProTable } from '@ant-design/pro-components';
-import { Button, message, notification, Popconfirm } from 'antd';
-import { useEffect, useRef, useState } from 'react';
-import * as XLSX from 'xlsx'
-import './product.css'
-import ViewProductDetail from './view.product.detail';
-import CreateProduct from './create.product';
-import UpdateProduct from './update.product';
-import { getAllCategoriesAPI, getAllProductAPI } from '../../../services/api.service';
-
-const color = ['#314659', '#979797']
-
-
+const color = ["#314659", "#979797"];
 
 const ProductTable = () => {
-
-    const actionRef = useRef()
-    const [dataProducts, setDataProducts] = useState([])
-    const [isOpenProductDetail, setIsOpenProductDetail] = useState(false)
-    const [dataProductDetail, setDataProductDetail] = useState(null)
-    const [isOpenModalCreateProduct, setIsOpenModalCreateProduct] = useState(false)
-    const [isOpenModalUpdateProduct, setIsOpenModalUpdateProduct] = useState(false)
-    const [dataUpdateProduct, setDataUpdateProduct] = useState(null)
-    const [listCategories, setListCategories] = useState([])
+    const actionRef = useRef();
+    const [dataProducts, setDataProducts] = useState([]);
+    const [isOpenProductDetail, setIsOpenProductDetail] = useState(false);
+    const [dataProductDetail, setDataProductDetail] = useState(null);
+    const [isOpenModalCreateProduct, setIsOpenModalCreateProduct] =
+        useState(false);
+    const [isOpenModalUpdateProduct, setIsOpenModalUpdateProduct] =
+        useState(false);
+    const [dataUpdateProduct, setDataUpdateProduct] = useState(null);
+    const [listCategories, setListCategories] = useState([]);
 
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(null);
 
-
     useEffect(() => {
         const getAllCategories = async () => {
-            const res = await getAllCategoriesAPI()
+            const res = await getAllCategoriesAPI();
             if (res.data) {
-                const categories = res.data.map(category => {
-                    return category.name
-                })
-                setListCategories(categories)
+                const categories = res.data.map((category) => {
+                    return category.name;
+                });
+                setListCategories(categories);
             }
-        }
-        getAllCategories()
-    }, [])
+        };
+        getAllCategories();
+    }, []);
 
     const handleDataProducts = () => {
         const indexStart = (current - 1) * pageSize;
@@ -78,48 +84,58 @@ const ProductTable = () => {
         },
         {
             key: "id",
-            title: 'Id',
-            dataIndex: 'id',
+            title: "Id",
+            dataIndex: "id",
             hideInSearch: true,
             render: (_, record) => (
-                <a href="#" onClick={() => {
-                    setIsOpenProductDetail(true)
-                    setDataProductDetail(record)
-                }}>{record.id}</a>
+                <a
+                    href="#"
+                    onClick={() => {
+                        setIsOpenProductDetail(true);
+                        setDataProductDetail(record);
+                    }}
+                >
+                    {record.id}
+                </a>
             ),
-            align: 'left',
+            align: "left",
         },
         {
             key: "name",
-            title: 'Product Name',
-            dataIndex: 'name',
-            valueType: 'text',
-            align: 'left',
+            title: "Product Name",
+            dataIndex: "name",
+            valueType: "text",
+            align: "left",
         },
         {
             key: "category",
-            title: 'Category',
-            dataIndex: 'category_name',
-            valueType: 'select',
+            title: "Category",
+            dataIndex: "category_name",
+            valueType: "select",
             valueEnum: listCategories,
-            align: 'left',
+            align: "left",
         },
         {
             key: "code",
-            title: 'Brand',
-            dataIndex: 'code',
+            title: "Brand",
+            dataIndex: "code",
             hideInSearch: true,
-            align: 'left',
+            align: "left",
         },
         {
             key: "price",
             title: "Price",
             dataIndex: "price",
             render: (_, record) => (
-                <>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(record.price)}</>
+                <>
+                    {new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                    }).format(record.price)}
+                </>
             ),
             hideInSearch: true,
-            align: 'left',
+            align: "left",
         },
         {
             key: "updatedAt",
@@ -127,48 +143,63 @@ const ProductTable = () => {
             dataIndex: "updatedAt",
             valueType: "date",
             hideInSearch: true,
-            align: 'left',
+            align: "left",
         },
         {
             key: "action",
-            title: 'Action',
+            title: "Action",
             render: (text, record, _, action) => {
                 return (
-                    <div style={{
-                        display: "flex",
-                        gap: "15px"
-                    }}>
+                    <div
+                        style={{
+                            display: "flex",
+                            gap: "15px",
+                        }}
+                    >
                         <EditOutlined
-                            style={{ cursor: 'pointer', color: "orange" }}
+                            style={{ cursor: "pointer", color: "orange" }}
                             onClick={() => {
-                                setIsOpenModalUpdateProduct(true)
-                                setDataUpdateProduct(record)
+                                setIsOpenModalUpdateProduct(true);
+                                setDataUpdateProduct(record);
                             }}
                         />
                         <Popconfirm
                             title="Delete the product"
                             description="Are you sure to delete this product?"
-                            onConfirm={() => { handleDeleteProduct() }}
-                            onCancel={() => { }}
+                            onConfirm={() => {
+                                handleDeleteProduct(record.id);
+                            }}
+                            onCancel={() => {}}
                             okText="Yes"
                             cancelText="No"
                         >
-                            <DeleteOutlined style={{ cursor: 'pointer', color: "red" }} />
+                            <DeleteOutlined
+                                style={{ cursor: "pointer", color: "red" }}
+                            />
                         </Popconfirm>
                     </div>
-                )
+                );
             },
-            hideInSearch: true
+            hideInSearch: true,
         },
     ];
 
-    const handleDeleteProduct = async (_id) => {
-        //call api delete product
-    }
+    const handleDeleteProduct = async (id) => {
+        const res = await deleteProductAPI(id);
+        if (res.statusCode === 200) {
+            message.success("Successfully Deleted Product");
+            actionRef.current?.reload();
+        } else {
+            notification.error({
+                message: "Delete Product Failed",
+                description: res.message,
+            });
+        }
+    };
 
     const handleExport = () => {
         if (dataProducts && dataProducts.length > 0) {
-            const data = handleDataProducts()
+            const data = handleDataProducts();
             if (data && data.length) {
                 const worksheet = XLSX.utils.json_to_sheet(dataProducts);
                 const workbook = XLSX.utils.book_new();
@@ -176,19 +207,16 @@ const ProductTable = () => {
                 XLSX.writeFile(workbook, "DataProducts.xlsx");
             }
         }
-    }
-
+    };
 
     return (
-
         <>
             <ProTable
                 columns={columns}
                 actionRef={actionRef}
                 cardBordered
                 request={async (params) => {
-
-                    const res = await getAllProductAPI()
+                    const res = await getAllProductAPI();
                     if (res.data) {
                         if (res.data) {
                             setDataProducts(res.data);
@@ -198,7 +226,10 @@ const ProductTable = () => {
 
                     return {
                         data: res.data.map((product) => {
-                            return { ...product, category_name: product.category.name }
+                            return {
+                                ...product,
+                                category_name: product.category.name,
+                            };
                         }),
                     };
                 }}
@@ -215,12 +246,11 @@ const ProductTable = () => {
                 }}
                 headerTitle="Table Product"
                 toolBarRender={() => [
-
                     <Button
                         key="button"
                         icon={<ExportOutlined />}
                         onClick={() => {
-                            handleExport()
+                            handleExport();
                         }}
                         type="primary"
                     >
@@ -230,7 +260,7 @@ const ProductTable = () => {
                         key="button"
                         icon={<PlusOutlined />}
                         onClick={() => {
-                            setIsOpenModalCreateProduct(true)
+                            setIsOpenModalCreateProduct(true);
                         }}
                         type="primary"
                     >
@@ -239,15 +269,16 @@ const ProductTable = () => {
                 ]}
             />
             <ViewProductDetail
-                dataProductDetail={dataProductDetail}
-                setDataProductDetail={setDataProductDetail}
                 isOpenProductDetail={isOpenProductDetail}
                 setIsOpenProductDetail={setIsOpenProductDetail}
+                dataProductDetail={dataProductDetail}
+                setDataProductDetail={setDataProductDetail}
             />
             <CreateProduct
                 isOpenModalCreateProduct={isOpenModalCreateProduct}
                 setIsOpenModalCreateProduct={setIsOpenModalCreateProduct}
-                actionRef={actionRef} />
+                actionRef={actionRef}
+            />
             <UpdateProduct
                 actionRef={actionRef}
                 setDataUpdateProduct={setDataUpdateProduct}
@@ -256,7 +287,7 @@ const ProductTable = () => {
                 isOpenModalUpdateProduct={isOpenModalUpdateProduct}
             />
         </>
-    )
-}
+    );
+};
 
-export default ProductTable
+export default ProductTable;

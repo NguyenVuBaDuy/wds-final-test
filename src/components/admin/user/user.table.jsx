@@ -213,7 +213,6 @@ const UserTable = () => {
 
     const handleDelete = async (id) => {
         const res = await deleteUserAPI(id);
-        console.log(res);
         if (res.statusCode === 200) {
             message.success("Successfully Deleted User");
             actionRef.current?.reload();
