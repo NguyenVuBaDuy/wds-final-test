@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Menu, Badge, Avatar, Space, Dropdown } from "antd";
 import {
     ShoppingCartOutlined,
@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { doLogoutAction } from "../../../../redux/profile/profileSlice";
 import { FaArrowRight } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
-
+import logo from "../../../../assets/img/logo.png";
 const CheckLogin = () => {
     const navigate = useNavigate();
     const user = useSelector((state) => state.profile.user);
@@ -60,7 +60,6 @@ const CheckLogin = () => {
                 </div>
             ),
         },
-
         {
             key: "2",
             label: (
@@ -159,7 +158,7 @@ const AppHeader = () => {
             <div className="container">
                 <div className="header-top">
                     <div className="logo">
-                        <img src="" alt="logo" className="logo__img" />
+                        <img src={logo} alt="logo" className="logo__img" />
                     </div>
                     <nav className="navbar">
                         <ul className="navbar__list">
