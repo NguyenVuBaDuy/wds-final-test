@@ -13,6 +13,7 @@ import {
     Button,
     Radio,
     Rate,
+    InputNumber,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
@@ -37,6 +38,8 @@ const Home = () => {
     const [selectedRating, setSelectedRating] = useState(null);
     const [selectedPriceRange, setSelectedPriceRange] = useState([0, 100]);
     const [selectedSizes, setSelectedSizes] = useState([]);
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(100);
     const [sortBy, setSortBy] = useState("default");
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -128,6 +131,8 @@ const Home = () => {
         setSelectedRating(null);
         setSelectedPriceRange([0, 100]);
         setSelectedSizes([]);
+        setMinPrice(0);
+        setMaxPrice(100);
         setSortBy("default");
         setFilteredProducts(products);
     };
@@ -138,6 +143,10 @@ const Home = () => {
 
     const handleSortChange = (value) => {
         setSortBy(value);
+    };
+
+    const handlePriceInputChange = () => {
+        setSelectedPriceRange([minPrice, maxPrice]);
     };
 
     return (
@@ -177,14 +186,52 @@ const Home = () => {
                                 </Radio.Group>
                             </Panel>
                             <Panel header="Price" key="2">
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "8px",
+                                        marginBottom: "8px",
+                                    }}
+                                >
+                                    <span>From:</span>
+                                    <InputNumber
+                                        min={0}
+                                        max={100}
+                                        value={selectedPriceRange[0]}
+                                        onChange={(value) => {
+                                            const newRange = [
+                                                value || 0,
+                                                selectedPriceRange[1],
+                                            ];
+                                            setSelectedPriceRange(newRange);
+                                        }}
+                                    />
+                                    <span>To:</span>
+                                    <InputNumber
+                                        min={0}
+                                        max={100}
+                                        value={selectedPriceRange[1]}
+                                        onChange={(value) => {
+                                            const newRange = [
+                                                selectedPriceRange[0],
+                                                value || 100,
+                                            ];
+                                            setSelectedPriceRange(newRange);
+                                        }}
+                                    />
+                                </div>
                                 <Slider
                                     range
                                     min={0}
                                     max={100}
                                     value={selectedPriceRange}
-                                    onChange={setSelectedPriceRange}
+                                    onChange={(value) =>
+                                        setSelectedPriceRange(value)
+                                    }
                                 />
                             </Panel>
+
                             <Panel header="Size" key="3">
                                 <Checkbox.Group
                                     value={selectedSizes}
