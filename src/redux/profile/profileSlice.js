@@ -36,11 +36,11 @@ const profileSlice = createSlice({
             state.tempAvatar = action.payload
         },
         doChangeAvatar: (state, action) => {
-
+            state.user.avatar_url = action.payload
         }
     },
 });
 
-export const { doGetProfileAction, doLogoutAction, doUpdateUserAction, doSetTempAvatarAction } = profileSlice.actions;
+export const { doGetProfileAction, doLogoutAction, doUpdateUserAction, doSetTempAvatarAction, doChangeAvatar } = profileSlice.actions;
 
 export default profileSlice.reducer;

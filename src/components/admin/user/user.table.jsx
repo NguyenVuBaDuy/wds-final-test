@@ -124,7 +124,7 @@ const UserTable = () => {
                                 <SaveOutlined
                                     style={{ cursor: "pointer", color: "blue" }}
                                     onClick={async () => {
-                                        handleSave(record.id);
+                                        handleSave(record.id, record.avatar_url);
                                     }}
                                 />
                                 <CloseOutlined
@@ -184,9 +184,9 @@ const UserTable = () => {
         }
     };
 
-    const handleSave = async (id) => {
+    const handleSave = async (id, avatar_url) => {
         if (dataUpdate) {
-            const res = await updateUserAPI(id, dataUpdate.name, dataUpdate.phone_number)
+            const res = await updateUserAPI(id, dataUpdate.name, dataUpdate.phone_number, avatar_url)
             if (res.data) {
                 message.success("Update User Successfully")
                 actionRef.current?.reload()
