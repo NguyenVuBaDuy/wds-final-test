@@ -30,7 +30,7 @@ const { Search } = Input;
 const { Panel } = Collapse;
 
 const Home = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [current, setCurrent] = useState(1);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -123,7 +123,7 @@ const Home = () => {
     ]);
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
+        setCurrent(page);
     };
 
     const handleClearFilters = () => {
@@ -306,7 +306,7 @@ const Home = () => {
                             <Col span={6}>
                                 <Search
                                     placeholder="Search"
-                                    onSearch={() => {}}
+                                    onSearch={() => { }}
                                     style={{ width: 250, marginBottom: "16px" }}
                                 />
                             </Col>
@@ -332,7 +332,7 @@ const Home = () => {
 
                         <Row gutter={[16, 16]}>
                             {filteredProducts
-                                .slice((currentPage - 1) * 8, currentPage * 8)
+                                .slice((current - 1) * 8, current * 8)
                                 .map((product, index) => (
                                     <Col
                                         span={6}
@@ -396,7 +396,7 @@ const Home = () => {
                         </Row>
 
                         <Pagination
-                            current={currentPage}
+                            current={current}
                             total={filteredProducts.length}
                             pageSize={8}
                             onChange={handlePageChange}

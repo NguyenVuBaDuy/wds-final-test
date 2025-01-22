@@ -127,7 +127,7 @@ const History = () => {
                             margin: "10px 0",
                         }}
                     >
-                        <span>Subtotal (items):</span>
+                        <span>Total Orders:</span>
                         <span>{orders.length}</span>
                     </p>
                     <p

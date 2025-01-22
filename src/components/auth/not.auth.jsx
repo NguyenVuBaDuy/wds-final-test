@@ -16,12 +16,14 @@ const NotAuth = (props) => {
                 ?
                 <>{props.children}</>
                 :
-                <Result
-                    status="403"
-                    title="401"
-                    subTitle="Sorry, you need log in to access this page."
-                    extra={<Button type="primary" onClick={() => { navigate('/') }}><ArrowLeftOutlined />Go Back Home</Button>}
-                />
+                <div style={{ marginTop: "110px" }}>
+                    <Result
+                        status="403"
+                        title="401"
+                        subTitle="Sorry, you need log in to access this page."
+                        extra={<Button type="primary" onClick={() => { navigate('/') }}><ArrowLeftOutlined />Go Back Home</Button>}
+                    />
+                </div>
             }
         </>
     )

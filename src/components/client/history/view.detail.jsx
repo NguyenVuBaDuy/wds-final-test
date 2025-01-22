@@ -4,7 +4,6 @@ import moment from "moment";
 const ViewDetail = ({ setDataOrderDetail, setIsOpenViewOrderDetail, isOpenViewOrderDetail, dataOrderDetail }) => {
 
 
-
     return (
         <Drawer
             title="Product Detail"
@@ -34,12 +33,6 @@ const ViewDetail = ({ setDataOrderDetail, setIsOpenViewOrderDetail, isOpenViewOr
                         <Descriptions.Item label="Shipping Address" span={3}>
                             {dataOrderDetail.shipping_address}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Total Price" span={2}>
-                            ${dataOrderDetail.total_price}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Shipping Fee" span={2}>
-                            ${dataOrderDetail.shipping_fee}
-                        </Descriptions.Item>
                         <Descriptions.Item label="Order Detail" span={3}>
                             <>
                                 {dataOrderDetail.orderDetails.map((order, index) => {
@@ -61,6 +54,12 @@ const ViewDetail = ({ setDataOrderDetail, setIsOpenViewOrderDetail, isOpenViewOr
                                     <div>${dataOrderDetail.total_price}</div>
                                 </div>
                             </>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Shipping Fee" span={3}>
+                            ${dataOrderDetail.shipping_fee}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Total Price" span={3}>
+                            ${parseFloat(dataOrderDetail.total_price) + parseFloat(dataOrderDetail.shipping_fee)}.00
                         </Descriptions.Item>
                     </Descriptions>
                 </>
