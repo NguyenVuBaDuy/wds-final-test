@@ -48,11 +48,12 @@ export const createUserAPI = (name, email, phone_number, password) => {
     return axios.post(urlBackend, data);
 };
 
-export const updateUserAPI = (id, name, phone_number) => {
+export const updateUserAPI = (id, name, phone_number, avatar_url) => {
     const urlBackend = `/users/${id}`
     const data = {
         name,
-        phone_number
+        phone_number,
+        avatar_url
     }
     return axios.patch(urlBackend, data)
 }

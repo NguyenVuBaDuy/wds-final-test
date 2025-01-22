@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAPI, uploadProductImageAPI } from "../../../services/api.service";
-import { doSetTempAvatarAction, doUpdateUserAction } from "../../../redux/profile/profileSlice";
+import { doChangeAvatar, doSetTempAvatarAction, doUpdateUserAction } from "../../../redux/profile/profileSlice";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -41,15 +41,16 @@ const Profile = () => {
                 name: user.name,
                 phone_number: user.phone_number,
                 email: user.email,
-                id: user.id
+                id: user.id,
+                avatar_url: user.avatar_url
             });
             setAvatar(user.avatar_url); // Set initial avatar
         }
     }, []);
 
-    const handleSave = async ({ id, name, phone_number }) => {
+    const handleSave = async ({ id, name, phone_number, avatar_url }) => {
         if (id) {
-            const res = await updateUserAPI(id, name, phone_number)
+            const res = await updateUserAPI(id, name, phone_number, avatar_url)
             if (res.data) {
                 dispatch(doUpdateUserAction({ name, phone_number }))
                 message.success("Change Information Successfully")
@@ -89,7 +90,19 @@ const Profile = () => {
     }
 
     const handleChangeAvatar = async () => {
-
+        if (user.id) {
+            const res = await updateUserAPI(user.id, user.name, user.phone_number, tempAvatar)
+            if (res.data) {
+                dispatch(doChangeAvatar(tempAvatar))
+                message.success("Update Avatar Successfully")
+                localStorage.removeItem('access_token')
+            } else {
+                notification.error({
+                    message: "Update Avatar Failed",
+                    description: res.message
+                })
+            }
+        }
     }
 
     return (
@@ -117,6 +130,13 @@ const Profile = () => {
                                         hidden
                                     >
                                     </Form.Item>
+                                    <Form.Item
+                                        name="avatar_url"
+                                        hidden
+                                    >
+
+                                    </Form.Item>
+
                                     <Form.Item
                                         label="Name"
                                         name="name"
@@ -226,7 +246,7 @@ const Profile = () => {
                                     </div>
                                 </div>
                                 {tempAvatar &&
-                                    <Button type="primary">
+                                    <Button type="primary" onClick={handleChangeAvatar}>
                                         Save
                                     </Button>}
 
