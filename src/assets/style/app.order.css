@@ -46,9 +46,11 @@
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 4px;
-
+    display: flex;
     width: 30px;
     height: 30px;
+    justify-content: center;
+    align-items: center;
 }
 
 .order__update {
@@ -86,18 +88,18 @@
     border: none;
 }
 
-.ant-table-thead > tr > th {
+.ant-table-thead>tr>th {
     background-color: #f6f6f6;
     font-weight: bold;
     text-align: center;
 }
 
-.ant-table-tbody > tr > td {
+.ant-table-tbody>tr>td {
     text-align: center;
     vertical-align: middle;
 }
 
-.ant-table-tbody > tr > td .order__item {
+.ant-table-tbody>tr>td .order__item {
     justify-content: space-around;
 }
 
@@ -155,8 +157,10 @@ th.custom-align-center {
 
 .order__address {
     display: flex;
-    flex-direction: column; /* Đặt các mục thành hàng dọc */
-    gap: 10px; /* Khoảng cách giữa các phần tử */
+    flex-direction: column;
+    /* Đặt các mục thành hàng dọc */
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
     margin-top: 10px;
 }
 

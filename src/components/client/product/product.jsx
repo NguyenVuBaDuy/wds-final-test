@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Button, Rate, InputNumber, Avatar, Space, Tabs } from "antd";
 import { getProductByIdAPI } from "../../../services/api.service";
 import ProductNotification from "./notification";
+import { useDispatch } from "react-redux";
+import { doAddToCartAction } from "../../../redux/order/orderSlice";
 
 const { TabPane } = Tabs;
 
@@ -15,7 +17,8 @@ const Product = () => {
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const [isNotificationVisible, setNotificationVisible] = useState(false);
+    const [isNotificationVisible, setNotificationVisible] = useState(false)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -36,7 +39,8 @@ const Product = () => {
     }, [id]);
 
     const handleAddToCart = () => {
-        setNotificationVisible(true);
+        setNotificationVisible(true)
+        dispatch(doAddToCartAction({ quantity: quantity, size: selectedSize, color: selectedColor, detail: product }))
     };
 
     if (loading) return <p>Loading...</p>;
@@ -171,12 +175,16 @@ const Product = () => {
                                 max={product.stock_quantity}
                                 value={quantity}
                                 onChange={(value) => setQuantity(value)}
+                                onBlur={() => {
+                                    if (!quantity) setQuantity(1)
+                                }}
                                 style={{
                                     marginLeft: "10px",
                                     width: "100px",
                                     fontSize: "16px",
                                 }}
                             />
+                            <span style={{ marginLeft: "20px", fontSize: "14px", color: "#CCC" }}>{product.stock_quantity} available</span>
                         </div>
                     </div>
 
