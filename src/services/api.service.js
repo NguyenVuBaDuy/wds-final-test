@@ -156,3 +156,17 @@ export const getProductByIdAPI = (id) => {
     return axios.get(urlBackend);
 };
 
+export const createOrderAPI = (total_price, shipping_address, shipping_fee, user_id, code, orderDetails) => {
+    const urlBackend = `/orders`
+    const data = {
+        total_price,
+        shipping_address,
+        shipping_fee,
+        user_id,
+        ...(code != "" ? { code } : {}),
+        orderDetails
+    };
+    console.log(data)
+    return axios.post(urlBackend, data)
+
+}

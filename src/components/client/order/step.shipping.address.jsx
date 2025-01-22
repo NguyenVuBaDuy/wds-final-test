@@ -61,7 +61,7 @@ const vietNamData = [
 ];
 
 
-const StepShippingAddress = ({ form, next, setHomeAddress }) => {
+const StepShippingAddress = ({ form, next, setShippingAddress }) => {
     const cart = useSelector(state => state.order.cart)
 
     const [selectedProvince, setSelectedProvince] = useState(null)
@@ -78,7 +78,7 @@ const StepShippingAddress = ({ form, next, setHomeAddress }) => {
     const onFinish = (values) => {
         const { country, province, city, address } = values
         const yourAddress = `${address}, ${city}, ${province}, ${country}`
-        setHomeAddress(yourAddress)
+        setShippingAddress(yourAddress)
         next()
     };
 

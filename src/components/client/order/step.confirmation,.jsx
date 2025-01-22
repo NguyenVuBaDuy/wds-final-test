@@ -1,18 +1,44 @@
-import { Button, Input, message, Table } from "antd";
+import { Button, Input, message, notification, Table } from "antd";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrderAPI } from "../../../services/api.service";
+import { doClearCartAction } from "../../../redux/order/orderSlice";
 
-const StepConfirmation = ({ totalPrice, next }) => {
+const StepConfirmation = ({ totalPrice, next, shippingAddress, shippingFee }) => {
 
     const [coupon, setCoupon] = useState("")
     const cart = useSelector(state => state.order.cart)
+    const user_id = useSelector(state => state.profile.user.id)
+    const dispatch = useDispatch()
 
     const handleApplyCoupon = () => {
-        // console.log("Coupon Code:", coupon)
+        console.log("Coupon Code:", coupon)
     };
 
     const handleCheckout = async () => {
-        next()
+        const shipping_address = shippingAddress
+        const shipping_fee = shippingFee
+        const code = coupon
+        const orderDetails = cart.map(item => {
+            return {
+                quantity: item.quantity,
+                size: item.size,
+                color: item.color,
+                product_id: item.detail.id
+            }
+        })
+        const res = await createOrderAPI(totalPrice, shipping_address, shipping_fee, user_id, code, orderDetails)
+        if (res.data) {
+            message.success("Order Successfully")
+            dispatch(doClearCartAction())
+            next()
+        } else {
+            notification.error({
+                message: "Order Failed",
+                description: res.message
+            })
+        }
+
     }
 
     const columns = [
@@ -99,7 +125,6 @@ const StepConfirmation = ({ totalPrice, next }) => {
         },
     ];
 
-    const shippingFee = 5
 
     return (
         <>

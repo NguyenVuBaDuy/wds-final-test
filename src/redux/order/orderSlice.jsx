@@ -28,10 +28,19 @@ const orderSlice = createSlice({
             if (index > -1) {
                 newCart[index] = action.payload
             }
+        },
+        doDeleteProductInCartAction: (state, action) => {
+            const { id, color, size } = action.payload
+            let newCart = state.cart
+            newCart = newCart.filter(item => item.id != id && item.color != color && item.size != size)
+            state.cart = newCart
+        },
+        doClearCartAction: (state) => {
+            state.cart = []
         }
     },
 });
 
-export const { doAddToCartAction, doUpdateQuantityAction } = orderSlice.actions;
+export const { doAddToCartAction, doUpdateQuantityAction, doClearCartAction, doDeleteProductInCartAction } = orderSlice.actions;
 
 export default orderSlice.reducer;

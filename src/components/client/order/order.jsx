@@ -14,6 +14,9 @@ import StepSuccess from "./step.success";
 
 const { Step } = Steps;
 
+const shippingFee = 5
+
+
 const Order = () => {
     const navigate = useNavigate();
     const [current, setCurrent] = useState(0)
@@ -22,7 +25,7 @@ const Order = () => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.order.cart)
     const [form] = Form.useForm()
-    const [homeAddress, setHomeAddress] = useState('')
+    const [shippingAddress, setShippingAddress] = useState('')
 
     useEffect(() => {
 
@@ -54,9 +57,9 @@ const Order = () => {
 
         <StepCart totalPrice={totalPrice} items={items} />,
 
-        <StepShippingAddress form={form} next={next} setHomeAddress={setHomeAddress} />,
+        <StepShippingAddress form={form} next={next} setShippingAddress={setShippingAddress} />,
 
-        <StepConfirmation totalPrice={totalPrice} next={next} />,
+        <StepConfirmation totalPrice={totalPrice} next={next} shippingAddress={shippingAddress} shippingFee={shippingFee} />,
 
         <StepSuccess />
     ];
@@ -73,7 +76,7 @@ const Order = () => {
                 <div className="steps-content">{stepsContent[current]}</div>
                 <div style={{ marginTop: "20px" }} className="steps-action">
 
-                    {current === 0 &&
+                    {current === 0 && cart.length > 0 &&
 
                         <>
                             <Button className="order__next-btn" onClick={next}>
@@ -108,7 +111,7 @@ const Order = () => {
                         </>}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

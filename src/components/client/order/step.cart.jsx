@@ -1,19 +1,21 @@
 import { Button, Input, Table } from "antd"
 import { useDispatch, useSelector } from "react-redux";
-import { doUpdateQuantityAction } from "../../../redux/order/orderSlice";
+import { doDeleteProductInCartAction, doUpdateQuantityAction } from "../../../redux/order/orderSlice";
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const StepCart = ({ totalPrice, items }) => {
 
     const cart = useSelector(state => state.order.cart)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const columns = [
         {
             title: "",
             dataIndex: "delete",
             key: "delete",
-            render: () => (
-                <div className="order__delete-icon">
+            render: (text, record) => (
+                <div className="order__delete-icon" onClick={() => { dispatch(doDeleteProductInCartAction(record)) }}>
                     <DeleteOutlined />
                 </div>
             ),
@@ -124,19 +126,20 @@ const StepCart = ({ totalPrice, items }) => {
                 bordered
             />
 
-            <section className="order__summary" style={{ marginTop: "30px" }}>
-                <h2 className="order__summary-title">Order Summary</h2>
-                <div className="order__summary-item">
-                    <span>Items</span>
-                    <span>{items}</span>
-                </div>
-                <div className="order__summary-total">
-                    <span>Total</span>
-                    <span>${totalPrice.toLocaleString()}.00</span>
-                </div>
-            </section>
+            {cart.length > 0 &&
+                <section className="order__summary" style={{ marginTop: "30px" }}>
+                    <h2 className="order__summary-title">Order Summary</h2>
+                    <div className="order__summary-item">
+                        <span>Items</span>
+                        <span>{items}</span>
+                    </div>
+                    <div className="order__summary-total">
+                        <span>Total</span>
+                        <span>${totalPrice.toLocaleString()}.00</span>
+                    </div>
+                </section>}
 
-            <Button className="order__update">Update Cart</Button>
+            <Button className="order__update" onClick={() => { navigate('/') }}>Why don't you add the product to the cart</Button>
 
         </section>
     )
