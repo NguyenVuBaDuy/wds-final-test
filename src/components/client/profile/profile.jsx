@@ -19,7 +19,9 @@ import {
     MessageOutlined,
     UploadOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserAPI, uploadProductImageAPI } from "../../../services/api.service";
+import { doSetTempAvatarAction, doUpdateUserAction } from "../../../redux/profile/profileSlice";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -28,19 +30,67 @@ const Profile = () => {
     const [form] = Form.useForm();
     const [isEditing, setIsEditing] = useState(false);
     const [avatar, setAvatar] = useState(null); // Avatar URL
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const user = useSelector((state) => state.profile.user);
+    const user = useSelector((state) => state.profile.user)
+    const tempAvatar = useSelector(state => state.profile.tempAvatar)
     useEffect(() => {
         if (user) {
             form.setFieldsValue({
                 name: user.name,
-                phone: user.phone_number,
+                phone_number: user.phone_number,
                 email: user.email,
+                id: user.id
             });
             setAvatar(user.avatar_url); // Set initial avatar
         }
     }, []);
+
+    const handleSave = async ({ id, name, phone_number }) => {
+        if (id) {
+            const res = await updateUserAPI(id, name, phone_number)
+            if (res.data) {
+                dispatch(doUpdateUserAction({ name, phone_number }))
+                message.success("Change Information Successfully")
+                localStorage.removeItem('access_token')
+            } else {
+                notification.error({
+                    message: "Change Information Failed",
+                    description: res.message
+                })
+            }
+        }
+    }
+
+    const handleUploadAvatar = async (values) => {
+        const { file, onSuccess, onError } = values
+        const res = await uploadProductImageAPI(file)
+        if (res) {
+            dispatch(doSetTempAvatarAction(res.data.url))
+            onSuccess("ok")
+        } else onError("Error")
+    }
+
+    const props = {
+        name: 'file',
+        maxCount: 1,
+        multiple: false,
+        showUploadList: false,
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+            }
+            if (info.file.status === 'done') {
+            } else if (info.file.status === 'error') {
+                message.error(`Avatar upload failed.`);
+            }
+        },
+        customRequest: handleUploadAvatar,
+    }
+
+    const handleChangeAvatar = async () => {
+
+    }
 
     return (
         <div className="container">
@@ -55,13 +105,18 @@ const Profile = () => {
                         style={{ boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}
                     >
                         <Row gutter={32}>
-                            {/* Left Column: User Information Form */}
                             <Col span={16}>
                                 <Form
                                     form={form}
                                     layout="vertical"
                                     style={{ maxWidth: "100%" }}
+                                    onFinish={handleSave}
                                 >
+                                    <Form.Item
+                                        name="id"
+                                        hidden
+                                    >
+                                    </Form.Item>
                                     <Form.Item
                                         label="Name"
                                         name="name"
@@ -69,7 +124,7 @@ const Profile = () => {
                                             {
                                                 required: true,
                                                 message:
-                                                    "Please input your name!",
+                                                    "Name cannot be left blank!",
                                             },
                                         ]}
                                     >
@@ -77,12 +132,12 @@ const Profile = () => {
                                     </Form.Item>
                                     <Form.Item
                                         label="Phone Number"
-                                        name="phone"
+                                        name="phone_number"
                                         rules={[
                                             {
                                                 required: true,
                                                 message:
-                                                    "Please input your phone number!",
+                                                    "Phone number cannot be left blank!",
                                             },
                                         ]}
                                     >
@@ -91,16 +146,9 @@ const Profile = () => {
                                     <Form.Item
                                         label="Email"
                                         name="email"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                type: "email",
-                                                message:
-                                                    "Please input a valid email!",
-                                            },
-                                        ]}
+
                                     >
-                                        <Input disabled={!isEditing} />
+                                        <Input disabled={true} />
                                     </Form.Item>
                                 </Form>
                                 {isEditing ? (
@@ -110,7 +158,7 @@ const Profile = () => {
                                     >
                                         <Button
                                             type="primary"
-                                            onClick={handleSave}
+                                            onClick={() => { form.submit() }}
                                             style={{
                                                 marginRight: "10px",
                                                 width: "100px",
@@ -153,7 +201,7 @@ const Profile = () => {
                                 <div style={{ marginBottom: "20px" }}>
                                     <Avatar
                                         size={120}
-                                        src={avatar}
+                                        src={tempAvatar || avatar}
                                         style={{
                                             backgroundColor: "#87d068",
                                             marginBottom: "10px",
@@ -166,7 +214,7 @@ const Profile = () => {
                                         >
                                             {user?.name || "User Name"}
                                         </Title>
-                                        <Upload >
+                                        <Upload {...props}>
                                             <Button
                                                 icon={<EditOutlined />}
                                                 type="link"
@@ -174,8 +222,14 @@ const Profile = () => {
                                                 Change Avatar
                                             </Button>
                                         </Upload>
+
                                     </div>
                                 </div>
+                                {tempAvatar &&
+                                    <Button type="primary">
+                                        Save
+                                    </Button>}
+
                                 <Button
                                     type="link"
                                     style={{
