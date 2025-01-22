@@ -12,26 +12,17 @@ import {
     Collapse,
     Button,
     Radio,
+    Rate,
 } from "antd";
-import { StarOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { getProfileAPI } from "../../../services/api.service";
+import { getProfileAPI, getAllProductAPI } from "../../../services/api.service";
 import { useDispatch } from "react-redux";
 import { doGetProfileAction } from "../../../redux/profile/profileSlice";
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 const { Option } = Select;
 const { Search } = Input;
 const { Panel } = Collapse;
-
-const products = new Array(20).fill(null).map((_, index) => ({
-    id: index + 1,
-    name: "VANS",
-    rating: 4.2,
-    price: 200,
-    size: 36,
-    brand: "Vans",
-}));
 
 const brands = [
     { name: "Adidas", logo: "src/assets/img/product-1.png" },
@@ -47,10 +38,13 @@ const brands = [
 
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [selectedRating, setSelectedRating] = useState(null);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([20, 50]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 100]);
     const [selectedSizes, setSelectedSizes] = useState([]);
+    const [sortBy, setSortBy] = useState("default");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -61,8 +55,17 @@ const Home = () => {
         }
     };
 
+    const fetchProducts = async () => {
+        const res = await getAllProductAPI();
+        if (res.data) {
+            setProducts(res.data);
+            setFilteredProducts(res.data);
+        }
+    };
+
     useEffect(() => {
         getProfile();
+        fetchProducts();
     }, []);
 
     const handlePageChange = (page) => {
@@ -72,21 +75,59 @@ const Home = () => {
     const handleClearFilters = () => {
         setSelectedBrand(null);
         setSelectedRating(null);
-        setSelectedPriceRange([20, 50]);
+        setSelectedPriceRange([0, 100]);
         setSelectedSizes([]);
+        setSortBy("default");
+        setFilteredProducts(products);
+    };
 
-        const checkboxes = document.querySelectorAll(".ant-checkbox-input");
-        checkboxes.forEach((checkbox) => (checkbox.checked = false));
+    const handleApplyFilters = () => {
+        let filtered = [...products];
 
-        const slider = document.querySelector(".ant-slider");
-        if (slider) {
-            const rangeSlider = slider.querySelector(".ant-slider-rail");
-            rangeSlider.style.left = "0%";
-            rangeSlider.style.right = "100%";
+        // Lọc theo thương hiệu
+        if (selectedBrand) {
+            filtered = filtered.filter(
+                (product) => product.brand === selectedBrand
+            );
         }
 
-        const radioGroup = document.querySelectorAll(".ant-radio-input");
-        radioGroup.forEach((radio) => (radio.checked = false));
+        // Lọc theo đánh giá
+        if (selectedRating !== null) {
+            filtered = filtered.filter(
+                (product) => product.rating >= selectedRating
+            );
+        }
+
+        // Lọc theo giá
+        filtered = filtered.filter(
+            (product) =>
+                product.price >= selectedPriceRange[0] &&
+                product.price <= selectedPriceRange[1]
+        );
+
+        // Lọc theo kích thước
+        if (selectedSizes.length > 0) {
+            filtered = filtered.filter((product) =>
+                selectedSizes.includes(product.size)
+            );
+        }
+
+        // Sắp xếp sản phẩm
+        if (sortBy === "price") {
+            filtered = filtered.sort((a, b) => a.price - b.price);
+        } else if (sortBy === "priceDesc") {
+            filtered = filtered.sort((a, b) => b.price - a.price);
+        } else if (sortBy === "recommended") {
+            filtered = filtered.sort(
+                (a, b) => b.ratings_number - a.ratings_number
+            );
+        }
+
+        setFilteredProducts(filtered);
+    };
+
+    const handleSortChange = (value) => {
+        setSortBy(value);
     };
 
     const handleBrandClick = (brandName) => {
@@ -104,20 +145,6 @@ const Home = () => {
                             borderRight: "1px solid #e0e0e0",
                         }}
                     >
-                        {selectedBrand && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "30px",
-                                    fontWeight: "bold",
-                                    fontSize: "30px",
-                                }}
-                            >
-                                {selectedBrand}
-                            </div>
-                        )}
                         <div
                             style={{
                                 display: "flex",
@@ -151,13 +178,14 @@ const Home = () => {
                                 >
                                     <Radio value={4}>4 star or up</Radio>
                                     <Radio value={3}>3 star or up</Radio>
+                                    <Radio value={2}>2 star or up</Radio>
                                 </Radio.Group>
                             </Panel>
                             <Panel header="Price" key="2">
                                 <Slider
                                     range
                                     min={0}
-                                    max={1000}
+                                    max={100}
                                     value={selectedPriceRange}
                                     onChange={setSelectedPriceRange}
                                 />
@@ -167,9 +195,11 @@ const Home = () => {
                                     value={selectedSizes}
                                     onChange={setSelectedSizes}
                                 >
-                                    <Checkbox value={36}>36</Checkbox>
-                                    <Checkbox value={37}>37</Checkbox>
-                                    <Checkbox value={38}>38</Checkbox>
+                                    {[...Array(16).keys()].map((i) => (
+                                        <Checkbox key={i} value={i + 30}>
+                                            {i + 30}
+                                        </Checkbox>
+                                    ))}
                                 </Checkbox.Group>
                             </Panel>
                         </Collapse>
@@ -177,6 +207,7 @@ const Home = () => {
                         <Button
                             type="primary"
                             style={{ width: "90%", marginTop: "16px" }}
+                            onClick={handleApplyFilters}
                         >
                             Apply Filters
                         </Button>
@@ -230,37 +261,58 @@ const Home = () => {
                         >
                             <Col span={6}>
                                 <Search
-                                    placeholder="Search..."
-                                    allowClear
-                                    style={{ width: "100%" }}
+                                    placeholder="Search"
+                                    onSearch={() => {}}
+                                    style={{
+                                        width: 250,
+                                        marginBottom: "16px",
+                                    }}
                                 />
                             </Col>
+
                             <Col span={6} style={{ textAlign: "right" }}>
                                 <Select
-                                    defaultValue="popular"
+                                    value={sortBy}
+                                    onChange={handleSortChange}
                                     style={{ width: 150 }}
                                 >
-                                    <Option value="popular">Popular</Option>
+                                    <Option value="default">Default</Option>
                                     <Option value="recommended">
                                         Recommended
                                     </Option>
-                                    <Option value="price">Price</Option>
-                                    <Option value="size">Size</Option>
+                                    <Option value="price">
+                                        Price Ascending
+                                    </Option>
+                                    <Option value="priceDesc">
+                                        Price Descending
+                                    </Option>
                                 </Select>
                             </Col>
                         </Row>
 
                         <Row gutter={[16, 16]}>
-                            {products
+                            {filteredProducts
                                 .slice((currentPage - 1) * 8, currentPage * 8)
                                 .map((product, index) => (
-                                    <Col span={6} key={index}>
+                                    <Col
+                                        span={6}
+                                        key={index}
+                                        style={{ height: "100%" }}
+                                    >
                                         <Card
                                             hoverable
                                             cover={
                                                 <img
-                                                    alt={product.name}
-                                                    src="src/assets/img/product-1.png"
+                                                    src={product.image_url}
+                                                    alt={
+                                                        product.name ||
+                                                        "Product Image"
+                                                    }
+                                                    style={{
+                                                        maxWidth: "100%",
+                                                        maxHeight: "200px",
+                                                        objectFit: "cover",
+                                                    }}
                                                 />
                                             }
                                             onClick={() =>
@@ -268,13 +320,32 @@ const Home = () => {
                                                     `/product/${product.id}`
                                                 )
                                             }
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "space-between",
+                                                height: "100%",
+                                                minHeight: "380px",
+                                            }}
                                         >
-                                            <h3>{product.name}</h3>
-                                            <p>
-                                                <StarOutlined />{" "}
-                                                {product.rating}
+                                            <h3
+                                                style={{
+                                                    flex: 1,
+                                                    marginBottom: "8px",
+                                                    marginTop: "16px",
+                                                }}
+                                            >
+                                                {product.name}
+                                            </h3>
+                                            <p style={{ marginBottom: "8px" }}>
+                                                <Rate
+                                                    disabled
+                                                    value={
+                                                        product.ratings_number
+                                                    }
+                                                />
                                             </p>
-                                            <p>
+                                            <p style={{ marginBottom: "16px" }}>
                                                 Price:{" "}
                                                 {product.price.toLocaleString()}{" "}
                                                 $
@@ -286,7 +357,7 @@ const Home = () => {
 
                         <Pagination
                             current={currentPage}
-                            total={products.length}
+                            total={filteredProducts.length}
                             pageSize={8}
                             onChange={handlePageChange}
                             style={{ textAlign: "center", marginTop: "16px" }}

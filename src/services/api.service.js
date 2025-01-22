@@ -149,3 +149,8 @@ export const deleteProductAPI = async (productId) => {
     const urlBackend = `/products/${productId}`;
     return axios.delete(urlBackend);
 };
+
+export const getProductByIdAPI = (id) => {
+    const urlBackend = `/products/${id}`;
+    return axios.get(urlBackend);
+};
