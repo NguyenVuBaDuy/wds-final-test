@@ -24,26 +24,28 @@ const CheckLogin = () => {
         (state) => state.profile.isAuthenticated
     );
     const dispatch = useDispatch();
+    const cart = useSelector(state => state.order.cart)
+
 
     const menuItems = [
         ...(user.role === "admin"
             ? [
-                  {
-                      key: "admin",
-                      label: (
-                          <div
-                              onClick={() => navigate("/admin")}
-                              style={{
-                                  cursor: "pointer",
-                                  width: "100%",
-                              }}
-                          >
-                              <RiAdminFill style={{ marginRight: "8px" }} />
-                              Admin DashBoard
-                          </div>
-                      ),
-                  },
-              ]
+                {
+                    key: "admin",
+                    label: (
+                        <div
+                            onClick={() => navigate("/admin")}
+                            style={{
+                                cursor: "pointer",
+                                width: "100%",
+                            }}
+                        >
+                            <RiAdminFill style={{ marginRight: "8px" }} />
+                            Admin DashBoard
+                        </div>
+                    ),
+                },
+            ]
             : []),
         {
             key: "1",
@@ -149,6 +151,8 @@ const CheckLogin = () => {
 const AppHeader = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const cart = useSelector(state => state.order.cart)
+
 
     const isHome = location.pathname === "/";
     const isCart = location.pathname === "/order";
@@ -159,7 +163,7 @@ const AppHeader = () => {
                 <div className="header-top">
                     <div className="logo">
                         <a href="#">
-                            <img src={logo} alt="logo" className="logo__img" />
+                            <img src={logo} alt="logo" className="logo__img" onClick={() => { navigate('/') }} />
                         </a>
                     </div>
                     <nav className="navbar">
@@ -167,9 +171,8 @@ const AppHeader = () => {
                             <li className="navbar__item">
                                 <a
                                     onClick={() => navigate("/")}
-                                    className={`navbar__link ${
-                                        isHome ? "navbar__link--active" : ""
-                                    }`}
+                                    className={`navbar__link ${isHome ? "navbar__link--active" : ""
+                                        }`}
                                     style={{
                                         textDecoration: isHome
                                             ? "underline"
@@ -183,9 +186,8 @@ const AppHeader = () => {
                             <li className="navbar__item">
                                 <a
                                     onClick={() => navigate("/order")}
-                                    className={`navbar__link ${
-                                        isCart ? "navbar__link--active" : ""
-                                    }`}
+                                    className={`navbar__link ${isCart ? "navbar__link--active" : ""
+                                        }`}
                                     style={{
                                         textDecoration: isCart
                                             ? "underline"
@@ -211,7 +213,7 @@ const AppHeader = () => {
                                         color: "#000",
                                     }}
                                 />
-                                <span className="cart-number">0</span>
+                                <span className="cart-number">{cart?.length}</span>
                             </a>
                         </div>
                         <CheckLogin />
