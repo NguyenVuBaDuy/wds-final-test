@@ -108,7 +108,6 @@ const Order = () => {
                         </>}
                 </div>
             </div>
-            <RelatedProducts />
         </div>
     );
 };

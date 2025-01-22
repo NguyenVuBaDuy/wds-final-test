@@ -158,7 +158,9 @@ const AppHeader = () => {
             <div className="container">
                 <div className="header-top">
                     <div className="logo">
-                        <img src={logo} alt="logo" className="logo__img" />
+                        <a href="#">
+                            <img src={logo} alt="logo" className="logo__img" />
+                        </a>
                     </div>
                     <nav className="navbar">
                         <ul className="navbar__list">

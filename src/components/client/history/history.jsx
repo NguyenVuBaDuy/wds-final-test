@@ -3,7 +3,6 @@ import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.history.css";
 import "../../../assets/style/global.css";
-import RelatedProducts from "../product/related-product";
 
 const History = () => {
     const navigate = useNavigate();
@@ -129,7 +128,6 @@ const History = () => {
                     </div>
                 </div>
             </div>
-            <RelatedProducts />
         </div>
     );
 };

@@ -2,7 +2,7 @@ import Product from "../../../components/client/product/product"
 
 const ProductPage = () => {
     return (
-        <div className="product-page">
+        <div style={{ marginTop: "110px" }} className="product-page">
             <Product />
         </div>
     )
