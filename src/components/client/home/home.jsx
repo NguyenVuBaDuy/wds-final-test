@@ -204,12 +204,14 @@ const Home = () => {
                         <div
                             style={{
                                 display: "flex",
+                                alignItems: "center",
                                 gap: "16px",
                                 overflowX: "auto",
                                 padding: "8px 0",
                                 marginBottom: "16px",
                             }}
                         >
+                            <strong>Category: </strong>
                             {categories.map((category, index) => (
                                 <div
                                     key={index}
