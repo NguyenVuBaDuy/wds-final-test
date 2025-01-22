@@ -31,8 +31,9 @@ const orderSlice = createSlice({
         },
         doDeleteProductInCartAction: (state, action) => {
             const { id, color, size } = action.payload
+            console.log(id, color, size)
             let newCart = state.cart
-            newCart = newCart.filter(item => item.id != id && item.color != color && item.size != size)
+            newCart = newCart.filter(item => item.id != id || item.color != color || item.size != size)
             state.cart = newCart
         },
         doClearCartAction: (state) => {
