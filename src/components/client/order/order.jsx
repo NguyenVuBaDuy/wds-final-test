@@ -4,7 +4,6 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../../../assets/style/app.order.css";
 import "../../../assets/style/global.css";
-import RelatedProducts from "../product/related-product";
 
 const { Option } = Select;
 const { Step } = Steps;
@@ -222,7 +221,6 @@ const Order = () => {
                     )}
                 </div>
             </div>
-            <RelatedProducts />
         </div>
     );
 };
