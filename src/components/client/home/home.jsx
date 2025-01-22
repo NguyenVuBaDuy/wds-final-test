@@ -30,10 +30,6 @@ const brands = [
     { name: "Vans", logo: "src/assets/img/product-1.png" },
     { name: "Type 3", logo: "src/assets/img/product-1.png" },
     { name: "Type 4", logo: "src/assets/img/product-1.png" },
-    { name: "Type 5", logo: "src/assets/img/product-1.png" },
-    { name: "Type 6", logo: "src/assets/img/product-1.png" },
-    { name: "Type 7", logo: "src/assets/img/product-1.png" },
-    { name: "Type 8", logo: "src/assets/img/product-1.png" },
 ];
 
 const Home = () => {
@@ -68,6 +64,61 @@ const Home = () => {
         fetchProducts();
     }, []);
 
+    const applyFilters = () => {
+        let filtered = [...products];
+
+        // Filter by brand
+        if (selectedBrand) {
+            filtered = filtered.filter(
+                (product) => product.code === selectedBrand
+            );
+        }
+
+        // Filter by rating
+        if (selectedRating !== null) {
+            filtered = filtered.filter(
+                (product) => product.ratings_number >= selectedRating
+            );
+        }
+
+        // Filter by price
+        filtered = filtered.filter(
+            (product) =>
+                product.price >= selectedPriceRange[0] &&
+                product.price <= selectedPriceRange[1]
+        );
+
+        // Filter by sizes
+        if (selectedSizes.length > 0) {
+            filtered = filtered.filter((product) =>
+                product.sizes.some((size) => selectedSizes.includes(size))
+            );
+        }
+
+        // Sort products
+        if (sortBy === "price") {
+            filtered = filtered.sort((a, b) => a.price - b.price);
+        } else if (sortBy === "priceDesc") {
+            filtered = filtered.sort((a, b) => b.price - a.price);
+        } else if (sortBy === "recommended") {
+            filtered = filtered.sort(
+                (a, b) => (b.ratings_number || 0) - (a.ratings_number || 0)
+            );
+        }
+
+        setFilteredProducts(filtered);
+    };
+
+    useEffect(() => {
+        applyFilters();
+    }, [
+        selectedBrand,
+        selectedRating,
+        selectedPriceRange,
+        selectedSizes,
+        sortBy,
+    ]);
+
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
@@ -81,57 +132,12 @@ const Home = () => {
         setFilteredProducts(products);
     };
 
-    const handleApplyFilters = () => {
-        let filtered = [...products];
-
-        // Lọc theo thương hiệu
-        if (selectedBrand) {
-            filtered = filtered.filter(
-                (product) => product.brand === selectedBrand
-            );
-        }
-
-        // Lọc theo đánh giá
-        if (selectedRating !== null) {
-            filtered = filtered.filter(
-                (product) => product.rating >= selectedRating
-            );
-        }
-
-        // Lọc theo giá
-        filtered = filtered.filter(
-            (product) =>
-                product.price >= selectedPriceRange[0] &&
-                product.price <= selectedPriceRange[1]
-        );
-
-        // Lọc theo kích thước
-        if (selectedSizes.length > 0) {
-            filtered = filtered.filter((product) =>
-                selectedSizes.includes(product.size)
-            );
-        }
-
-        // Sắp xếp sản phẩm
-        if (sortBy === "price") {
-            filtered = filtered.sort((a, b) => a.price - b.price);
-        } else if (sortBy === "priceDesc") {
-            filtered = filtered.sort((a, b) => b.price - a.price);
-        } else if (sortBy === "recommended") {
-            filtered = filtered.sort(
-                (a, b) => b.ratings_number - a.ratings_number
-            );
-        }
-
-        setFilteredProducts(filtered);
+    const handleBrandClick = (brandName) => {
+        setSelectedBrand(brandName);
     };
 
     const handleSortChange = (value) => {
         setSortBy(value);
-    };
-
-    const handleBrandClick = (brandName) => {
-        setSelectedBrand(brandName);
     };
 
     return (
@@ -145,21 +151,10 @@ const Home = () => {
                             borderRight: "1px solid #e0e0e0",
                         }}
                     >
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <h3
-                                style={{
-                                    fontSize: "20px",
-                                    fontWeight: "600",
-                                }}
-                            >
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <h3 style={{ fontSize: "20px", fontWeight: "600" }}>
                                 Filters
                             </h3>
-
                             <Button
                                 type="link"
                                 style={{ marginLeft: "auto" }}
@@ -203,20 +198,11 @@ const Home = () => {
                                 </Checkbox.Group>
                             </Panel>
                         </Collapse>
-
-                        <Button
-                            type="primary"
-                            style={{ width: "90%", marginTop: "16px" }}
-                            onClick={handleApplyFilters}
-                        >
-                            Apply Filters
-                        </Button>
                     </Sider>
 
                     <Content style={{ padding: "0 16px", background: "#fff" }}>
                         <div
                             style={{
-                                background: "#fff",
                                 display: "flex",
                                 gap: "16px",
                                 overflowX: "auto",
@@ -263,13 +249,9 @@ const Home = () => {
                                 <Search
                                     placeholder="Search"
                                     onSearch={() => {}}
-                                    style={{
-                                        width: 250,
-                                        marginBottom: "16px",
-                                    }}
+                                    style={{ width: 250, marginBottom: "16px" }}
                                 />
                             </Col>
-
                             <Col span={6} style={{ textAlign: "right" }}>
                                 <Select
                                     value={sortBy}
