@@ -166,7 +166,6 @@ export const createOrderAPI = (total_price, shipping_address, shipping_fee, user
         ...(code != "" ? { code } : {}),
         orderDetails
     };
-    console.log(data)
     return axios.post(urlBackend, data)
 
 }
