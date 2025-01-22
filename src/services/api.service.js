@@ -154,3 +154,4 @@ export const getProductByIdAPI = (id) => {
     const urlBackend = `/products/${id}`;
     return axios.get(urlBackend);
 };
+

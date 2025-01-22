@@ -15,7 +15,11 @@ import {
     Rate,
 } from "antd";
 import { useNavigate } from "react-router-dom";
-import { getProfileAPI, getAllProductAPI } from "../../../services/api.service";
+import {
+    getProfileAPI,
+    getAllProductAPI,
+    getAllCategoriesAPI,
+} from "../../../services/api.service";
 import { useDispatch } from "react-redux";
 import { doGetProfileAction } from "../../../redux/profile/profileSlice";
 
@@ -24,19 +28,12 @@ const { Option } = Select;
 const { Search } = Input;
 const { Panel } = Collapse;
 
-const brands = [
-    { name: "Adidas", logo: "src/assets/img/product-1.png" },
-    { name: "Nike", logo: "src/assets/img/product-1.png" },
-    { name: "Vans", logo: "src/assets/img/product-1.png" },
-    { name: "Type 3", logo: "src/assets/img/product-1.png" },
-    { name: "Type 4", logo: "src/assets/img/product-1.png" },
-];
-
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [selectedBrand, setSelectedBrand] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedRating, setSelectedRating] = useState(null);
     const [selectedPriceRange, setSelectedPriceRange] = useState([0, 100]);
     const [selectedSizes, setSelectedSizes] = useState([]);
@@ -59,43 +56,46 @@ const Home = () => {
         }
     };
 
+    const fetchCategories = async () => {
+        const res = await getAllCategoriesAPI();
+        if (res.data) {
+            setCategories(res.data);
+        }
+    };
+
     useEffect(() => {
         getProfile();
         fetchProducts();
+        fetchCategories();
     }, []);
 
     const applyFilters = () => {
         let filtered = [...products];
 
-        // Filter by brand
-        if (selectedBrand) {
+        if (selectedCategory) {
             filtered = filtered.filter(
-                (product) => product.code === selectedBrand
+                (product) => product.category.name === selectedCategory
             );
         }
 
-        // Filter by rating
         if (selectedRating !== null) {
             filtered = filtered.filter(
                 (product) => product.ratings_number >= selectedRating
             );
         }
 
-        // Filter by price
         filtered = filtered.filter(
             (product) =>
                 product.price >= selectedPriceRange[0] &&
                 product.price <= selectedPriceRange[1]
         );
 
-        // Filter by sizes
         if (selectedSizes.length > 0) {
             filtered = filtered.filter((product) =>
                 product.sizes.some((size) => selectedSizes.includes(size))
             );
         }
 
-        // Sort products
         if (sortBy === "price") {
             filtered = filtered.sort((a, b) => a.price - b.price);
         } else if (sortBy === "priceDesc") {
@@ -112,7 +112,7 @@ const Home = () => {
     useEffect(() => {
         applyFilters();
     }, [
-        selectedBrand,
+        selectedCategory,
         selectedRating,
         selectedPriceRange,
         selectedSizes,
@@ -124,7 +124,7 @@ const Home = () => {
     };
 
     const handleClearFilters = () => {
-        setSelectedBrand(null);
+        setSelectedCategory(null);
         setSelectedRating(null);
         setSelectedPriceRange([0, 100]);
         setSelectedSizes([]);
@@ -132,8 +132,8 @@ const Home = () => {
         setFilteredProducts(products);
     };
 
-    const handleBrandClick = (brandName) => {
-        setSelectedBrand(brandName);
+    const handleCategoryClick = (categoryName) => {
+        setSelectedCategory(categoryName);
     };
 
     const handleSortChange = (value) => {
@@ -204,38 +204,49 @@ const Home = () => {
                         <div
                             style={{
                                 display: "flex",
+                                alignItems: "center",
                                 gap: "16px",
                                 overflowX: "auto",
                                 padding: "8px 0",
                                 marginBottom: "16px",
                             }}
                         >
-                            {brands.map((brand, index) => (
+                            <strong>Category: </strong>
+                            {categories.map((category, index) => (
                                 <div
                                     key={index}
                                     style={{
+                                        display: "inline-block",
                                         textAlign: "center",
                                         cursor: "pointer",
+                                        padding: "10px",
+                                        margin: "0 10px",
+                                        backgroundColor: "#f0f0f0",
+                                        borderRadius: "8px",
+                                        transition: "all 0.3s ease",
                                     }}
-                                    onClick={() => handleBrandClick(brand.name)}
+                                    onClick={() =>
+                                        handleCategoryClick(category.name)
+                                    }
+                                    onMouseEnter={(e) => {
+                                        e.target.style.backgroundColor =
+                                            "#1890ff";
+                                        e.target.style.color = "white";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.backgroundColor =
+                                            "#f0f0f0";
+                                        e.target.style.color = "#333";
+                                    }}
                                 >
-                                    <img
-                                        src={brand.logo}
-                                        alt={brand.name}
-                                        style={{
-                                            width: 50,
-                                            height: 50,
-                                            borderRadius: "50%",
-                                        }}
-                                    />
                                     <div
                                         style={{
-                                            fontSize: "12px",
-                                            marginTop: "8px",
+                                            fontSize: "14px",
                                             color: "#333",
+                                            fontWeight: "500",
                                         }}
                                     >
-                                        {brand.name}
+                                        {category.name}
                                     </div>
                                 </div>
                             ))}

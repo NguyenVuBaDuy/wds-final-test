@@ -41,9 +41,7 @@ const ViewProductDetail = (props) => {
                         </Descriptions.Item>
                         <Descriptions.Item label="Category" span={3}>
                             <Badge>
-                                {dataProductDetail.category?.name ||
-                                    dataProductDetail.category ||
-                                    "N/A"}
+                                {dataProductDetail.category?.name || "N/A"}
                             </Badge>
                         </Descriptions.Item>
                         <Descriptions.Item label="Created At" span={2}>

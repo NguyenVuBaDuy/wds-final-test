@@ -68,26 +68,60 @@ const Product = () => {
                 />
 
                 <div style={{ flex: 1 }}>
-                    <h1>{product.name}</h1>
-                    <p style={{ color: "#ff4d4f", fontSize: "22px" }}>
+                    <h1
+                        style={{
+                            fontSize: "28px",
+                            fontWeight: "600",
+                            marginBottom: "10px",
+                        }}
+                    >
+                        {product.name}
+                    </h1>
+                    <p
+                        style={{
+                            color: "#ff4d4f",
+                            fontSize: "22px",
+                            fontWeight: "500",
+                            marginBottom: "10px",
+                        }}
+                    >
                         ${product.price}
                     </p>
-                    <p>Brand: {product.brand || "N/A"}</p>
-                    <p>Product Code: {product.code || "N/A"}</p>
-                    <Rate disabled value={product.ratings_number} />
-                    <p style={{ marginTop: "15px" }}>{product.description}</p>
+                    <p
+                        style={{
+                            fontSize: "16px",
+                            color: "#888",
+                            marginBottom: "20px",
+                        }}
+                    >
+                        Brand: {product.code || "N/A"}
+                    </p>
+                    <Rate
+                        disabled
+                        value={product.ratings_number}
+                        style={{ marginBottom: "15px" }}
+                    />
+                    <p style={{ marginTop: "15px", fontSize: "16px" }}>
+                        {product.description}
+                    </p>
 
                     <div style={{ marginTop: "20px" }}>
                         <div>
                             <strong>Colors:</strong>
-                            <div style={{ display: "flex", gap: "10px" }}>
+                            <div
+                                style={{
+                                    marginTop: "10px",
+                                    display: "flex",
+                                    gap: "15px",
+                                }}
+                            >
                                 {product.colors.map((color) => (
                                     <div
                                         key={color}
                                         onClick={() => setSelectedColor(color)}
                                         style={{
-                                            width: "30px",
-                                            height: "30px",
+                                            width: "35px",
+                                            height: "35px",
                                             borderRadius: "50%",
                                             backgroundColor: color,
                                             border:
@@ -103,7 +137,13 @@ const Product = () => {
 
                         <div style={{ marginTop: "20px" }}>
                             <strong>Sizes:</strong>
-                            <div style={{ display: "flex", gap: "10px" }}>
+                            <div
+                                style={{
+                                    marginTop: "10px",
+                                    display: "flex",
+                                    gap: "10px",
+                                }}
+                            >
                                 {product.sizes.map((size) => (
                                     <Button
                                         key={size}
@@ -113,6 +153,10 @@ const Product = () => {
                                                 ? "primary"
                                                 : "default"
                                         }
+                                        style={{
+                                            padding: "8px 16px",
+                                            fontSize: "16px",
+                                        }}
                                     >
                                         {size}
                                     </Button>
@@ -127,7 +171,11 @@ const Product = () => {
                                 max={product.stock_quantity}
                                 value={quantity}
                                 onChange={(value) => setQuantity(value)}
-                                style={{ marginLeft: "10px" }}
+                                style={{
+                                    marginLeft: "10px",
+                                    width: "100px",
+                                    fontSize: "16px",
+                                }}
                             />
                         </div>
                     </div>
@@ -137,6 +185,8 @@ const Product = () => {
                         style={{
                             marginTop: "20px",
                             width: "100%",
+                            padding: "12px",
+                            fontSize: "18px",
                         }}
                         onClick={handleAddToCart}
                         disabled={!selectedSize || !selectedColor}
@@ -153,7 +203,9 @@ const Product = () => {
             <div style={{ marginTop: "40px" }}>
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Product Introduction" key="1">
-                        <p>{product.description}</p>
+                        <p style={{ fontSize: "16px", lineHeight: "1.6" }}>
+                            {product.description}
+                        </p>
                     </TabPane>
                     <TabPane tab="Reviews" key="2">
                         <p>Coming soon...</p>
