@@ -27,10 +27,20 @@ const profileSlice = createSlice({
             state.user = initialState.user
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
+        },
+        doUpdateUserAction: (state, action) => {
+            state.user.name = action.payload.name
+            state.user.phone_number = action.payload.phone_number
+        },
+        doSetTempAvatarAction: (state, action) => {
+            state.tempAvatar = action.payload
+        },
+        doChangeAvatar: (state, action) => {
+
         }
     },
 });
 
-export const { doGetProfileAction, doLogoutAction } = profileSlice.actions;
+export const { doGetProfileAction, doLogoutAction, doUpdateUserAction, doSetTempAvatarAction } = profileSlice.actions;
 
 export default profileSlice.reducer;
