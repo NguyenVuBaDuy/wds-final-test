@@ -2,7 +2,7 @@ import Order from "../../../components/client/order/order"
 
 const OrderPage = () => {
     return (
-        <div className="order-page">
+        <div style={{ marginTop: "110px" }} className="order-page">
             <Order />
         </div>
     )

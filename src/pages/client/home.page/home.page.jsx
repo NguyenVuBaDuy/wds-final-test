@@ -1,11 +1,11 @@
-import Home from "../../../components/client/home/home"
+import Home from "../../../components/client/home/home";
 
 const HomePage = () => {
     return (
-        <div className="home-page">
+        <div style={{ marginTop: "110px" }} className="home-page">
             <Home />
         </div>
-    )
-}
+    );
+};
 
-export default HomePage
+export default HomePage;

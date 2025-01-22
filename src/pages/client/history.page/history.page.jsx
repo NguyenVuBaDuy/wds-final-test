@@ -2,7 +2,7 @@ import History from "../../../components/client/history/history"
 
 const HistoryPage = () => {
     return (
-        <div className="history-page">
+        <div style={{ marginTop: "110px" }} className="history-page">
             <History />
         </div>
     )
