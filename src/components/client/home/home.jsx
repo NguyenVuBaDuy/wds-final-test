@@ -14,6 +14,7 @@ import {
     Radio,
     Rate,
     InputNumber,
+    notification,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
@@ -30,124 +31,53 @@ const { Search } = Input;
 const { Panel } = Collapse;
 
 const Home = () => {
-    const [current, setCurrent] = useState(1);
-    const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedRating, setSelectedRating] = useState(null);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 100]);
-    const [selectedSizes, setSelectedSizes] = useState([]);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(100);
-    const [sortBy, setSortBy] = useState("default");
+    const [current, setCurrent] = useState(1)
+    const [pageSize, setPageSize] = useState(5)
+    const [dataProducts, setDataProducts] = useState([])
+    const [filterPrice, setFilterPrice] = useState([])
+    const [filterSize, setFilterSize] = useState([])
+    const [filterRating, setFilterRating] = useState(0)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        getProfile()
+        getProductAPI()
+    }, [])
 
     const getProfile = async () => {
         const res = await getProfileAPI();
         if (res.data) {
             dispatch(doGetProfileAction(res.data));
         }
-    };
+    }
 
-    const fetchProducts = async () => {
-        const res = await getAllProductAPI();
+    const getProductAPI = async () => {
+        const res = await getAllProductAPI()
         if (res.data) {
-            setProducts(res.data);
-            setFilteredProducts(res.data);
+            setDataProducts(res.data)
+        } else {
+            notification.error({
+                message: "Failed",
+                description: res.message
+            })
         }
-    };
+    }
 
-    const fetchCategories = async () => {
-        const res = await getAllCategoriesAPI();
-        if (res.data) {
-            setCategories(res.data);
-        }
-    };
 
-    useEffect(() => {
-        getProfile();
-        fetchProducts();
-        fetchCategories();
-    }, []);
-
-    const applyFilters = () => {
-        let filtered = [...products];
-
-        if (selectedCategory) {
-            filtered = filtered.filter(
-                (product) => product.category.name === selectedCategory
-            );
-        }
-
-        if (selectedRating !== null) {
-            filtered = filtered.filter(
-                (product) => product.ratings_number >= selectedRating
-            );
-        }
-
-        filtered = filtered.filter(
-            (product) =>
-                product.price >= selectedPriceRange[0] &&
-                product.price <= selectedPriceRange[1]
-        );
-
-        if (selectedSizes.length > 0) {
-            filtered = filtered.filter((product) =>
-                product.sizes.some((size) => selectedSizes.includes(size))
-            );
-        }
-
-        if (sortBy === "price") {
-            filtered = filtered.sort((a, b) => a.price - b.price);
-        } else if (sortBy === "priceDesc") {
-            filtered = filtered.sort((a, b) => b.price - a.price);
-        } else if (sortBy === "recommended") {
-            filtered = filtered.sort(
-                (a, b) => (b.ratings_number || 0) - (a.ratings_number || 0)
-            );
-        }
-
-        setFilteredProducts(filtered);
-    };
-
-    useEffect(() => {
-        applyFilters();
-    }, [
-        selectedCategory,
-        selectedRating,
-        selectedPriceRange,
-        selectedSizes,
-        sortBy,
-    ]);
-
-    const handlePageChange = (page) => {
-        setCurrent(page);
-    };
+    const handlePagination = (page, pageSize) => {
+        setCurrent(page)
+        setPageSize(pageSize)
+    }
 
     const handleClearFilters = () => {
-        setSelectedCategory(null);
-        setSelectedRating(null);
-        setSelectedPriceRange([0, 100]);
-        setSelectedSizes([]);
-        setMinPrice(0);
-        setMaxPrice(100);
-        setSortBy("default");
-        setFilteredProducts(products);
-    };
+        setFilterPrice([])
+        setFilterSize([])
+        setFilterRating(0)
+        setCurrent(1)
+    }
 
-    const handleCategoryClick = (categoryName) => {
-        setSelectedCategory(categoryName);
-    };
-
-    const handleSortChange = (value) => {
-        setSortBy(value);
-    };
-
-    const handlePriceInputChange = () => {
-        setSelectedPriceRange([minPrice, maxPrice]);
-    };
 
     return (
         <div className="container">
@@ -175,9 +105,8 @@ const Home = () => {
                         <Collapse defaultActiveKey={[]} ghost>
                             <Panel header="Rating" key="1">
                                 <Radio.Group
-                                    value={selectedRating}
-                                    onChange={(e) =>
-                                        setSelectedRating(e.target.value)
+                                    // value={selectedRating}
+                                    onChange={(event) => { setFilterRating(event.target.value) }
                                     }
                                 >
                                     <Radio value={4}>4 star or up</Radio>
@@ -197,45 +126,40 @@ const Home = () => {
                                     <span>From:</span>
                                     <InputNumber
                                         min={0}
-                                        max={100}
-                                        value={selectedPriceRange[0]}
+                                        max={1000}
+                                        value={filterPrice[0]}
                                         onChange={(value) => {
-                                            const newRange = [
-                                                value || 0,
-                                                selectedPriceRange[1],
-                                            ];
-                                            setSelectedPriceRange(newRange);
+                                            setFilterPrice([value, filterPrice[1]])
                                         }}
                                     />
                                     <span>To:</span>
                                     <InputNumber
                                         min={0}
-                                        max={100}
-                                        value={selectedPriceRange[1]}
+                                        max={1000}
+                                        value={filterPrice[1]}
                                         onChange={(value) => {
-                                            const newRange = [
-                                                selectedPriceRange[0],
-                                                value || 100,
-                                            ];
-                                            setSelectedPriceRange(newRange);
+                                            setFilterPrice([filterPrice[0], value])
+
                                         }}
                                     />
                                 </div>
                                 <Slider
                                     range
                                     min={0}
-                                    max={100}
-                                    value={selectedPriceRange}
-                                    onChange={(value) =>
-                                        setSelectedPriceRange(value)
+                                    max={1000}
+                                    defaultValue={[0, 1000]}
+                                    onChange={(value) => {
+                                        setFilterPrice((value))
+                                    }
                                     }
                                 />
                             </Panel>
 
                             <Panel header="Size" key="3">
                                 <Checkbox.Group
-                                    value={selectedSizes}
-                                    onChange={setSelectedSizes}
+                                    onChange={(values) => {
+                                        setFilterSize(values)
+                                    }}
                                 >
                                     {[...Array(16).keys()].map((i) => (
                                         <Checkbox key={i} value={i + 30}>
@@ -248,57 +172,6 @@ const Home = () => {
                     </Sider>
 
                     <Content style={{ padding: "0 16px", background: "#fff" }}>
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "16px",
-                                overflowX: "auto",
-                                padding: "8px 0",
-                                marginBottom: "16px",
-                            }}
-                        >
-                            <strong>Category: </strong>
-                            {categories.map((category, index) => (
-                                <div
-                                    key={index}
-                                    style={{
-                                        display: "inline-block",
-                                        textAlign: "center",
-                                        cursor: "pointer",
-                                        padding: "10px",
-                                        margin: "0 10px",
-                                        backgroundColor: "#f0f0f0",
-                                        borderRadius: "8px",
-                                        transition: "all 0.3s ease",
-                                    }}
-                                    onClick={() =>
-                                        handleCategoryClick(category.name)
-                                    }
-                                    onMouseEnter={(e) => {
-                                        e.target.style.backgroundColor =
-                                            "#1890ff";
-                                        e.target.style.color = "white";
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.target.style.backgroundColor =
-                                            "#f0f0f0";
-                                        e.target.style.color = "#333";
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            fontSize: "14px",
-                                            color: "#333",
-                                            fontWeight: "500",
-                                        }}
-                                    >
-                                        {category.name}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
                         <Row
                             justify="space-between"
                             style={{ marginBottom: "16px" }}
@@ -312,8 +185,8 @@ const Home = () => {
                             </Col>
                             <Col span={6} style={{ textAlign: "right" }}>
                                 <Select
-                                    value={sortBy}
-                                    onChange={handleSortChange}
+                                    // value={sortBy}
+                                    // onChange={handleSortChange}
                                     style={{ width: 150 }}
                                 >
                                     <Option value="default">Default</Option>
@@ -331,75 +204,101 @@ const Home = () => {
                         </Row>
 
                         <Row gutter={[16, 16]}>
-                            {filteredProducts
-                                .slice((current - 1) * 8, current * 8)
-                                .map((product, index) => (
-                                    <Col
-                                        span={6}
-                                        key={index}
-                                        style={{ height: "100%" }}
-                                    >
-                                        <Card
-                                            hoverable
-                                            cover={
-                                                <img
-                                                    src={product.image_url}
-                                                    alt={
-                                                        product.name ||
-                                                        "Product Image"
-                                                    }
-                                                    style={{
-                                                        maxWidth: "100%",
-                                                        maxHeight: "200px",
-                                                        objectFit: "cover",
-                                                    }}
-                                                />
+                            {dataProducts
+                                .filter((product, index) => {
+                                    if (filterPrice.length === 0) return true
+                                    return product.price >= filterPrice[0]
+                                        && product.price <= filterPrice[1]
+
+                                })
+                                .filter((product, index) => {
+                                    if (filterSize.length === 0) return true
+                                    for (let i = 0; i < product.sizes.length; i++) {
+                                        for (let j = 0; j < filterSize; j++) {
+                                            if (product.sizes[i] === filterSize[j]) {
+                                                return true;
                                             }
-                                            onClick={() =>
-                                                navigate(
-                                                    `/product/${product.id}`
-                                                )
-                                            }
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                justifyContent: "space-between",
-                                                height: "100%",
-                                                minHeight: "380px",
-                                            }}
+                                        }
+                                    }
+                                    return false
+                                })
+                                .filter((product, index) => {
+                                    return product.ratings_number >= filterRating
+                                })
+                                .filter((product, index) => {
+                                    return index >= (current - 1) * pageSize
+                                        && index < ((current - 1) * pageSize) + pageSize
+
+                                })
+                                .map((product, index) => {
+                                    return (
+                                        <Col
+                                            span={6}
+                                            key={index}
+                                            style={{ height: "100%" }}
                                         >
-                                            <h3
+                                            <Card
+                                                hoverable
+                                                cover={
+                                                    <img
+                                                        src={product.image_url}
+                                                        alt={
+                                                            product.name ||
+                                                            "Product Image"
+                                                        }
+                                                        style={{
+                                                            maxWidth: "100%",
+                                                            maxHeight: "200px",
+                                                            objectFit: "cover",
+                                                        }}
+                                                    />
+                                                }
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/product/${product.id}`
+                                                    )
+                                                }
                                                 style={{
-                                                    flex: 1,
-                                                    marginBottom: "8px",
-                                                    marginTop: "16px",
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    justifyContent: "space-between",
+                                                    height: "100%",
+                                                    minHeight: "380px",
                                                 }}
                                             >
-                                                {product.name}
-                                            </h3>
-                                            <p style={{ marginBottom: "8px" }}>
-                                                <Rate
-                                                    disabled
-                                                    value={
-                                                        product.ratings_number
-                                                    }
-                                                />
-                                            </p>
-                                            <p style={{ marginBottom: "16px" }}>
-                                                Price:{" "}
-                                                {product.price.toLocaleString()}{" "}
-                                                $
-                                            </p>
-                                        </Card>
-                                    </Col>
-                                ))}
+                                                <h3
+                                                    style={{
+                                                        flex: 1,
+                                                        marginBottom: "8px",
+                                                        marginTop: "16px",
+                                                    }}
+                                                >
+                                                    {product.name}
+                                                </h3>
+                                                <p style={{ marginBottom: "8px" }}>
+                                                    <Rate
+                                                        disabled
+                                                        value={
+                                                            product.ratings_number
+                                                        }
+                                                    />
+                                                </p>
+                                                <p style={{ marginBottom: "16px" }}>
+                                                    Price:{" "}
+                                                    {product.price.toLocaleString()}{" "}
+                                                    $
+                                                </p>
+                                            </Card>
+                                        </Col>
+                                    )
+                                })}
                         </Row>
 
                         <Pagination
                             current={current}
-                            total={filteredProducts.length}
-                            pageSize={8}
-                            onChange={handlePageChange}
+                            pageSize={pageSize}
+                            total={dataProducts.length}
+                            onChange={handlePagination}
                             style={{ textAlign: "center", marginTop: "16px" }}
                         />
                     </Content>
