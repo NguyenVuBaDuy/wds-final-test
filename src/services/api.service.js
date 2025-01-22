@@ -170,3 +170,8 @@ export const createOrderAPI = (total_price, shipping_address, shipping_fee, user
     return axios.post(urlBackend, data)
 
 }
+
+export const getOrdersAPI = () => {
+    const urlBackend = "/orders";
+    return axios.get(urlBackend);
+};
