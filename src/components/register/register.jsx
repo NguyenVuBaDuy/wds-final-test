@@ -53,7 +53,7 @@ const Register = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter name!",
+                                        message: "Please enter your name!",
                                     },
                                 ]}
                             >
@@ -78,11 +78,14 @@ const Register = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter email!",
+                                        message: "Please enter your email!",
                                     },
                                     {
                                         type: "email",
-                                        message: "Email is incorrect format!",
+                                        message:
+                                            "Email is not in the correct format!",
+                                        pattern:
+                                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                     },
                                 ]}
                             >
@@ -108,6 +111,11 @@ const Register = () => {
                                     {
                                         required: true,
                                         message: "Please enter phone number!",
+                                    },
+                                    {
+                                        pattern: /^[0-9]{9,11}$/,
+                                        message:
+                                            "Phone number must be 9 to 11 digits!",
                                     },
                                 ]}
                             >

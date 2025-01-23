@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider } from "antd";
+import { Button, Divider, Empty } from "antd";
 import { useNavigate } from "react-router-dom";
 import { getOrdersAPI } from "../../../services/api.service";
 import moment from "moment";
@@ -14,7 +14,7 @@ const History = () => {
 
     const [dataOrderDetail, setDataOrderDetail] = useState(null);
     const [isOpenViewOrderDetail, setIsOpenViewOrderDetail] = useState(false);
-    const user_id = useSelector(state => state.profile.user.id)
+    const user_id = useSelector((state) => state.profile.user.id);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -138,7 +138,23 @@ const History = () => {
                             </div>
                         ))
                     ) : (
-                        <p>No orders available.</p>
+                        <Empty
+                            image="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+                            imageStyle={{
+                                height: 100,
+                                marginTop: "50px",
+                            }}
+                            description={
+                                <span
+                                    style={{
+                                        color: "#888",
+                                        fontSize: "16px",
+                                    }}
+                                >
+                                    Haven't bought anything yet but still looking at purchase history ???
+                                </span>
+                            }
+                        />
                     )}
                 </div>
 
