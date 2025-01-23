@@ -37,6 +37,7 @@ const Home = () => {
     const [filterPrice, setFilterPrice] = useState([])
     const [filterSize, setFilterSize] = useState([])
     const [filterRating, setFilterRating] = useState(0)
+    const [filterSort, setFilterSort] = useState('default')
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -185,11 +186,13 @@ const Home = () => {
                             </Col>
                             <Col span={6} style={{ textAlign: "right" }}>
                                 <Select
-                                    // value={sortBy}
-                                    // onChange={handleSortChange}
+                                    value={filterSort}
+                                    onChange={(values) => { setFilterSort(values) }}
                                     style={{ width: 150 }}
                                 >
-                                    <Option value="default">Default</Option>
+                                    <Option value="default">
+                                        Default
+                                    </Option>
                                     <Option value="recommended">
                                         Recommended
                                     </Option>
@@ -230,6 +233,19 @@ const Home = () => {
                                         && index < ((current - 1) * pageSize) + pageSize
 
                                 })
+                                .sort((a, b) => {
+                                    if (filterSort === "recommended") {
+                                        return b.ratings_number - a.ratings_number;
+                                    } else if (filterSort === "price") {
+                                        return a.price - b.price;
+                                    } else if (filterSort === "priceDesc") {
+                                        return b.price - a.price;
+                                    } else {
+                                        return 0;
+                                    }
+                                }
+
+                                )
                                 .map((product, index) => {
                                     return (
                                         <Col
