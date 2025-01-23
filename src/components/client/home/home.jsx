@@ -32,40 +32,39 @@ const { Search } = Input;
 const { Panel } = Collapse;
 
 const Home = () => {
-    const [current, setCurrent] = useState(1)
-    const [pageSize, setPageSize] = useState(12)
-    const [dataProducts, setDataProducts] = useState([])
-    const [filterPrice, setFilterPrice] = useState([])
-    const [filterSize, setFilterSize] = useState([])
-    const [filterRating, setFilterRating] = useState(0)
-    const [filterSort, setFilterSort] = useState('default')
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(12);
+    const [dataProducts, setDataProducts] = useState([]);
+    const [filterPrice, setFilterPrice] = useState([]);
+    const [filterSize, setFilterSize] = useState([]);
+    const [filterRating, setFilterRating] = useState(0);
+    const [filterSort, setFilterSort] = useState("default");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-
     useEffect(() => {
-        getProfile()
-        getProductAPI()
-    }, [])
+        getProfile();
+        getProductAPI();
+    }, []);
 
     const getProfile = async () => {
         const res = await getProfileAPI();
         if (res.data) {
             dispatch(doGetProfileAction(res.data));
         }
-    }
+    };
 
     const getProductAPI = async (searchTerm) => {
-        const res = await getAllProductAPI(searchTerm)
+        const res = await getAllProductAPI(searchTerm);
         if (res.data) {
-            setDataProducts(res.data)
+            setDataProducts(res.data);
         } else {
             notification.error({
                 message: "Failed",
-                description: res.message
-            })
+                description: res.message,
+            });
         }
-    }
+    };
 
     const handleSearch = useCallback(
         _.debounce((searchTerm) => {
@@ -80,17 +79,16 @@ const Home = () => {
     };
 
     const handlePagination = (page, pageSize) => {
-        setCurrent(page)
-        setPageSize(pageSize)
-    }
+        setCurrent(page);
+        setPageSize(pageSize);
+    };
 
     const handleClearFilters = () => {
-        setFilterPrice([])
-        setFilterSize([])
-        setFilterRating(0)
-        setCurrent(1)
-    }
-
+        setFilterPrice([]);
+        setFilterSize([]);
+        setFilterRating(0);
+        setCurrent(1);
+    };
 
     return (
         <div className="container">
@@ -118,8 +116,9 @@ const Home = () => {
                         <Collapse defaultActiveKey={[]} ghost>
                             <Panel header="Rating" key="1">
                                 <Radio.Group
-                                    // value={selectedRating}
-                                    onChange={(event) => { setFilterRating(event.target.value) }
+                                    value={filterRating}
+                                    onChange={(event) =>
+                                        setFilterRating(event.target.value)
                                     }
                                 >
                                     <Radio value={4}>4 star or up</Radio>
@@ -140,39 +139,43 @@ const Home = () => {
                                     <InputNumber
                                         min={0}
                                         max={1000}
-                                        value={filterPrice[0]}
-                                        onChange={(value) => {
-                                            setFilterPrice([value, filterPrice[1]])
-                                        }}
+                                        value={filterPrice[0] || 0}
+                                        onChange={(value) =>
+                                            setFilterPrice([
+                                                value,
+                                                filterPrice[1],
+                                            ])
+                                        }
                                     />
                                     <span>To:</span>
                                     <InputNumber
                                         min={0}
                                         max={1000}
-                                        value={filterPrice[1]}
-                                        onChange={(value) => {
-                                            setFilterPrice([filterPrice[0], value])
-
-                                        }}
+                                        value={filterPrice[1] || 1000}
+                                        onChange={(value) =>
+                                            setFilterPrice([
+                                                filterPrice[0],
+                                                value,
+                                            ])
+                                        }
                                     />
                                 </div>
                                 <Slider
                                     range
                                     min={0}
                                     max={1000}
-                                    defaultValue={[0, 1000]}
-                                    onChange={(value) => {
-                                        setFilterPrice((value))
+                                    value={
+                                        filterPrice.length
+                                            ? filterPrice
+                                            : [0, 1000]
                                     }
-                                    }
+                                    onChange={(value) => setFilterPrice(value)}
                                 />
                             </Panel>
-
                             <Panel header="Size" key="3">
                                 <Checkbox.Group
-                                    onChange={(values) => {
-                                        setFilterSize(values)
-                                    }}
+                                    value={filterSize}
+                                    onChange={(values) => setFilterSize(values)}
                                 >
                                     {[...Array(16).keys()].map((i) => (
                                         <Checkbox key={i} value={i + 30}>
@@ -199,12 +202,12 @@ const Home = () => {
                             <Col span={6} style={{ textAlign: "right" }}>
                                 <Select
                                     value={filterSort}
-                                    onChange={(values) => { setFilterSort(values) }}
+                                    onChange={(values) => {
+                                        setFilterSort(values);
+                                    }}
                                     style={{ width: 150 }}
                                 >
-                                    <Option value="default">
-                                        Default
-                                    </Option>
+                                    <Option value="default">Default</Option>
                                     <Option value="recommended">
                                         Recommended
                                     </Option>
@@ -221,33 +224,47 @@ const Home = () => {
                         <Row gutter={[16, 16]}>
                             {dataProducts
                                 .filter((product, index) => {
-                                    if (filterPrice.length === 0) return true
-                                    return product.price >= filterPrice[0]
-                                        && product.price <= filterPrice[1]
-
+                                    if (filterPrice.length === 0) return true;
+                                    return (
+                                        product.price >= filterPrice[0] &&
+                                        product.price <= filterPrice[1]
+                                    );
                                 })
                                 .filter((product, index) => {
-                                    if (filterSize.length === 0) return true
-                                    for (let i = 0; i < product.sizes.length; i++) {
+                                    if (filterSize.length === 0) return true;
+                                    for (
+                                        let i = 0;
+                                        i < product.sizes.length;
+                                        i++
+                                    ) {
                                         for (let j = 0; j < filterSize; j++) {
-                                            if (product.sizes[i] === filterSize[j]) {
+                                            if (
+                                                product.sizes[i] ===
+                                                filterSize[j]
+                                            ) {
                                                 return true;
                                             }
                                         }
                                     }
-                                    return false
+                                    return false;
                                 })
                                 .filter((product, index) => {
-                                    return product.ratings_number >= filterRating
+                                    return (
+                                        product.ratings_number >= filterRating
+                                    );
                                 })
                                 .filter((product, index) => {
-                                    return index >= (current - 1) * pageSize
-                                        && index < ((current - 1) * pageSize) + pageSize
-
+                                    return (
+                                        index >= (current - 1) * pageSize &&
+                                        index <
+                                            (current - 1) * pageSize + pageSize
+                                    );
                                 })
                                 .sort((a, b) => {
                                     if (filterSort === "recommended") {
-                                        return b.ratings_number - a.ratings_number;
+                                        return (
+                                            b.ratings_number - a.ratings_number
+                                        );
                                     } else if (filterSort === "price") {
                                         return a.price - b.price;
                                     } else if (filterSort === "priceDesc") {
@@ -255,9 +272,7 @@ const Home = () => {
                                     } else {
                                         return 0;
                                     }
-                                }
-
-                                )
+                                })
                                 .map((product, index) => {
                                     return (
                                         <Col
@@ -289,7 +304,8 @@ const Home = () => {
                                                 style={{
                                                     display: "flex",
                                                     flexDirection: "column",
-                                                    justifyContent: "space-between",
+                                                    justifyContent:
+                                                        "space-between",
                                                     height: "100%",
                                                     minHeight: "380px",
                                                 }}
@@ -303,7 +319,11 @@ const Home = () => {
                                                 >
                                                     {product.name}
                                                 </h3>
-                                                <p style={{ marginBottom: "8px" }}>
+                                                <p
+                                                    style={{
+                                                        marginBottom: "8px",
+                                                    }}
+                                                >
                                                     <Rate
                                                         disabled
                                                         value={
@@ -311,14 +331,18 @@ const Home = () => {
                                                         }
                                                     />
                                                 </p>
-                                                <p style={{ marginBottom: "16px" }}>
+                                                <p
+                                                    style={{
+                                                        marginBottom: "16px",
+                                                    }}
+                                                >
                                                     Price:{" "}
                                                     {product.price.toLocaleString()}{" "}
                                                     $
                                                 </p>
                                             </Card>
                                         </Col>
-                                    )
+                                    );
                                 })}
                         </Row>
 
