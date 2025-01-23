@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
-import { getOrdersAPI, getProductByIdAPI } from "../../../services/api.service";
+import { getOrdersAPI } from "../../../services/api.service";
 import moment from "moment";
 import ViewDetail from "./view.detail";
 
@@ -11,8 +11,8 @@ const History = () => {
     const [totalAllOrders, setTotalAllOrders] = useState(0);
     const [totalShippingFee, setTotalShippingFee] = useState(0);
 
-    const [dataOrderDetail, setDataOrderDetail] = useState(null)
-    const [isOpenViewOrderDetail, setIsOpenViewOrderDetail] = useState(false)
+    const [dataOrderDetail, setDataOrderDetail] = useState(null);
+    const [isOpenViewOrderDetail, setIsOpenViewOrderDetail] = useState(false);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -41,24 +41,24 @@ const History = () => {
         fetchOrders();
     }, []);
 
-
-
     return (
         <>
             <div style={{ display: "flex", padding: "20px", gap: "20px" }}>
-                {/* Danh sách sản phẩm */}
+                {/* Danh sách đơn hàng */}
                 <div
                     style={{
                         width: "70%",
                         marginRight: "20px",
-
                         padding: "10px",
                         backgroundColor: "#fff",
-                        // height: "306px"
+                        maxHeight: "400px",
+                        overflowY: "auto",
+                        border: "1px solid #ddd",
+                        borderRadius: "8px",
                     }}
                 >
                     {orders.length > 0 ? (
-                        orders.map((order, index) => (
+                        orders.map((order) => (
                             <div
                                 key={order.id}
                                 style={{
@@ -68,11 +68,36 @@ const History = () => {
                                     borderRadius: "3px",
                                     padding: "15px",
                                     marginBottom: "25px",
-                                    backgroundColor: "#F9F9F9"
+                                    backgroundColor: "#F9F9F9",
                                 }}
                             >
-                                <div style={{ marginBottom: "10px", color: "#998382", fontSize: "18px" }}>
-                                    Order <strong style={{ color: "blue", fontSize: "22px" }}> {order.id}</strong> day <strong style={{ color: "blue", fontSize: "22px" }}>{moment(order.createdAt).format('YYYY-MM-DD')}</strong>
+                                <div
+                                    style={{
+                                        marginBottom: "10px",
+                                        color: "#998382",
+                                        fontSize: "18px",
+                                    }}
+                                >
+                                    Order{" "}
+                                    <strong
+                                        style={{
+                                            color: "blue",
+                                            fontSize: "22px",
+                                        }}
+                                    >
+                                        {order.id}
+                                    </strong>{" "}
+                                    day{" "}
+                                    <strong
+                                        style={{
+                                            color: "blue",
+                                            fontSize: "22px",
+                                        }}
+                                    >
+                                        {moment(order.createdAt).format(
+                                            "YYYY-MM-DD"
+                                        )}
+                                    </strong>
                                 </div>
                                 <div
                                     style={{
@@ -82,8 +107,16 @@ const History = () => {
                                         marginTop: "10px",
                                     }}
                                 >
-                                    <strong style={{ fontSize: "18px", color: "#333" }}>
-                                        ${parseFloat(order.total_price || 0).toFixed(2)}
+                                    <strong
+                                        style={{
+                                            fontSize: "18px",
+                                            color: "#333",
+                                        }}
+                                    >
+                                        $
+                                        {parseFloat(
+                                            order.total_price || 0
+                                        ).toFixed(2)}
                                     </strong>
                                     <Button
                                         type="primary"
@@ -93,9 +126,8 @@ const History = () => {
                                             color: "#fff",
                                         }}
                                         onClick={() => {
-                                            console.log(order)
-                                            setDataOrderDetail(order)
-                                            setIsOpenViewOrderDetail(true)
+                                            setDataOrderDetail(order);
+                                            setIsOpenViewOrderDetail(true);
                                         }}
                                     >
                                         View detail
@@ -118,7 +150,9 @@ const History = () => {
                         backgroundColor: "#f9f9f9",
                     }}
                 >
-                    <h2 style={{ marginBottom: "20px", fontSize: "18px" }}>Order Summary</h2>
+                    <h2 style={{ marginBottom: "20px", fontSize: "18px" }}>
+                        Order Summary
+                    </h2>
                     <p
                         style={{
                             display: "flex",
@@ -162,7 +196,9 @@ const History = () => {
                         }}
                     >
                         <span>Total:</span>
-                        <span>${(totalAllOrders + totalShippingFee).toFixed(2)}</span>
+                        <span>
+                            ${(totalAllOrders + totalShippingFee).toFixed(2)}
+                        </span>
                     </p>
                     <Button
                         type="default"
