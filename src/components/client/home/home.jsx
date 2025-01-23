@@ -25,6 +25,8 @@ import {
 import { useDispatch } from "react-redux";
 import { doGetProfileAction } from "../../../redux/profile/profileSlice";
 import _ from "lodash";
+import Loading from "../loading/loading";
+import { HashLoader } from "react-spinners";
 
 const { Sider, Content } = Layout;
 const { Option } = Select;
@@ -32,6 +34,7 @@ const { Search } = Input;
 const { Panel } = Collapse;
 
 const Home = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(12);
     const [dataProducts, setDataProducts] = useState([]);
@@ -55,9 +58,13 @@ const Home = () => {
     };
 
     const getProductAPI = async (searchTerm) => {
+        setIsLoading(true)
         const res = await getAllProductAPI(searchTerm);
         if (res.data) {
             setDataProducts(res.data);
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 500)
         } else {
             notification.error({
                 message: "Failed",
@@ -221,138 +228,154 @@ const Home = () => {
                             </Col>
                         </Row>
 
-                        <Row gutter={[16, 16]}>
-                            {dataProducts
-                                .filter((product, index) => {
-                                    if (filterPrice.length === 0) return true;
-                                    return (
-                                        product.price >= filterPrice[0] &&
-                                        product.price <= filterPrice[1]
-                                    );
-                                })
-                                .filter((product, index) => {
-                                    if (filterSize.length === 0) return true;
-                                    for (
-                                        let i = 0;
-                                        i < product.sizes.length;
-                                        i++
-                                    ) {
-                                        for (let j = 0; j < filterSize; j++) {
-                                            if (
-                                                product.sizes[i] ===
-                                                filterSize[j]
+                        {isLoading === false
+                            ?
+                            <>
+                                <Row gutter={[16, 16]}>
+
+                                    {dataProducts
+                                        .filter((product, index) => {
+                                            if (filterPrice.length === 0) return true;
+                                            return (
+                                                product.price >= filterPrice[0] &&
+                                                product.price <= filterPrice[1]
+                                            );
+                                        })
+                                        .filter((product, index) => {
+                                            if (filterSize.length === 0) return true;
+                                            for (
+                                                let i = 0;
+                                                i < product.sizes.length;
+                                                i++
                                             ) {
-                                                return true;
+                                                for (let j = 0; j < filterSize; j++) {
+                                                    if (
+                                                        product.sizes[i] ===
+                                                        filterSize[j]
+                                                    ) {
+                                                        return true;
+                                                    }
+                                                }
                                             }
-                                        }
-                                    }
-                                    return false;
-                                })
-                                .filter((product, index) => {
-                                    return (
-                                        product.ratings_number >= filterRating
-                                    );
-                                })
-                                .filter((product, index) => {
-                                    return (
-                                        index >= (current - 1) * pageSize &&
-                                        index <
-                                        (current - 1) * pageSize + pageSize
-                                    );
-                                })
-                                .sort((a, b) => {
-                                    if (filterSort === "recommended") {
-                                        return (
-                                            b.ratings_number - a.ratings_number
-                                        );
-                                    } else if (filterSort === "price") {
-                                        return a.price - b.price;
-                                    } else if (filterSort === "priceDesc") {
-                                        return b.price - a.price;
-                                    } else {
-                                        return 0;
-                                    }
-                                })
-                                .map((product, index) => {
-                                    return (
-                                        <Col
-                                            span={6}
-                                            key={index}
-                                            style={{ height: "100%" }}
-                                        >
-                                            <Card
-                                                hoverable
-                                                cover={
-                                                    <img
-                                                        src={product.image_url}
-                                                        alt={
-                                                            product.name ||
-                                                            "Product Image"
+                                            return false;
+                                        })
+                                        .filter((product, index) => {
+                                            return (
+                                                product.ratings_number >= filterRating
+                                            );
+                                        })
+                                        .filter((product, index) => {
+                                            return (
+                                                index >= (current - 1) * pageSize &&
+                                                index <
+                                                (current - 1) * pageSize + pageSize
+                                            );
+                                        })
+                                        .sort((a, b) => {
+                                            if (filterSort === "recommended") {
+                                                return (
+                                                    b.ratings_number - a.ratings_number
+                                                );
+                                            } else if (filterSort === "price") {
+                                                return a.price - b.price;
+                                            } else if (filterSort === "priceDesc") {
+                                                return b.price - a.price;
+                                            } else {
+                                                return 0;
+                                            }
+                                        })
+                                        .map((product, index) => {
+                                            return (
+                                                <Col
+                                                    span={6}
+                                                    key={index}
+                                                    style={{ height: "100%" }}
+                                                >
+                                                    <Card
+                                                        hoverable
+                                                        cover={
+                                                            <img
+                                                                src={product.image_url}
+                                                                alt={
+                                                                    product.name ||
+                                                                    "Product Image"
+                                                                }
+                                                                style={{
+                                                                    maxWidth: "100%",
+                                                                    maxHeight: "200px",
+                                                                    objectFit: "cover",
+                                                                }}
+                                                            />
+                                                        }
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/product/${product.id}`
+                                                            )
                                                         }
                                                         style={{
-                                                            maxWidth: "100%",
-                                                            maxHeight: "200px",
-                                                            objectFit: "cover",
+                                                            display: "flex",
+                                                            flexDirection: "column",
+                                                            justifyContent:
+                                                                "space-between",
+                                                            height: "100%",
+                                                            minHeight: "380px",
                                                         }}
-                                                    />
-                                                }
-                                                onClick={() =>
-                                                    navigate(
-                                                        `/product/${product.id}`
-                                                    )
-                                                }
-                                                style={{
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    justifyContent:
-                                                        "space-between",
-                                                    height: "100%",
-                                                    minHeight: "380px",
-                                                }}
-                                            >
-                                                <h3
-                                                    style={{
-                                                        flex: 1,
-                                                        marginBottom: "8px",
-                                                        marginTop: "16px",
-                                                    }}
-                                                >
-                                                    {product.name}
-                                                </h3>
-                                                <p
-                                                    style={{
-                                                        marginBottom: "8px",
-                                                    }}
-                                                >
-                                                    <Rate
-                                                        disabled
-                                                        value={
-                                                            product.ratings_number
-                                                        }
-                                                    />
-                                                </p>
-                                                <p
-                                                    style={{
-                                                        marginBottom: "16px",
-                                                    }}
-                                                >
-                                                    Price:{" "}
-                                                    {product.price.toLocaleString()}{" "}
-                                                    $
-                                                </p>
-                                            </Card>
-                                        </Col>
-                                    );
-                                })}
-                        </Row>
+                                                    >
+                                                        <h3
+                                                            style={{
+                                                                flex: 1,
+                                                                marginBottom: "8px",
+                                                                marginTop: "16px",
+                                                            }}
+                                                        >
+                                                            {product.name}
+                                                        </h3>
+                                                        <p
+                                                            style={{
+                                                                marginBottom: "8px",
+                                                            }}
+                                                        >
+                                                            <Rate
+                                                                disabled
+                                                                value={
+                                                                    product.ratings_number
+                                                                }
+                                                            />
+                                                        </p>
+                                                        <p
+                                                            style={{
+                                                                marginBottom: "16px",
+                                                            }}
+                                                        >
+                                                            Price:{" "}
+                                                            {product.price.toLocaleString()}{" "}
+                                                            $
+                                                        </p>
+                                                    </Card>
+                                                </Col>
+                                            );
+                                        })}
+                                </Row>
 
-                        <Pagination
-                            current={current}
-                            pageSize={pageSize}
-                            total={dataProducts.length}
-                            onChange={handlePagination}
-                            style={{ textAlign: "center", marginTop: "16px" }}
-                        />
+                                <Pagination
+                                    current={current}
+                                    pageSize={pageSize}
+                                    total={dataProducts.length}
+                                    onChange={handlePagination}
+                                    style={{ textAlign: "center", marginTop: "16px" }}
+                                />
+                            </>
+                            :
+                            <div style={{
+                                position: "fixed",
+                                top: "50%",
+                                left: "55%",
+                                transform: "translate(-50%, -50%)"
+                            }}>
+                                <HashLoader color="#3986E4" />
+                            </div>
+                        }
+
                     </Content>
                 </Layout>
             </Layout>

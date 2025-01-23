@@ -6,6 +6,7 @@ import ProductNotification from "./notification";
 import { useDispatch } from "react-redux";
 import { doAddToCartAction } from "../../../redux/order/orderSlice";
 import Loading from "../loading/loading";
+import { HashLoader } from "react-spinners";
 
 const { TabPane } = Tabs;
 
@@ -30,7 +31,9 @@ const Product = () => {
             } catch (err) {
                 setError("Failed to load product data.");
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 300)
             }
         };
 
@@ -44,7 +47,18 @@ const Product = () => {
         dispatch(doAddToCartAction({ quantity: quantity, size: selectedSize, color: selectedColor, detail: product }))
     };
 
-    if (loading) return <Loading />;
+    if (loading) return (
+        <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{
+                position: "fixed",
+                top: "35%",
+                left: "50%",
+                transform: "translate(-50%, -50%)"
+            }}>
+                <HashLoader color="#3986E4" />
+            </div>
+        </div>
+    )
     if (error) return <p>{error}</p>;
     if (!product) return <p>Product not found.</p>;
 
