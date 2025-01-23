@@ -184,7 +184,7 @@ const Product = () => {
                                     fontSize: "16px",
                                 }}
                             />
-                            <span style={{ marginLeft: "20px", fontSize: "14px", color: "#CCC" }}>{product.stock_quantity} available</span>
+                            <span style={{ marginLeft: "20px", fontSize: "14px", color: "#CCC" }}>{product.stock_quantity >= 0 ? product.stock_quantity : 0} available</span>
                         </div>
                     </div>
 
@@ -197,7 +197,7 @@ const Product = () => {
                             fontSize: "18px",
                         }}
                         onClick={handleAddToCart}
-                        disabled={!selectedSize || !selectedColor}
+                        disabled={!selectedSize || !selectedColor || product.stock_quantity <= 0}
                     >
                         Add to Cart
                     </Button>
