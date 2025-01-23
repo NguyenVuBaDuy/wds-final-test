@@ -104,7 +104,13 @@ const Login = () => {
                                 color: "black", fontWeight: "600",
                                 fontSize: "14px", height: '39.63px',
                                 width: "100%",
-                            }}>
+                            }}
+                            onClick={() => {
+                                notification.info({
+                                    message: "Coming soon..."
+                                })
+                            }}
+                        >
                             <FcGoogle style={{ fontSize: "24px" }} />
                             Sign in with Google
                         </Button>
