@@ -45,13 +45,13 @@ const History = () => {
 
     return (
         <>
-            <div style={{ display: "flex", padding: "20px", gap: "20px" }}>
+            <div className="container" style={{ display: "flex", padding: "20px", gap: "20px" }}>
                 {/* Danh sách đơn hàng */}
                 <div
                     style={{
                         width: "70%",
                         marginRight: "20px",
-                        padding: "10px",
+                        padding: "20px",
                         backgroundColor: "#fff",
                         maxHeight: "400px",
                         overflowY: "auto",
