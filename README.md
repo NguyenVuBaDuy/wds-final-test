@@ -40,3 +40,12 @@ Shoe Store giúp người dùng tìm kiếm, xem chi tiết và đặt mua các 
 3. Tạo và cấu hình file .env
 4. Khởi chạy ứng dụng:
     npm run dev
+
+5. Đăng nhập hoặc đăng ký tài khoản để sử dụng
+    *Tài khoản admin:
+        - Email: admin@gmail.com   
+        - Password: 123456
+
+    *Tài khoản user(có thể tự đăng ký hoặc dùng tài khoản có sẵn):
+        - Email: user@gmail.com 
+        - Password: 123456
