@@ -139,7 +139,7 @@ const StepCart = ({ totalPrice, items }) => {
                     </div>
                 </section>}
 
-            <Button className="order__update" onClick={() => { navigate('/') }}>Why don't you add the product to the cart</Button>
+            <Button className="order__update" onClick={() => { navigate('/') }}>Buy more!</Button>
 
         </section>
     )

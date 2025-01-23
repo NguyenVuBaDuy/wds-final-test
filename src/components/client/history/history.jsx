@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getOrdersAPI } from "../../../services/api.service";
 import moment from "moment";
 import ViewDetail from "./view.detail";
+import { useSelector } from "react-redux";
 
 const History = () => {
     const navigate = useNavigate();
@@ -13,11 +14,12 @@ const History = () => {
 
     const [dataOrderDetail, setDataOrderDetail] = useState(null);
     const [isOpenViewOrderDetail, setIsOpenViewOrderDetail] = useState(false);
+    const user_id = useSelector(state => state.profile.user.id)
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await getOrdersAPI();
+                const response = await getOrdersAPI(user_id);
                 const ordersData = response.data;
 
                 const totalOrderPrice = ordersData.reduce(
