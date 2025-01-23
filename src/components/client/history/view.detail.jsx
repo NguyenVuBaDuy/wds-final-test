@@ -1,8 +1,10 @@
 import { Col, Descriptions, Divider, Drawer, Row } from "antd";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const ViewDetail = ({ setDataOrderDetail, setIsOpenViewOrderDetail, isOpenViewOrderDetail, dataOrderDetail }) => {
 
+    const user = useSelector(state => state.profile.user)
 
     return (
         <Drawer
@@ -25,10 +27,10 @@ const ViewDetail = ({ setDataOrderDetail, setIsOpenViewOrderDetail, isOpenViewOr
                             {moment(dataOrderDetail.createdAt).format('YYYY-MM-DD HH:MM:SS')}
                         </Descriptions.Item>
                         <Descriptions.Item label="Customer" span={2}>
-                            {dataOrderDetail.user.name}
+                            {user.name}
                         </Descriptions.Item>
                         <Descriptions.Item label="Phone Number" span={2}>
-                            {dataOrderDetail.user.phone_number}
+                            {user.phone_number}
                         </Descriptions.Item>
                         <Descriptions.Item label="Shipping Address" span={3}>
                             {dataOrderDetail.shipping_address}
