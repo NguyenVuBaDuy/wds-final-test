@@ -15,8 +15,8 @@ import { ConfigProvider } from "antd";
 import enUS from "antd/locale/en_US";
 import { useEffect, useState } from "react";
 import { getProfileAPI } from "./services/api.service.js";
-import { useDispatch } from "react-redux";
-import { doGetProfileAction } from "./redux/profile/profileSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { doGetProfileAction, doNoGetProfileAction } from "./redux/profile/profileSlice.js";
 import Loading from "./components/client/loading/loading.jsx";
 import ProtectedRoute from "./components/auth/protectedRoute.jsx";
 import ErrorPage from "./components/errorPage/errorPage.jsx";
@@ -118,7 +118,7 @@ const router = createBrowserRouter([
 const App = () => {
 
     const dispatch = useDispatch()
-    const [isAppLoading, setIsAppLoading] = useState(false)
+    const isLoading = useSelector(state => state.profile.isLoading)
 
     useEffect(() => {
         getProfile()
@@ -130,23 +130,20 @@ const App = () => {
             || window.location.pathname === '/register'
         ) return
 
-        setIsAppLoading(true)
         const res = await getProfileAPI()
         if (res.data) {
             dispatch(doGetProfileAction(res.data))
+        } else {
+            dispatch(doNoGetProfileAction())
         }
-        setTimeout(() => {
-            setIsAppLoading(false)
-        }, 1000)
+
     }
 
     return (
         <>
-            {isAppLoading === false
-                || window.location.pathname === '/'
+            {isLoading === false
                 || window.location.pathname === '/login'
                 || window.location.pathname === '/register'
-                || window.location.pathname.startsWith('/product/')
                 ?
                 <ConfigProvider locale={enUS}>
                     <RouterProvider router={router} />

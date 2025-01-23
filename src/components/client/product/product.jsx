@@ -5,6 +5,7 @@ import { getProductByIdAPI } from "../../../services/api.service";
 import ProductNotification from "./notification";
 import { useDispatch } from "react-redux";
 import { doAddToCartAction } from "../../../redux/order/orderSlice";
+import Loading from "../loading/loading";
 
 const { TabPane } = Tabs;
 
@@ -43,7 +44,7 @@ const Product = () => {
         dispatch(doAddToCartAction({ quantity: quantity, size: selectedSize, color: selectedColor, detail: product }))
     };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loading />;
     if (error) return <p>{error}</p>;
     if (!product) return <p>Product not found.</p>;
 

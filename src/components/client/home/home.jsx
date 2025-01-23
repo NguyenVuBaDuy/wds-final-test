@@ -257,7 +257,7 @@ const Home = () => {
                                     return (
                                         index >= (current - 1) * pageSize &&
                                         index <
-                                            (current - 1) * pageSize + pageSize
+                                        (current - 1) * pageSize + pageSize
                                     );
                                 })
                                 .sort((a, b) => {

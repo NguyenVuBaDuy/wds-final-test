@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     isAuthenticated: false,
     tempAvatar: null,
+    isLoading: true,
     user: {
         id: '',
         email: '',
@@ -21,6 +22,10 @@ const profileSlice = createSlice({
         doGetProfileAction: (state, action) => {
             state.isAuthenticated = true
             state.user = action.payload
+            state.isLoading = false
+        },
+        doNoGetProfileAction: (state) => {
+            state.isLoading = false
         },
         doLogoutAction: (state) => {
             state.isAuthenticated = false
@@ -41,6 +46,6 @@ const profileSlice = createSlice({
     },
 });
 
-export const { doGetProfileAction, doLogoutAction, doUpdateUserAction, doSetTempAvatarAction, doChangeAvatar } = profileSlice.actions;
+export const { doGetProfileAction, doLogoutAction, doUpdateUserAction, doSetTempAvatarAction, doChangeAvatar, doNoGetProfileAction } = profileSlice.actions;
 
 export default profileSlice.reducer;
