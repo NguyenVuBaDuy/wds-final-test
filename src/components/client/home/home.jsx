@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     Layout,
     Card,
@@ -24,6 +24,7 @@ import {
 } from "../../../services/api.service";
 import { useDispatch } from "react-redux";
 import { doGetProfileAction } from "../../../redux/profile/profileSlice";
+import _ from "lodash";
 
 const { Sider, Content } = Layout;
 const { Option } = Select;
@@ -54,8 +55,8 @@ const Home = () => {
         }
     }
 
-    const getProductAPI = async () => {
-        const res = await getAllProductAPI()
+    const getProductAPI = async (searchTerm) => {
+        const res = await getAllProductAPI(searchTerm)
         if (res.data) {
             setDataProducts(res.data)
         } else {
@@ -66,6 +67,17 @@ const Home = () => {
         }
     }
 
+    const handleSearch = useCallback(
+        _.debounce((searchTerm) => {
+            getProductAPI(searchTerm);
+        }, 300),
+        []
+    );
+
+    const onSearchInputChange = (e) => {
+        const value = e.target.value;
+        handleSearch(value);
+    };
 
     const handlePagination = (page, pageSize) => {
         setCurrent(page)
@@ -178,9 +190,9 @@ const Home = () => {
                             style={{ marginBottom: "16px" }}
                         >
                             <Col span={6}>
-                                <Search
-                                    placeholder="Search"
-                                    onSearch={() => { }}
+                                <Input
+                                    placeholder="What are you looking for today?"
+                                    onChange={onSearchInputChange}
                                     style={{ width: 250, marginBottom: "16px" }}
                                 />
                             </Col>

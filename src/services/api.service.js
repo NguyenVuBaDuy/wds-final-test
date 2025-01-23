@@ -120,8 +120,9 @@ export const createProductAPI = (
     return axios.post(urlBackend, data);
 };
 
-export const getAllProductAPI = () => {
-    const urlBackend = "/products";
+export const getAllProductAPI = (searchTerm) => {
+    const search = `/?name=${searchTerm}`
+    const urlBackend = `/products${searchTerm === undefined || searchTerm === '' ? '' : search}`;
     return axios.get(urlBackend);
 };
 
