@@ -51,7 +51,7 @@ const ProductTable = () => {
 
     const handleDataProducts = () => {
         const indexStart = (current - 1) * pageSize;
-        const currentDataUsers = dataUsers.slice(
+        const currentDataUsers = dataProducts.slice(
             indexStart,
             indexStart + pageSize
         );
@@ -170,7 +170,7 @@ const ProductTable = () => {
                             onConfirm={() => {
                                 handleDeleteProduct(record.id);
                             }}
-                            onCancel={() => {}}
+                            onCancel={() => { }}
                             okText="Yes"
                             cancelText="No"
                         >
@@ -202,7 +202,7 @@ const ProductTable = () => {
         if (dataProducts && dataProducts.length > 0) {
             const data = handleDataProducts();
             if (data && data.length) {
-                const worksheet = XLSX.utils.json_to_sheet(dataProducts);
+                const worksheet = XLSX.utils.json_to_sheet(data);
                 const workbook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
                 XLSX.writeFile(workbook, "DataProducts.xlsx");
@@ -216,6 +216,7 @@ const ProductTable = () => {
                 columns={columns}
                 actionRef={actionRef}
                 cardBordered
+                search={false}
                 request={async (params) => {
                     const res = await getAllProductAPI();
                     if (res.data) {

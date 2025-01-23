@@ -216,6 +216,7 @@ const UserTable = () => {
                 columns={columns}
                 actionRef={actionRef}
                 cardBordered
+                search={false}
                 request={async () => {
                     const res = await getUsersAPI();
                     if (res.data) {

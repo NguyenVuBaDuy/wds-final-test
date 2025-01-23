@@ -176,3 +176,7 @@ export const getOrdersAPI = (user_id) => {
     return axios.get(urlBackend);
 };
 
+export const getAllOrdersAPI = () => {
+    const urlBackend = '/orders'
+    return axios.get(urlBackend)
+}
