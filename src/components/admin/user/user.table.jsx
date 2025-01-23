@@ -74,10 +74,7 @@ const UserTable = () => {
             render: (text, record) => [
                 <a
                     href="#"
-                    onClick={() => {
-                        setDataUserDetail(record);
-                        setIsOpenUserDetail(true);
-                    }}
+
                 >
                     {record.id}
                 </a>,
@@ -169,6 +166,18 @@ const UserTable = () => {
             },
             search: false,
             editable: false,
+        },
+        {
+            key: "detail",
+            title: "View Detail",
+            hideInSearch: true,
+            render: (_, record) => (
+                <Button type="primary" onClick={() => {
+                    setDataUserDetail(record);
+                    setIsOpenUserDetail(true);
+                }}>View Detail</Button>
+            ),
+            align: "left",
         },
     ];
 

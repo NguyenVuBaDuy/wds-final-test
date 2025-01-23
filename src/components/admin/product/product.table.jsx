@@ -90,10 +90,6 @@ const ProductTable = () => {
             render: (_, record) => (
                 <a
                     href="#"
-                    onClick={() => {
-                        setIsOpenProductDetail(true);
-                        setDataProductDetail(record);
-                    }}
                 >
                     {record.id}
                 </a>
@@ -182,6 +178,18 @@ const ProductTable = () => {
                 );
             },
             hideInSearch: true,
+        },
+        {
+            key: "detail",
+            title: "View Detail",
+            hideInSearch: true,
+            render: (_, record) => (
+                <Button type="primary" onClick={() => {
+                    setIsOpenProductDetail(true)
+                    setDataProductDetail(record)
+                }}>View Detail</Button>
+            ),
+            align: "left",
         },
     ];
 
