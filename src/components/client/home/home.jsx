@@ -32,7 +32,7 @@ const { Panel } = Collapse;
 
 const Home = () => {
     const [current, setCurrent] = useState(1)
-    const [pageSize, setPageSize] = useState(5)
+    const [pageSize, setPageSize] = useState(12)
     const [dataProducts, setDataProducts] = useState([])
     const [filterPrice, setFilterPrice] = useState([])
     const [filterSize, setFilterSize] = useState([])

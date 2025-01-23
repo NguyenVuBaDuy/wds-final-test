@@ -16,7 +16,7 @@ const NotAuth = (props) => {
                 ?
                 <>{props.children}</>
                 :
-                <div style={{ marginTop: "110px" }}>
+                <div style={{ marginTop: "110px", minHeight: "calc(100vh - 506px)" }}>
                     <Result
                         status="403"
                         title="401"
